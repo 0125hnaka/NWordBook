@@ -1,0 +1,1560 @@
+[
+  {
+    "category": "L2",
+    "topic": "Ethernet",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_NEXT_HOP_MAC",
+      "KA_MAC_LEARN",
+      "KA_FLOOD",
+      "KA_MULTI_SOURCE_MAC",
+      "KA_SAME_L2_IP",
+      "KA_MAC_OUI",
+      "KA_WLAN_UPLINK"
+    ],
+    "verifiedAtomCount": 7,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "MAC学習",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_MAC_LEARN",
+      "KA_MIRROR_LEARN"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "Flooding",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_FLOOD"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "ARP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DSR_ARP",
+      "KA_GARP",
+      "KA_NEXT_HOP_MAC",
+      "KA_ARP_TARGET",
+      "KA_ARP_PROXY",
+      "KA_DAI"
+    ],
+    "verifiedAtomCount": 5,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "VLAN",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_VLAN_TAG",
+      "KA_DYNAMIC_VLAN",
+      "KA_QOS_COS",
+      "KA_BROADCAST_DOMAIN"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "802.1Q",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_VLAN_TAG"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "QinQ",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_QINQ"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "STP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_STP_LAG",
+      "KA_RSTP",
+      "KA_STP_ROOT",
+      "KA_STP_PORT_ROLE",
+      "KA_STP_DELAY"
+    ],
+    "verifiedAtomCount": 5,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "RSTP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_RSTP"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "LACP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_LACP",
+      "KA_LAG_HASH",
+      "KA_LAG_CAP"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "Stack",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_STACK",
+      "KA_IPV6_FALLBACK"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L2",
+    "topic": "PoE",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_POE_BUDGET",
+      "KA_POE_PASSIVE",
+      "KA_POE_STANDARD"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "IPv4",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_LONGEST",
+      "KA_DHCP_OPTIONS",
+      "KA_IPV6_FALLBACK",
+      "KA_IP_TTL_LOOP",
+      "KA_IP_UNNUMBERED",
+      "KA_PRIVATE_PUBLIC",
+      "KA_ADDRESS_OVERLAP",
+      "KA_LOOPBACK_LOCAL",
+      "KA_SUBNET_RANGE"
+    ],
+    "verifiedAtomCount": 9,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "ICMP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_HEALTH_L7",
+      "KA_PING_CONGEST",
+      "KA_TRACEROUTE"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "MTU",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_TUNNEL_MTU",
+      "KA_PMTU",
+      "KA_IPV6_PTB"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "PMTUD",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_PMTU",
+      "KA_IPV6_PTB"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "VRRP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_VRRP_DG",
+      "KA_VRRP_ADVERT",
+      "KA_VRRP_TRACK"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "OSPF",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_OSPF_COST",
+      "KA_OSPF_DRAIN",
+      "KA_OSPF_ABR",
+      "KA_OSPF_TYPE5",
+      "KA_OSPF_DEFAULT",
+      "KA_OSPF_VLINK",
+      "KA_OSPF_AUTH",
+      "KA_OSPF_PASSIVE",
+      "KA_OSPF_DR0",
+      "KA_OSPF_BACKBONE",
+      "KA_OSPF_LSDB",
+      "KA_ROUTER_ID",
+      "KA_OSPF_TYPE3",
+      "KA_OSPFV3"
+    ],
+    "verifiedAtomCount": 13,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "BGP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_BGP_ASPATH",
+      "KA_BGP_ATTR",
+      "KA_BGP_DIRECTION",
+      "KA_BGP_KEEP",
+      "KA_RR",
+      "KA_BGP_UPDATE",
+      "KA_BGP_NEXTHOP",
+      "KA_BGP_PREPEND",
+      "KA_AS_OVERRIDE",
+      "KA_BGP_BEST",
+      "KA_PRIVATE_AS",
+      "KA_BGP_PEER"
+    ],
+    "verifiedAtomCount": 12,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "ECMP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_ECMP",
+      "KA_ECMP_ORDER",
+      "KA_ECMP_HASH"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "Redistribution",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_REDIST_LOOP"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "NAT",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_NAT_FW",
+      "KA_NAT_ENTRY",
+      "KA_NAT_TIMEOUT",
+      "KA_IPSEC_NATT",
+      "KA_SIP_NAT",
+      "KA_MULTIHOME_RETURN",
+      "KA_NAPT_FIELDS",
+      "KA_NAT_PORT_CAP",
+      "KA_NAT_BOTH",
+      "KA_PORT_FORWARD",
+      "KA_IPSEC_AH_NAT"
+    ],
+    "verifiedAtomCount": 11,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "L3",
+    "topic": "NAPT",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_NAT_ENTRY",
+      "KA_NAT_TIMEOUT",
+      "KA_IPSEC_NATT",
+      "KA_MULTIHOME_RETURN",
+      "KA_NAPT_FIELDS",
+      "KA_NAT_PORT_CAP",
+      "KA_NAT_BOTH",
+      "KA_PORT_FORWARD"
+    ],
+    "verifiedAtomCount": 8,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "IPsec",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPSEC_GRE",
+      "KA_IPSEC_ESP",
+      "KA_IPSEC_PSK",
+      "KA_IPSEC_MODE",
+      "KA_IPSEC_INTEGRITY",
+      "KA_VPN_DYNAMIC_IP",
+      "KA_IPSEC_AH_NAT"
+    ],
+    "verifiedAtomCount": 7,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "IKE",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IKE_SA",
+      "KA_LEGACY_IKE",
+      "KA_IPSEC_REKEY"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "GRE",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPSEC_GRE"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "MPLS",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_MPLS_LABEL",
+      "KA_MPLS_TENANT"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "IP-VPN",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_MPLS_LABEL"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "VRF",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_VRF"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "RD",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_XFF",
+      "KA_HTTP_PROXY_ROLE",
+      "KA_PORT_FORWARD",
+      "KA_IPSG",
+      "KA_RD"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "RT",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_FAIL_DOMAIN",
+      "KA_CERT_NAME",
+      "KA_CRL",
+      "KA_KEY_DEVICE",
+      "KA_STARTTLS",
+      "KA_VXLAN_ENCAP",
+      "KA_VNI",
+      "KA_VXLAN_BUM",
+      "KA_EVPN_LEARN",
+      "KA_LOOPBACK_VTEP",
+      "KA_VDI_PATH",
+      "KA_CERT_EXPIRY",
+      "KA_IPSEC_MODE",
+      "KA_NAPT_FIELDS",
+      "KA_NAT_PORT_CAP",
+      "KA_CERT_SERVER_VERIFY",
+      "KA_CERT_SIGN_KEYS",
+      "KA_STUN",
+      "KA_VM_LOCAL",
+      "KA_VIRTUAL_FW",
+      "KA_NFV",
+      "KA_CERT_BOOTSTRAP",
+      "KA_VIRTUAL_NIC",
+      "KA_PORT_FORWARD",
+      "KA_CERT_SUBJECT",
+      "KA_TCP_WINDOW_RTT",
+      "KA_MIRROR_FUNCTION",
+      "KA_WEB_CLIENT_COMPAT",
+      "KA_CONTAINER_NAT",
+      "KA_RT"
+    ],
+    "verifiedAtomCount": 29,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "SD-WAN",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_BREAKOUT",
+      "KA_TUNNEL_CONTROL"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "WAN/VPN",
+    "topic": "Tunnel",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_TUNNEL_MTU",
+      "KA_IPSEC_MODE",
+      "KA_TUNNEL_ENDPOINTS"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "HTTP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_TLS_HEADER",
+      "KA_HTTP2_STREAM",
+      "KA_HTTP_HOL",
+      "KA_ALPN",
+      "KA_KEEPALIVE_RESOURCE",
+      "KA_HTTP_REDIRECT",
+      "KA_HTTP_STATUS",
+      "KA_HTTP2_PSEUDO",
+      "KA_WEBSOCKET",
+      "KA_RESTFUL"
+    ],
+    "verifiedAtomCount": 10,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "HTTP/2",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_HTTP2_STREAM",
+      "KA_ALPN",
+      "KA_HTTP2_PSEUDO"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "Cookie",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_COOKIE_SECURE",
+      "KA_COOKIE_LEARN",
+      "KA_SYN_COOKIE",
+      "KA_DTLS_COOKIE",
+      "KA_HTTP_COOKIE_FIELDS"
+    ],
+    "verifiedAtomCount": 5,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "Session",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_PERSIST_SNAT",
+      "KA_PERSIST_PORT",
+      "KA_COOKIE_ROTATE",
+      "KA_COOKIE_LEARN"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "Proxy",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_CONNECT",
+      "KA_CONNECT_PORT",
+      "KA_TCP_SPLIT",
+      "KA_PAC_BYPASS",
+      "KA_HTTP_HOST",
+      "KA_WPAD",
+      "KA_ARP_PROXY",
+      "KA_HTTP_PROXY_ROLE",
+      "KA_PROXY_AUTH_LOG"
+    ],
+    "verifiedAtomCount": 9,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "PAC",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_PAC_BYPASS",
+      "KA_MIRROR_CAP",
+      "KA_PROMISC",
+      "KA_CAP_FAIL",
+      "KA_JITTER_LOAD",
+      "KA_QUEUE_BACKLOG",
+      "KA_MIRROR_LEARN",
+      "KA_FLOW_COUNT",
+      "KA_SCALING",
+      "KA_MIRROR_FUNCTION",
+      "KA_QUEUE_UTIL",
+      "KA_IPV6_PTB"
+    ],
+    "verifiedAtomCount": 11,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "CONNECT",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_CONNECT",
+      "KA_CONNECT_PORT"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "TLS",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_TLS_KEY",
+      "KA_TLS_ROOT",
+      "KA_TLS_HEADER",
+      "KA_ALPN",
+      "KA_CLIENT_KEY",
+      "KA_PFS",
+      "KA_STARTTLS",
+      "KA_DTLS_COOKIE",
+      "KA_LEGACY_TLS_RSA",
+      "KA_TLS_HELLO",
+      "KA_TLS_SUITE",
+      "KA_DHE_ROLE",
+      "KA_TLS_SESSION_REUSE"
+    ],
+    "verifiedAtomCount": 13,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "Certificate",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_TLS_KEY",
+      "KA_CERT_NAME",
+      "KA_CRL",
+      "KA_KEY_DEVICE",
+      "KA_CERT_EXPIRY",
+      "KA_CERT_SERVER_VERIFY",
+      "KA_CERT_SIGN_KEYS",
+      "KA_CERT_BOOTSTRAP",
+      "KA_CERT_SUBJECT"
+    ],
+    "verifiedAtomCount": 9,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "WAF",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_XFF_HANDOFF",
+      "KA_PERSIST_SNAT",
+      "KA_WAF_REMOVE_FW",
+      "KA_WAF_REMOVE_DNS"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Web",
+    "topic": "CDN",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DNS_RESOLVER_LOCATION"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "LB",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_TLS_KEY",
+      "KA_XFF",
+      "KA_XFF_HANDOFF",
+      "KA_PERSIST_SNAT",
+      "KA_LB_RETURN",
+      "KA_DSR_ARP",
+      "KA_HTTP_TRANSLATE",
+      "KA_SYN_NO_L7",
+      "KA_DNS_DELEGATE",
+      "KA_SITE_SESSION",
+      "KA_DNS_LOAD",
+      "KA_OAUTH_CALLBACK",
+      "KA_L2_LB",
+      "KA_LB_LEAST",
+      "KA_LB_VIP",
+      "KA_GSLB_PATH"
+    ],
+    "verifiedAtomCount": 16,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "VIP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_LB_RETURN",
+      "KA_DSR_ARP",
+      "KA_VRRP_DG",
+      "KA_LB_VIP"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "Real Server",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_LB_RETURN",
+      "KA_DSR_ARP",
+      "KA_LB_VIP"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "Session Persistence",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_PERSIST_SNAT",
+      "KA_PERSIST_PORT",
+      "KA_COOKIE_LEARN"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "Health Check",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_HEALTH_L7",
+      "KA_HEALTH_L4"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "SNAT",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_XFF",
+      "KA_PERSIST_SNAT"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "DSR",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DSR_ARP"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "XFF",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_XFF",
+      "KA_XFF_HANDOFF"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "GSLB",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DNS_DELEGATE",
+      "KA_SITE_SESSION",
+      "KA_DNS_LOAD",
+      "KA_GSLB_PATH"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "DNS",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DNS_TTL",
+      "KA_DNS_CNAME",
+      "KA_DNS_RR_SKEW",
+      "KA_DNS_RR",
+      "KA_WAF_REMOVE_DNS",
+      "KA_DNS_DELEGATE",
+      "KA_DNS_RESOLVER_LOCATION",
+      "KA_HOSTS_TEST",
+      "KA_MAIL_MX",
+      "KA_DNS_POISON",
+      "KA_DNS_RECURSION",
+      "KA_IPV6_AAAA",
+      "KA_DNS_ZONE_TRANSFER",
+      "KA_DNS_FAILURE_REMOVE",
+      "KA_DNS_TCP",
+      "KA_DNS_SPLIT",
+      "KA_DNS_SRV",
+      "KA_DNS_ROLES",
+      "KA_DNS_A",
+      "KA_DNS_CACHE_KEY",
+      "KA_GSLB_PATH"
+    ],
+    "verifiedAtomCount": 21,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "A",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_XFF",
+      "KA_HEALTH_L7",
+      "KA_HEALTH_L4",
+      "KA_DNS_CNAME",
+      "KA_DNS_RR",
+      "KA_DSR_ARP",
+      "KA_GARP",
+      "KA_NEXT_HOP_MAC",
+      "KA_MAC_LEARN",
+      "KA_VLAN_TAG",
+      "KA_STACK",
+      "KA_LACP",
+      "KA_LAG_HASH",
+      "KA_LAG_CAP",
+      "KA_OSPF_ABR",
+      "KA_BGP_ASPATH",
+      "KA_BGP_ATTR",
+      "KA_BGP_KEEP",
+      "KA_DHCP_GIADDR",
+      "KA_DHCP_ONLY",
+      "KA_NAT_FW",
+      "KA_FW_FIELDS",
+      "KA_SRC_ALLOW_CHANGE",
+      "KA_WAF_REMOVE_FW",
+      "KA_WAF_REMOVE_DNS",
+      "KA_STATEFUL",
+      "KA_FW_SYNC",
+      "KA_PAC_BYPASS",
+      "KA_BREAKOUT",
+      "KA_NAT_ENTRY",
+      "KA_NAT_TIMEOUT",
+      "KA_NAT_LOG",
+      "KA_DHCP_LOG",
+      "KA_SNMP_POLL_TRAP",
+      "KA_MIRROR_CAP",
+      "KA_PROMISC",
+      "KA_IKE_SA",
+      "KA_IPSEC_NATT",
+      "KA_IPV6_DAD",
+      "KA_IPV6_LINKLOCAL",
+      "KA_IPV6_RA",
+      "KA_IPV6_FALLBACK",
+      "KA_PMTU",
+      "KA_CAP_FAIL",
+      "KA_FAIL_DOMAIN",
+      "KA_ROLLBACK",
+      "KA_TEST_PURPOSE",
+      "KA_CHANGE_HOLDERS",
+      "KA_CAUSE_CHAIN",
+      "KA_READ_SCOPE",
+      "KA_HTTP_HOL",
+      "KA_ALPN",
+      "KA_OLD_DRAIN",
+      "KA_CERT_NAME",
+      "KA_CLIENT_KEY",
+      "KA_CRL",
+      "KA_KEY_DEVICE",
+      "KA_SAML_VERIFY",
+      "KA_AUTHN_AUTHZ",
+      "KA_DYNAMIC_VLAN",
+      "KA_WIFI_STEALTH",
+      "KA_QOS_COS",
+      "KA_SIP_NAT",
+      "KA_SPF",
+      "KA_MAIL_OPEN_RELAY",
+      "KA_SMTP_SUBMISSION",
+      "KA_STARTTLS",
+      "KA_DKIM",
+      "KA_DKIM_KEY_SPLIT",
+      "KA_MAIL_MIGRATION",
+      "KA_URPF",
+      "KA_IPS_FAILOPEN",
+      "KA_VXLAN_ENCAP",
+      "KA_VNI",
+      "KA_VXLAN_BUM",
+      "KA_EVPN_LEARN",
+      "KA_LOOPBACK_VTEP",
+      "KA_IGMP",
+      "KA_IGMPV3",
+      "KA_MULTI_UNICAST",
+      "KA_COAP_LIGHT",
+      "KA_COAP_TOKEN",
+      "KA_JITTER_LOAD",
+      "KA_FQDN_CONFIG",
+      "KA_HTTP_CACHE_STALE",
+      "KA_MULTIHOME_RETURN",
+      "KA_VDI_PATH",
+      "KA_SPLIT_BRAIN",
+      "KA_POWER_DIVERSITY",
+      "KA_INDEPENDENT_PATH",
+      "KA_ROUTING_BRIDGE_HOPS",
+      "KA_QUEUE_BACKLOG",
+      "KA_OPENFLOW",
+      "KA_MIRROR_LEARN",
+      "KA_MIGRATION_CHECKPOINT",
+      "KA_CONFIG_UPDATE",
+      "KA_OSPF_PASSIVE",
+      "KA_WPAD",
+      "KA_IPV6_PRIVACY",
+      "KA_IPV6_TRANS_SECURITY",
+      "KA_BROADCAST_DOMAIN",
+      "KA_LINK_PROPAGATION",
+      "KA_LEGACY_TLS_RSA",
+      "KA_LEGACY_IKE",
+      "KA_IPV6_AAAA",
+      "KA_SLAAC_PREFIX",
+      "KA_CERT_EXPIRY",
+      "KA_IPSEC_MODE",
+      "KA_SECURE_SEGMENT",
+      "KA_FLOW_COUNT",
+      "KA_PRIVATE_PUBLIC",
+      "KA_NAPT_FIELDS",
+      "KA_NAT_PORT_CAP",
+      "KA_NAT_BOTH",
+      "KA_ARP_TARGET",
+      "KA_ARP_PROXY",
+      "KA_PORT_UNUSED",
+      "KA_PORT_ISOLATION",
+      "KA_SNMP_MODEL",
+      "KA_SNMP_COMMUNITY",
+      "KA_HTTP_PROXY_ROLE",
+      "KA_TLS_SUITE",
+      "KA_LOOPBACK_LOCAL",
+      "KA_CERT_SERVER_VERIFY",
+      "KA_CERT_SIGN_KEYS",
+      "KA_TCP_HANDSHAKE",
+      "KA_BGP_UPDATE",
+      "KA_BGP_PREPEND",
+      "KA_AS_OVERRIDE",
+      "KA_SPF_RELAY",
+      "KA_WPA2_PSK",
+      "KA_WIFI_CSMA",
+      "KA_OAUTH_CALLBACK",
+      "KA_OAUTH_REFRESH",
+      "KA_VM_LOCAL",
+      "KA_VIRTUAL_FW",
+      "KA_NFV",
+      "KA_HASH_COLLISION",
+      "KA_ISCSI",
+      "KA_BUFFER_HOL",
+      "KA_OTP_REPLAY",
+      "KA_IMAP_SYNC",
+      "KA_INCIDENT_REVIEW",
+      "KA_CERT_BOOTSTRAP",
+      "KA_TEST_FAILOVER",
+      "KA_MAC_OUI",
+      "KA_DHCP_STATIC_BIND",
+      "KA_VIRTUAL_NIC",
+      "KA_FW_SYMMETRY",
+      "KA_LB_SPOF",
+      "KA_BYPASS_DESIGN",
+      "KA_REHEARSAL",
+      "KA_LPWA",
+      "KA_CELLULAR_SIM_APN",
+      "KA_BACKOFF",
+      "KA_RESTFUL",
+      "KA_PRIVATE_AS",
+      "KA_BGP_PEER",
+      "KA_TUNNEL_CONTROL",
+      "KA_MULTICAST_TREE",
+      "KA_IGMP_SNOOP",
+      "KA_WLAN_UPLINK",
+      "KA_CNC",
+      "KA_PORT_FORWARD",
+      "KA_VM_ID_MAPPING",
+      "KA_LB_VIP",
+      "KA_SCALING",
+      "KA_RETRY_SYNC",
+      "KA_CERT_SUBJECT",
+      "KA_DNS_A",
+      "KA_TRAFFIC_PATTERN",
+      "KA_MIRROR_FUNCTION",
+      "KA_CRYPTO_ROLE",
+      "KA_FIXED_EGRESS",
+      "KA_ASSET_LABELLING",
+      "KA_QUEUE_UTIL",
+      "KA_DR_GEOGRAPHY",
+      "KA_IPSEC_AH_NAT",
+      "KA_WIFI_ASSOC",
+      "KA_DEVICE_USER_AUTH",
+      "KA_THROUGHPUT_BOTTLENECK",
+      "KA_PHISHING_RESPONSE",
+      "KA_CONTAINER_NAT",
+      "KA_OSPF_TYPE3",
+      "KA_DAI",
+      "KA_IPSG",
+      "KA_RT",
+      "KA_IPV6_NDP",
+      "KA_IPV6_DHCPV6",
+      "KA_IPV6_PTB",
+      "KA_WPA3_SAE",
+      "KA_PMF"
+    ],
+    "verifiedAtomCount": 185,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "AAAA",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_AAAA"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "CNAME",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DNS_CNAME"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "MX",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_MAIL_MX"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "TTL",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DNS_TTL",
+      "KA_L2_TTL",
+      "KA_STARTTLS"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "LB/DNS",
+    "topic": "Cache",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_DNS_TTL",
+      "KA_HTTP_CACHE_STALE"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "FW",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_NAT_FW",
+      "KA_FW_FIELDS",
+      "KA_WAF_REMOVE_FW",
+      "KA_STATEFUL",
+      "KA_FW_SYNC",
+      "KA_VIRTUAL_FW",
+      "KA_FW_SYMMETRY"
+    ],
+    "verifiedAtomCount": 7,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "ACL",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_NAT_FW",
+      "KA_FW_FIELDS",
+      "KA_WAF_REMOVE_FW"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "Stateful Inspection",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_STATEFUL",
+      "KA_FW_SYMMETRY"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "802.1X",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_EAP_ROLES",
+      "KA_DYNAMIC_VLAN",
+      "KA_AUTH_PORT_BYPASS"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "RADIUS",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_EAP_ROLES"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "EAP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_CLIENT_KEY",
+      "KA_EAP_ROLES",
+      "KA_AUTH_PORT_BYPASS"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "EAP-TLS",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_CLIENT_KEY",
+      "KA_EAP_ROLES"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "WPA2",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_EAP_ROLES",
+      "KA_WLC_DATA",
+      "KA_WPA2_PSK"
+    ],
+    "verifiedAtomCount": 3,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "WPA3",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_WPA3_SAE",
+      "KA_PMF"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "SAE",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_WPA3_SAE"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "PMF",
+    "status": "unverified_supplement_only",
+    "knowledgeAtomIds": [
+      "KA_PMF"
+    ],
+    "verifiedAtomCount": 0,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "DHCP Snooping",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_SNOOP_TRUST"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "DAI",
+    "status": "unverified_supplement_only",
+    "knowledgeAtomIds": [
+      "KA_DAI"
+    ],
+    "verifiedAtomCount": 0,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Security",
+    "topic": "IP Source Guard",
+    "status": "unverified_supplement_only",
+    "knowledgeAtomIds": [
+      "KA_IPSG"
+    ],
+    "verifiedAtomCount": 0,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Management",
+    "topic": "SNMP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_SNMP_RATE",
+      "KA_SNMP_BURST",
+      "KA_SNMP_POLL_TRAP",
+      "KA_SNMP_WRAP",
+      "KA_SNMP_INFORM",
+      "KA_SNMP_MODEL",
+      "KA_SNMP_MIB",
+      "KA_SNMP_COMMUNITY",
+      "KA_SNMP_UDP",
+      "KA_MEASUREMENT_EFFECT"
+    ],
+    "verifiedAtomCount": 10,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Management",
+    "topic": "Syslog",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_SYSLOG"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Management",
+    "topic": "NTP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_LOG_TIME",
+      "KA_IOT_CLOCK"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Management",
+    "topic": "Log correlation",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_NAT_LOG",
+      "KA_LOG_TIME",
+      "KA_DHCP_LOG",
+      "KA_VM_ID_MAPPING"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Management",
+    "topic": "Packet capture",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_MIRROR_CAP",
+      "KA_PROMISC",
+      "KA_MIRROR_LEARN",
+      "KA_MIRROR_FUNCTION"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "Management",
+    "topic": "Mirror port",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_MIRROR_CAP",
+      "KA_MIRROR_LEARN"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "GUA",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_SLAAC_PREFIX",
+      "KA_IPSG"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "Link Local",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_LINKLOCAL"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "NDP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_DAD",
+      "KA_IPV6_NDP"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "NS/NA",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_NDP"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "RS/RA",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_RA"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "SLAAC",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_RA",
+      "KA_SLAAC_PREFIX"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "DHCPv6",
+    "status": "unverified_supplement_only",
+    "knowledgeAtomIds": [
+      "KA_IPV6_DHCPV6"
+    ],
+    "verifiedAtomCount": 0,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "DAD",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_DAD"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "PMTUD",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_PMTU",
+      "KA_IPV6_PTB"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "AAAA",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IPV6_AAAA"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "IPv6",
+    "topic": "OSPFv3",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_OSPFV3"
+    ],
+    "verifiedAtomCount": 1,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "QoS",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_QOS_COS",
+      "KA_SHAPING",
+      "KA_QOS_DIFFSERV",
+      "KA_QOS_NONPREEMPT",
+      "KA_BUFFER_HOL"
+    ],
+    "verifiedAtomCount": 5,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Mail",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_SPF",
+      "KA_MAIL_OPEN_RELAY",
+      "KA_SMTP_SUBMISSION",
+      "KA_STARTTLS",
+      "KA_DKIM",
+      "KA_DKIM_KEY_SPLIT",
+      "KA_MAIL_MX",
+      "KA_MAIL_MIGRATION",
+      "KA_SPF_RELAY",
+      "KA_IMAP_SYNC"
+    ],
+    "verifiedAtomCount": 10,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Multicast",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_IGMP",
+      "KA_IGMPV3",
+      "KA_MULTI_UNICAST",
+      "KA_MULTICAST_TREE",
+      "KA_IGMP_SNOOP"
+    ],
+    "verifiedAtomCount": 5,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "VoIP",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_VOICE_JITTER",
+      "KA_VOICE_BW",
+      "KA_SIP_RTP",
+      "KA_SIP_NAT",
+      "KA_STUN",
+      "KA_SIP_REGISTER",
+      "KA_SIP_SDP"
+    ],
+    "verifiedAtomCount": 7,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "SDN",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_OPENFLOW",
+      "KA_OFC_REACH"
+    ],
+    "verifiedAtomCount": 2,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Virtualization",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_FAIL_DOMAIN",
+      "KA_VXLAN_ENCAP",
+      "KA_VNI",
+      "KA_VXLAN_BUM",
+      "KA_EVPN_LEARN",
+      "KA_LOOPBACK_VTEP",
+      "KA_VDI_PATH",
+      "KA_VM_LOCAL",
+      "KA_VIRTUAL_FW",
+      "KA_NFV",
+      "KA_VIRTUAL_NIC",
+      "KA_CONTAINER_NAT"
+    ],
+    "verifiedAtomCount": 12,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Monitoring",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_HEALTH_L7",
+      "KA_LOG_EGRESS",
+      "KA_PING_CONGEST",
+      "KA_REDUNDANCY_MON",
+      "KA_ALERT_STORM",
+      "KA_SCAN_SCOPE",
+      "KA_MONITOR_PATH_CHANGE",
+      "KA_LOG_ANOMALY",
+      "KA_MONITOR_VM_HOST",
+      "KA_ENDPOINT_VISIBILITY"
+    ],
+    "verifiedAtomCount": 10,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Migration",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_ROLLBACK",
+      "KA_TEST_PURPOSE",
+      "KA_CHANGE_HOLDERS",
+      "KA_OLD_DRAIN",
+      "KA_MAIL_MIGRATION",
+      "KA_MIGRATION_CHECKPOINT",
+      "KA_IPV6_TRANS_SECURITY",
+      "KA_REHEARSAL",
+      "KA_ASSET_LABELLING"
+    ],
+    "verifiedAtomCount": 9,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Redundancy",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_FW_SYNC",
+      "KA_CAP_FAIL",
+      "KA_FAIL_DOMAIN",
+      "KA_SPLIT_BRAIN",
+      "KA_POWER_DIVERSITY",
+      "KA_INDEPENDENT_PATH",
+      "KA_TEST_FAILOVER",
+      "KA_LB_SPOF",
+      "KA_BYPASS_DESIGN",
+      "KA_DR_GEOGRAPHY"
+    ],
+    "verifiedAtomCount": 10,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Capacity",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_NAT_ENTRY",
+      "KA_CAP_FAIL",
+      "KA_JITTER_LOAD",
+      "KA_QUEUE_BACKLOG",
+      "KA_FLOW_COUNT",
+      "KA_SCALING",
+      "KA_QUEUE_UTIL"
+    ],
+    "verifiedAtomCount": 7,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  },
+  {
+    "category": "その他",
+    "topic": "Performance",
+    "status": "verified_atom_available",
+    "knowledgeAtomIds": [
+      "KA_LAG_CAP",
+      "KA_SHAPING",
+      "KA_TRAFFIC_PATTERN",
+      "KA_THROUGHPUT_BOTTLENECK"
+    ],
+    "verifiedAtomCount": 4,
+    "note": "分類タグは学習範囲。技術名の存在自体を出題回数には数えない。"
+  }
+]

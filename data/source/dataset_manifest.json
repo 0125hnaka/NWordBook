@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "datasetVersion": "ipa-nw-2009-2025-v2-20261016",
+  "atomCount": 366,
+  "questionCount": 852,
+  "verifiedAtomCount": 358,
+  "globallyEnabledQuestionCount": 836,
+  "initialProfileEnabledQuestionCount": 659,
+  "unverifiedAtomCount": 8,
+  "unverifiedQuestionCount": 16,
+  "questionRootType": "array",
+  "atomRootType": "array",
+  "encoding": "UTF-8",
+  "files": [
+    {
+      "path": "data/source/first_100_atom_ids.json",
+      "sha256": "8c640da2c05d7ae786e217b075fe87383ee2807e3c56486cacf09a21607c25e1"
+    },
+    {
+      "path": "data/source/knowledge_atoms.json",
+      "sha256": "1999ba357fc1149d716300226f63da6447873c03e1c71e55b366220c3063748c"
+    },
+    {
+      "path": "data/source/question_pool.json",
+      "sha256": "b94f683e092e8ddb2d9743ae4db2b3ba47a16b11ff7d76d1a6de494ba8abdaa1"
+    },
+    {
+      "path": "data/source/taxonomy.json",
+      "sha256": "db130cc1d6e8a5b00170bbf619648a0220c25893d37ecde628c1e3097de949a5"
+    }
+  ]
+}
