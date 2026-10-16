@@ -7,7 +7,8 @@ import { readDataset, root } from './data.mjs';
 
 export async function validate() {
   const data = await readDataset();
-  const catalog = createCatalog(data);
+  const catalog = createCatalog({ ...data, editorial: undefined });
+  createCatalog(data); // Also validate separate editorial references and added cards.
   for (const file of data.manifest.files) {
     const hash = createHash('sha256').update(await readFile(join(root, file.path))).digest('hex');
     if (hash !== file.sha256) throw new Error(`原本ハッシュ不一致: ${file.path}`);

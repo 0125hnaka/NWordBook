@@ -6,7 +6,7 @@ import { readDataset } from '../scripts/data.mjs';
 import { validate } from '../scripts/validate.mjs';
 
 const data = await readDataset();
-const catalog = createCatalog(data);
+const catalog = createCatalog({ ...data, editorial: undefined });
 const filter = { groupId: 'all', preset: 'all' };
 const fresh = () => initialState(catalog);
 const copy = value => structuredClone(value);

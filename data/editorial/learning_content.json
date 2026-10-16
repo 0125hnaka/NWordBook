@@ -1,0 +1,518 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-16-learning-v2",
+  "terms": [
+    {
+      "id": "TLS_TERMINATION",
+      "atomId": "KA_TLS_KEY",
+      "term": "TLS終端",
+      "meaning": "装置がTLS接続を受け、その装置で暗号化された通信を復号する処理。終端装置にはサーバ証明書と対応する秘密鍵が必要。"
+    },
+    {
+      "id": "CONNECT",
+      "atomId": "KA_CONNECT",
+      "term": "CONNECT",
+      "meaning": "HTTPプロキシに、指定した接続先ホストとポートへのTCPトンネルの確立を依頼するHTTPメソッド。"
+    },
+    {
+      "id": "XFF",
+      "atomId": "KA_XFF",
+      "term": "X-Forwarded-For（XFF）",
+      "meaning": "プロキシや負荷分散装置を経由した通信で、元のクライアントIPアドレスを後段へ伝えるために使うHTTPヘッダー。"
+    },
+    {
+      "id": "DNS_TTL",
+      "atomId": "KA_DNS_TTL",
+      "term": "DNSのTTL",
+      "meaning": "DNSの応答情報をキャッシュしてよい時間を表す値。"
+    },
+    {
+      "id": "CNAME",
+      "atomId": "KA_DNS_CNAME",
+      "term": "CNAMEレコード",
+      "meaning": "あるホスト名を、別のホスト名の別名として対応付けるDNSレコード。"
+    },
+    {
+      "id": "DNS_RR",
+      "atomId": "KA_DNS_RR",
+      "term": "DNSラウンドロビン",
+      "meaning": "同じホスト名に複数のIPアドレスを対応付け、DNSの応答を利用して接続先を分散する方式。"
+    },
+    {
+      "id": "A_RECORD",
+      "atomId": "KA_DNS_A",
+      "term": "Aレコード",
+      "meaning": "ホスト名とIPv4アドレスの対応を表すDNSレコード。"
+    },
+    {
+      "id": "AAAA_RECORD",
+      "atomId": "KA_IPV6_AAAA",
+      "term": "AAAAレコード",
+      "meaning": "ホスト名とIPv6アドレスの対応を表すDNSレコード。"
+    },
+    {
+      "id": "NEXT_HOP",
+      "atomId": "KA_NEXT_HOP_MAC",
+      "term": "次ホップ（Next hop）",
+      "meaning": "宛先へパケットを転送するとき、直近の送り先となるルータ。最終宛先のサーバとは区別する。"
+    },
+    {
+      "id": "MAC_LEARNING",
+      "atomId": "KA_MAC_LEARN",
+      "term": "MACアドレス学習",
+      "meaning": "スイッチが受信フレームの送信元MACアドレスと受信ポートの対応を記録する処理。"
+    },
+    {
+      "id": "FLOODING",
+      "atomId": "KA_FLOOD",
+      "term": "フラッディング",
+      "meaning": "宛先MACアドレスが未学習の場合などに、同じVLANの受信ポート以外の転送可能ポートへフレームを送る動作。"
+    },
+    {
+      "id": "DOT1Q",
+      "atomId": "KA_VLAN_TAG",
+      "term": "IEEE 802.1Q",
+      "meaning": "EthernetフレームにVLANを識別するタグを付ける代表的な規格。"
+    },
+    {
+      "id": "LAG",
+      "atomId": "KA_LAG_CAP",
+      "term": "リンクアグリゲーション（LAG）",
+      "meaning": "複数の物理リンクを束ね、一つの論理リンクとして扱う技術。"
+    },
+    {
+      "id": "LACP",
+      "atomId": "KA_LACP",
+      "term": "LACP",
+      "meaning": "対向装置と制御情報を交換し、リンクアグリゲーションに参加する回線の状態を制御するプロトコル。"
+    },
+    {
+      "id": "STACK",
+      "atomId": "KA_STACK",
+      "term": "スイッチのスタック",
+      "meaning": "複数のスイッチを連携させ、一台の論理スイッチとして管理する構成。"
+    },
+    {
+      "id": "VRRP",
+      "atomId": "KA_VRRP_DG",
+      "term": "VRRP",
+      "meaning": "複数のルータで仮想デフォルトゲートウェイを構成し、障害時などに役割を引き継ぐためのプロトコル。"
+    },
+    {
+      "id": "OSPF_COST",
+      "atomId": "KA_OSPF_COST",
+      "term": "OSPFのコスト",
+      "meaning": "OSPFが経路を比較するときに使うメトリック。経路上のリンクコストの合計を比較する。"
+    },
+    {
+      "id": "ABR",
+      "atomId": "KA_OSPF_ABR",
+      "term": "ABR",
+      "meaning": "OSPFでエリア間を接続する境界ルータの役割。"
+    },
+    {
+      "id": "ASBR",
+      "atomId": "KA_OSPF_TYPE5",
+      "term": "ASBR",
+      "meaning": "OSPFへ外部の経路情報を導入するルータの役割。"
+    },
+    {
+      "id": "LSDB",
+      "atomId": "KA_OSPF_LSDB",
+      "term": "LSDB",
+      "meaning": "OSPFがリンク状態情報を保持し、最短経路計算に使うデータベース。"
+    },
+    {
+      "id": "ROUTER_ID",
+      "atomId": "KA_ROUTER_ID",
+      "term": "Router ID",
+      "meaning": "ルーティングプロトコルなどでルータを識別するための値。パケットの転送先インタフェースIPとは役割が異なる。"
+    },
+    {
+      "id": "ECMP",
+      "atomId": "KA_ECMP",
+      "term": "ECMP",
+      "meaning": "同じ宛先に対する等しいコストの複数経路を利用する方式。"
+    },
+    {
+      "id": "REDISTRIBUTION",
+      "atomId": "KA_REDIST_LOOP",
+      "term": "経路再配送（再配布）",
+      "meaning": "ある経路制御プロトコルなどで得た経路情報を、別の経路制御プロトコルへ導入すること。"
+    },
+    {
+      "id": "AS_PATH",
+      "atomId": "KA_BGP_ASPATH",
+      "term": "AS_PATH",
+      "meaning": "BGPの経路情報で、経路が通ったASの列を示す属性。"
+    },
+    {
+      "id": "BGP_NEXT_HOP",
+      "atomId": "KA_BGP_NEXTHOP",
+      "term": "BGPのNEXT_HOP属性",
+      "meaning": "BGPの経路情報で、パケットの転送先となる次ホップを示す属性。"
+    },
+    {
+      "id": "DHCP_RELAY",
+      "atomId": "KA_DHCP_RELAY",
+      "term": "DHCPリレー",
+      "meaning": "クライアントと異なるセグメントにあるDHCPサーバへ、DHCPの要求などを中継する機能。"
+    },
+    {
+      "id": "GIADDR",
+      "atomId": "KA_DHCP_GIADDR",
+      "term": "giaddr",
+      "meaning": "DHCPリレー経由の要求で、DHCPサーバがクライアント側サブネットを識別するために利用するフィールド。"
+    },
+    {
+      "id": "DHCPDISCOVER",
+      "atomId": "KA_DHCP_DISCOVER",
+      "term": "DHCPDISCOVER",
+      "meaning": "IPv4クライアントがIPアドレス未取得の状態で、DHCPサーバを探す際に送るメッセージ。"
+    },
+    {
+      "id": "TRUSTED_PORT",
+      "atomId": "KA_SNOOP_TRUST",
+      "term": "DHCP SnoopingのTrustedポート",
+      "meaning": "DHCP Snoopingで、正規のDHCPサーバからの応答を受け入れる側として扱う信頼ポート。"
+    },
+    {
+      "id": "VRF",
+      "atomId": "KA_VRF",
+      "term": "VRF",
+      "meaning": "同じネットワーク装置の中で経路表を分離し、ネットワークを論理的に分ける仕組み。"
+    },
+    {
+      "id": "MPLS",
+      "atomId": "KA_MPLS_LABEL",
+      "term": "MPLS",
+      "meaning": "ラベルを使ってパケットを転送する技術。VPNの分離と暗号化の有無は別に確認する。"
+    },
+    {
+      "id": "IKE_SA",
+      "atomId": "KA_IKE_SA",
+      "term": "IKEv2のIKE SA",
+      "meaning": "IKEv2で認証や鍵交換などの制御通信を保護するためのSA。データ通信用のChild SAとは区別する。"
+    },
+    {
+      "id": "NAT_T",
+      "atomId": "KA_IPSEC_NATT",
+      "term": "NAT-T",
+      "meaning": "IPsecのESP通信をUDPでカプセル化するなどして、NATやNAPTを越えられるようにする仕組み。"
+    },
+    {
+      "id": "MTU",
+      "atomId": "KA_TUNNEL_MTU",
+      "term": "MTU",
+      "meaning": "リンクで一度に運べるIPパケットの最大サイズを表す値。"
+    },
+    {
+      "id": "DNAT",
+      "atomId": "KA_NAT_FW",
+      "term": "宛先NAT（DNAT）",
+      "meaning": "パケットの宛先IPアドレスを別のIPアドレスへ変換する処理。"
+    },
+    {
+      "id": "STATEFUL",
+      "atomId": "KA_STATEFUL",
+      "term": "ステートフルインスペクション",
+      "meaning": "通信の接続状態を追跡し、その状態を使ってパケットをフィルタリングする方式。"
+    },
+    {
+      "id": "CLIENT_CERT",
+      "atomId": "KA_CLIENT_KEY",
+      "term": "クライアント証明書認証",
+      "meaning": "クライアントの証明書と、それに対応する秘密鍵の所有を確認することでクライアントを認証する方式。"
+    },
+    {
+      "id": "PFS",
+      "atomId": "KA_PFS",
+      "term": "前方秘匿性（PFS）",
+      "meaning": "長期的に使う秘密鍵が後で漏えいしても、過去の通信の秘密を保護する性質。"
+    },
+    {
+      "id": "SUPPLICANT",
+      "atomId": "KA_EAP_ROLES",
+      "term": "Supplicant",
+      "meaning": "IEEE 802.1Xで、認証を要求する端末側の役割。"
+    },
+    {
+      "id": "AUTHENTICATOR",
+      "atomId": "KA_EAP_ROLES",
+      "term": "Authenticator",
+      "meaning": "IEEE 802.1Xで、端末の接続を制御し、認証サーバとの間を仲介する装置側の役割。"
+    },
+    {
+      "id": "DFS",
+      "atomId": "KA_WIFI_DFS",
+      "term": "DFS",
+      "meaning": "無線LANが対象帯域でレーダーを検知した際、チャネルの利用停止や変更を行う仕組み。"
+    },
+    {
+      "id": "DAD",
+      "atomId": "KA_IPV6_DAD",
+      "term": "DAD",
+      "meaning": "IPv6アドレスを使い始める前に、同じリンク内でアドレスが重複していないか確認する処理。"
+    },
+    {
+      "id": "LINK_LOCAL",
+      "atomId": "KA_IPV6_LINKLOCAL",
+      "term": "IPv6リンクローカルアドレス",
+      "meaning": "同じリンク内の通信に使うIPv6アドレス。ルータを越えて転送するためのアドレスではない。"
+    },
+    {
+      "id": "SLAAC",
+      "atomId": "KA_SLAAC_PREFIX",
+      "term": "SLAAC",
+      "meaning": "端末がRAで通知されたプレフィックスなどを使って、自分のIPv6アドレスを構成する仕組み。"
+    },
+    {
+      "id": "NTP",
+      "atomId": "KA_LOG_TIME",
+      "term": "NTP",
+      "meaning": "ネットワーク上の装置間で時刻を同期するために使う代表的なプロトコル。"
+    },
+    {
+      "id": "SYSLOG",
+      "atomId": "KA_SYSLOG",
+      "term": "Syslog",
+      "meaning": "ネットワーク機器などのイベントログを収集し、障害やセキュリティ事象の分析に利用する仕組み。"
+    },
+    {
+      "id": "MIB",
+      "atomId": "KA_SNMP_MIB",
+      "term": "MIB",
+      "meaning": "SNMPで扱う管理対象の情報を定義したもの。"
+    },
+    {
+      "id": "INFORM",
+      "atomId": "KA_SNMP_INFORM",
+      "term": "SNMP Inform",
+      "meaning": "確認応答と再送によって通知の喪失に対処できるSNMPの通知方式。"
+    },
+    {
+      "id": "SPOF",
+      "atomId": "KA_CAP_FAIL",
+      "term": "単一障害点（SPOF）",
+      "meaning": "一つの箇所の故障によってサービス全体が停止する原因になる箇所。"
+    },
+    {
+      "id": "ROLLBACK",
+      "atomId": "KA_ROLLBACK",
+      "term": "切戻し",
+      "meaning": "移行や設定変更で問題が発生したとき、事前に決めた手順で変更前の状態へ戻すこと。"
+    }
+  ],
+  "questionRevisions": [
+    {
+      "id": "Q_CONNECT_PORT_L3",
+      "question": "HTTPプロキシでCONNECTの接続先ポートを443に制限せず、任意のTCPポートを許可した。HTTPS以外の通信にも使われるのはなぜか。",
+      "answerFocus": "CONNECTが接続する相手とポートの扱いを、1〜2文で説明する。"
+    },
+    {
+      "id": "Q_PERSIST_PORT_L3",
+      "question": "Webアプリのログイン状態を維持するため、TCPの送信元ポート番号を利用者の識別子にしたい。再接続を考えると、この識別方法が不安定になるのはなぜか。",
+      "answerFocus": "TCP接続とWebセッションの寿命の違いを説明する。"
+    },
+    {
+      "id": "Q_HEALTH_L4_L3",
+      "question": "WebサーバへのTCP接続に成功した。この確認で分かることと、業務アプリの正常性についてまだ分からないことを、それぞれ答えてください。",
+      "answerFocus": "確認できた範囲と、確認できていない範囲を一つずつ答える。"
+    },
+    {
+      "id": "Q_DNS_RR_SKEW_L3",
+      "question": "DNSラウンドロビンで複数サーバを登録した。利用者が少数のキャッシュDNSを共有し、そのキャッシュが長く有効な場合、接続先の負荷が均等にならないのはなぜか。",
+      "answerFocus": "キャッシュされた応答が再利用されることと、接続回数との関係を説明する。"
+    },
+    {
+      "id": "Q_DNS_RR_L3",
+      "question": "一つのホスト名に複数のAレコードを登録した。これで接続先を分散する仕組みと、この方式だけでは判断できないサーバの状態を答えてください。",
+      "answerFocus": "DNSが返す情報と、死活・負荷の把握の限界を答える。"
+    },
+    {
+      "id": "Q_LB_RETURN_L3",
+      "question": "クライアントがVIPへ接続するNAT型LB構成で、実サーバからの応答だけがLBを迂回した。クライアントから見た接続にどのような不整合が起こり得るか。DSR構成は考えない。",
+      "answerFocus": "接続先VIPと、応答パケットの送信元の関係を答える。"
+    },
+    {
+      "id": "Q_DSR_ARP_L3",
+      "question": "DSR型LBの実サーバにもVIPを設定している。実サーバがVIPへのARP要求に応答すると、クライアントからの要求がLBを迂回し得るのはなぜか。",
+      "answerFocus": "クライアントが学習するMACアドレスと、その後の転送先を説明する。"
+    },
+    {
+      "id": "Q_GARP_L3",
+      "question": "仮想IPを引き継ぐ装置が切り替わり、そのIPに対応するMACアドレスが変わった。切替時にGARPなどで近隣へ通知する目的は何か。",
+      "answerFocus": "近隣装置に残るARP情報と、更新後の転送先を説明する。"
+    },
+    {
+      "id": "Q_L2_TTL_L3",
+      "question": "L2スイッチ間にループができた。フレーム内のIPパケットにTTLがあっても、通常のL2転送でループを止められないのはなぜか。",
+      "answerFocus": "L2スイッチがIPのTTLをどう扱うかを説明する。"
+    },
+    {
+      "id": "Q_STP_LAG_L3",
+      "question": "2台のL2スイッチを複数の独立したリンクで接続した。この構成のループを抑える方法として、STPとLAGはそれぞれリンクをどのように扱うか。",
+      "answerFocus": "STPの閉塞と、LAGの論理リンク化を対比する。"
+    },
+    {
+      "id": "Q_RSTP_L3",
+      "question": "RSTPでは、障害時に転送経路へ切り替える時間を短縮するため、どのような経路の準備や隣接装置との協調を利用するか。",
+      "answerFocus": "代替経路と転送状態への遷移を、1〜2文で説明する。"
+    },
+    {
+      "id": "Q_STACK_L3",
+      "question": "スイッチをスタック構成にすると、管理上は複数の物理装置をどのように扱えるか。また、装置をまたぐLAGを使う際に何を確認する必要があるか。",
+      "answerFocus": "論理装置の単位と、対応仕様・障害時の挙動を答える。",
+      "answer": "複数の物理スイッチを一台の論理スイッチとして管理できる。装置をまたぐLAGの可否、対応仕様、障害時の挙動を確認する。"
+    },
+    {
+      "id": "Q_LACP_L3",
+      "question": "LAGの物理リンクはUPのままだが、対向装置との正常な通信ができなくなった。LACPがその回線をLAGから除外する判断に使う情報は何か。",
+      "answerFocus": "物理リンク状態以外に確認する制御情報を答える。"
+    },
+    {
+      "id": "Q_VRRP_ADVERT_L3",
+      "question": "VRRPのBackupがMasterからのAdvertisementを一定時間受信できなくなった。何を判断して切替を行うか。また、Master自体が正常でも同じ事象が起こる原因を答えてください。",
+      "answerFocus": "故障判断の根拠と、広告の通るVLAN・経路の障害を答える。"
+    },
+    {
+      "id": "Q_CONVERGE_FIRST_L3",
+      "question": "復旧したルータをVRRPのMasterへ戻す時点で、OSPFなどによる経路学習が終わっていないと何が起こり得るか。",
+      "answerFocus": "端末から受信したパケットを転送できるか、という観点で答える。"
+    },
+    {
+      "id": "Q_OSPF_DRAIN_L3",
+      "question": "OSPFの保守対象リンクから通信を迂回させたい。リンクのコストを少し上げるだけでは迂回しない場合があるのはなぜか。",
+      "answerFocus": "対象経路と代替経路の合計コストの比較を説明する。"
+    },
+    {
+      "id": "Q_OSPF_DEFAULT_L3",
+      "question": "インターネット出口ルータだけに静的デフォルト経路を設定した。OSPF内部の他のルータからもこの出口を使うには、なぜ別途OSPFへの広告設定を確認する必要があるか。",
+      "answerFocus": "出口ルータ自身の経路表と、内部ルータへの経路通知の違いを説明する。"
+    },
+    {
+      "id": "Q_OSPF_VLINK_L3",
+      "question": "OSPFネットワークの統合で、非バックボーンエリアを経由してエリア0との論理接続を補う必要がある。仮想リンクは何を接続するために使い、設定時はどの条件を確認するか。",
+      "answerFocus": "エリア0との論理接続、通過エリア、終端ルータの条件を答える。"
+    },
+    {
+      "id": "Q_ECMP_ORDER_L3",
+      "question": "遅延の異なる2経路へ同じ通信のパケットを1個ずつ交互に送ると、受信順序が逆転することがある。同じフローを一つの経路に固定すると、この問題を抑えられるのはなぜか。",
+      "answerFocus": "経路ごとの遅延と、先着するパケットの関係を説明する。"
+    },
+    {
+      "id": "Q_ROUTE_PREFERENCE_L3",
+      "question": "同じ宛先プレフィックスに対する静的経路とBGP経路がある。どちらを経路表へ採用するか確認するため、プレフィックス長以外に何を調べるか。",
+      "answerFocus": "経路情報の取得元に対する装置の優先度を答える。",
+      "answer": "経路情報の取得元ごとに設定された優先度（管理距離など）を確認する。同じ宛先プレフィックスでも、装置の設定により静的経路がBGP経路より優先される場合がある。"
+    },
+    {
+      "id": "Q_LONGEST_L3",
+      "question": "ある宛先IPに、デフォルト経路と、それより長いプレフィックスの個別経路が一致する。通常どちらを選ぶか。選択規則の名前も答えてください。",
+      "answerFocus": "優先する経路と、最長一致という規則を答える。",
+      "answer": "より長いプレフィックスの個別経路を選ぶ。宛先IPに一致する経路の中でプレフィックス長が最も長いものを選ぶ、最長一致の規則による。"
+    },
+    {
+      "id": "Q_BGP_ATTR_L3",
+      "question": "BGP経路の選択で、ほかの比較条件が同じ場合、Local PreferenceとAS_PATH長は、それぞれ大きい値と小さい値のどちらが有利か。",
+      "answerFocus": "2つの属性について、有利な大小の向きを答える。",
+      "answer": "Local Preferenceは大きい値が有利で、AS_PATH長は短い方が有利。他の属性を含む実際の選択順序は、装置や設定の条件に従う。"
+    },
+    {
+      "id": "Q_IKE_SA_L3",
+      "question": "IKEv2のIKE SAとChild SAは、保護する通信の目的がどう異なるか。制御通信とデータ通信に分けて答えてください。",
+      "answerFocus": "それぞれが保護する通信と、認証・鍵交換から確立する関係を説明する。",
+      "answer": "IKE SAは認証や鍵交換などの制御通信を保護し、Child SAはESPなどのデータ通信に使う。IKEによる認証・鍵交換の上で、データ通信用のSAを確立する。"
+    },
+    {
+      "id": "Q_IPSEC_NATT_L3",
+      "question": "ESP通信を通常のTCP・UDP通信と同じ方法でNAPT変換しにくいのはなぜか。また、NAT-Tでは外側へ何を付けて対処するか。",
+      "answerFocus": "外側から使えるポート番号の有無と、UDPによるカプセル化を答える。"
+    },
+    {
+      "id": "Q_VRF_L3",
+      "question": "同じルータに同一の宛先アドレス範囲を使う二つのネットワークを収容する。VRFで経路表を分けると、転送先をどのように区別できるか。",
+      "answerFocus": "入力インタフェースなどに対応するVRFと、その経路表の関係を説明する。"
+    },
+    {
+      "id": "Q_MPLS_LABEL_L3",
+      "question": "MPLSを使うプロバイダー網内では、何を参照してパケットを転送するか。また、MPLSでVPNを分離すれば必ず暗号化されるといえるか。",
+      "answerFocus": "転送に使う識別情報と、VPN分離・暗号化の違いを答える。"
+    },
+    {
+      "id": "Q_LOG_TIME_L3",
+      "question": "複数の機器のログから、障害が発生した順序を調べたい。機器ごとの時計がずれていると、分析でどのような誤りが起こり得るか。",
+      "answerFocus": "同じ事象の前後関係と、ログ同士の対応付けへの影響を答える。"
+    },
+    {
+      "id": "Q_SYSLOG_L3",
+      "question": "Syslogでログを一か所へ集めるだけでは、異常の発生順序や原因まで自動的に確定できない。分析できるようにそろえる情報を答えてください。",
+      "answerFocus": "時刻・送信元・記録内容・保存期間という観点で答える。"
+    },
+    {
+      "id": "Q_SNMP_MODEL_L3",
+      "question": "SNMPのPollingでは、ManagerとAgentのどちらが情報取得の要求を送り、どちらが監視対象の情報を返すか。Trapの通知方向とも比べてください。",
+      "answerFocus": "要求・応答・通知それぞれの送信方向を答える。",
+      "answer": "PollingではManagerがAgentへ取得要求を送り、Agentが監視情報を返す。TrapはAgentからManagerへ自発的に通知する。"
+    },
+    {
+      "id": "Q_SNMP_MIB_L3",
+      "question": "SNMPでインタフェースのカウンターや状態を取得したい。MIBは、この取得において何を定義するものか。",
+      "answerFocus": "監視対象の情報を識別・選択する役割を説明する。",
+      "answer": "MIBはSNMPで管理対象となる情報を定義する。インタフェースのカウンターや状態など、取得する情報を識別・選択するために使う。"
+    },
+    {
+      "id": "Q_SNMP_INFORM_L3",
+      "question": "SNMPの通知が途中で失われる可能性がある。InformがTrapと異なり、通知の到達性を高めるために使う仕組みを二つ答えてください。",
+      "answerFocus": "確認応答と再送を答え、再送可能期間内の復旧との関係を説明する。",
+      "answer": "確認応答と再送。通知が失われても、再送できる期間内に通信経路が復旧すれば、再度通知を届けられる可能性がある。"
+    },
+    {
+      "id": "Q_IPV6_LINKLOCAL_L3",
+      "question": "IPv6リンクローカルアドレスを送信先に指定した通信は、通常ルータを越えて別リンクへ届くか。また、同じ値のアドレスでもインタフェースを指定する場合があるのはなぜか。",
+      "answerFocus": "有効なリンクの範囲と、インタフェースを区別する必要性を説明する。"
+    },
+    {
+      "id": "Q_IPV6_AAAA_L3",
+      "question": "AレコードとAAAAレコードは、返すIPアドレスの種類がどう異なるか。DNS問合せ自体をIPv4で送るかIPv6で送るかとは区別して答えてください。",
+      "answerFocus": "AとAAAAが対応するアドレスの種類を答える。"
+    },
+    {
+      "id": "Q_SLAAC_PREFIX_L3",
+      "question": "SLAACで端末がIPv6アドレスを構成するとき、RAから得る情報と端末側の識別情報をどのように組み合わせるか。",
+      "answerFocus": "プレフィックスとインタフェース識別子の役割を答える。"
+    },
+    {
+      "id": "Q_CAP_FAIL_L3",
+      "question": "通常は同じ能力の2台へ負荷を分散している。1台故障時にも通信経路は残るが、それだけで性能を維持できるといえないのはなぜか。",
+      "answerFocus": "残った1台にかかる負荷と、その処理容量を比較する。",
+      "answer": "故障した装置が処理していた負荷も、残った一台へ集中するため。その一台の処理容量を合計負荷が超えると、通信経路があっても性能低下や廃棄が起こり得る。"
+    },
+    {
+      "id": "Q_ROLLBACK_L3",
+      "question": "ネットワークの切替中に問題が起きた。切戻すかどうかの判断条件や判断時刻を、作業開始前に決めておく必要があるのはなぜか。",
+      "answerFocus": "残り時間・依存作業・新旧の状態が切戻しに及ぼす影響を説明する。"
+    },
+    {
+      "id": "Q_NAT_ENTRY_L3",
+      "question": "NAPT装置で帯域には余裕があるのに、新しい接続だけが失敗する。変換テーブルの資源という観点では、どのような状態が考えられるか。",
+      "answerFocus": "フローごとの状態を保存する有限の表と、その枯渇を説明する。",
+      "answer": "フローごとの変換対応を保持するNAPT変換テーブルが枯渇している可能性がある。帯域に余裕があっても、新しい通信の状態を登録できなければ接続できない。"
+    },
+    {
+      "id": "Q_ROUTE_PREFERENCE_L4",
+      "question": "同じ宛先・同じプレフィックス長について、BGP経路を学習しても静的経路が使われている。この装置では静的経路の管理距離がBGP経路より小さい。静的経路が使われる理由は何か。",
+      "answerFocus": "この設問で与えた経路の優先関係を答える。"
+    },
+    {
+      "id": "Q_BGP_DIRECTION_L4",
+      "question": "CDNが、顧客ネットワーク宛ての不正なBGP経路を受け入れた。影響を受けるのは、CDNから顧客へ送る通信と、顧客からCDNへ送る通信のどちらの経路選択か。",
+      "answerFocus": "不正な経路を学習した装置が、どの宛先への送信に使うかを答える。"
+    },
+    {
+      "id": "Q_RETURN_ROUTE_L4",
+      "question": "新しい検疫セグメントから既存サーバへの往路は到達できる。サーバの応答を新セグメントへ戻すため、既存サーバ側のL3装置へ追加すべき経路は何か。",
+      "answerFocus": "追加する経路の宛先ネットワークを答える。"
+    }
+  ]
+}

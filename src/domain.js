@@ -1,4 +1,8 @@
 /** Pure domain logic; no browser or storage dependency. */
+import { buildLearningQuestions, validateEditorial } from './content.js';
+export const studyModes = ['terms', 'thinking', 'mixed'];
+export const termDirections = ['both', 'meaning', 'name'];
+export const confidenceValues = ['understood', 'unclear', 'unknown'];
 export const STORAGE_KEY = 'nw-afternoon:user-state:v1';
 export const MAX_IMPORT_BYTES = 2 * 1024 * 1024;
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -48,6 +52,7 @@ export function validateDataset(data) {
     if (!questionTypes.includes(q.questionType) || ![1, 2, 3].includes(q.difficulty) || (q.level != null && ![1, 2, 3, 4, 5].includes(q.level)) || typeof q.defaultEnabled !== 'boolean') fail(`問題の形式が不正です: ${q.id}`);
   }
   if (typeof manifest.datasetVersion !== 'string') fail('教材の版が不正です。');
+  validateEditorial(data);
   return data;
 }
 
@@ -58,7 +63,7 @@ export function createCatalog(data) {
   return {
     ...data,
     first100Set: new Set(data.first100),
-    cards: data.questions.map(q => ({ ...q, atom: atomMap.get(q.knowledgeAtomId), group: groupMap.get(q.knowledgeAtomId) })),
+    cards: buildLearningQuestions(data).map(q => ({ ...q, atom: atomMap.get(q.knowledgeAtomId), group: groupMap.get(q.knowledgeAtomId) })),
   };
 }
 
@@ -70,6 +75,8 @@ export function initialState(catalog) {
       enabledGroupIds: [...catalog.profile.defaultEnabledGroupIds],
       allowUnverifiedSupplement: false,
       questionCount: catalog.profile.defaultQuestionCount,
+      studyMode: 'terms',
+      termDirection: 'both',
     },
     questionStates: {},
   };
@@ -83,8 +90,10 @@ export function parseState(text) {
   if (!record(value) || value.schemaVersion !== 1 || typeof value.datasetVersion !== 'string' || value.datasetVersion.length > 200 || !record(value.settings) || !record(value.questionStates)) fail('対応する状態形式ではありません。');
   const s = value.settings;
   if (!Array.isArray(s.enabledGroupIds) || s.enabledGroupIds.length > 1000 || s.enabledGroupIds.some(id => typeof id !== 'string' || !id || id.length > 200) || new Set(s.enabledGroupIds).size !== s.enabledGroupIds.length || typeof s.allowUnverifiedSupplement !== 'boolean' || ![5, 10, 20].includes(s.questionCount)) fail('学習設定が不正です。');
+  if ((s.studyMode !== undefined && !studyModes.includes(s.studyMode)) || (s.termDirection !== undefined && !termDirections.includes(s.termDirection))) fail('学習モードが不正です。');
   for (const [id, state] of Object.entries(value.questionStates)) {
     if (!id || id.length > 200 || ['__proto__', 'prototype', 'constructor'].includes(id) || !record(state) || typeof state.hidden !== 'boolean') fail('問題の保存状態が不正です。');
+    if ((state.confidence !== undefined && !confidenceValues.includes(state.confidence)) || (state.lastReviewed !== undefined && (typeof state.lastReviewed !== 'string' || !Number.isFinite(Date.parse(state.lastReviewed))))) fail('理解度の保存状態が不正です。');
   }
   return value;
 }
@@ -104,7 +113,11 @@ export function isEligible(card, state, filter = { groupId: 'all', preset: 'all'
     && state.settings.enabledGroupIds.includes(card.group.id)
     && !state.questionStates[card.id]?.hidden
     && (filter.groupId === 'all' || filter.groupId === card.group.id)
-    && (filter.preset !== 'first100' || first100Set.has(card.knowledgeAtomId)));
+    && (filter.preset !== 'first100' || first100Set.has(card.knowledgeAtomId))
+    && (filter.mode !== 'terms' || card.questionType === 'term')
+    && (filter.mode !== 'thinking' || card.questionType !== 'term')
+    && (filter.mode !== 'terms' || !filter.direction || filter.direction === 'both' || card.termDirection === filter.direction)
+    && (filter.review !== 'weak' || ['unclear', 'unknown'].includes(state.questionStates[card.id]?.confidence)));
 }
 
 export function eligibleCards(catalog, state, filter) {
@@ -131,7 +144,31 @@ export function selectQuestions(candidates, count, random = Math.random) {
 }
 
 export function createSession(cards, filter, requestedCount) {
-  return { queue: cards.map(card => card.id), index: 0, completed: 0, hidden: 0, filter: { ...filter }, requestedCount };
+  return { queue: cards.map(card => card.id), index: 0, completed: 0, hidden: 0, ratings: {}, filter: { ...filter }, requestedCount };
+}
+
+export function recordConfidence(state, questionId, confidence, now = new Date().toISOString()) {
+  if (!confidenceValues.includes(confidence) || typeof questionId !== 'string' || !questionId || ['__proto__', 'prototype', 'constructor'].includes(questionId) || !Number.isFinite(Date.parse(now))) fail('理解度の記録が不正です。');
+  return { ...state, questionStates: { ...state.questionStates, [questionId]: { hidden: false, ...state.questionStates[questionId], confidence, lastReviewed: now } } };
+}
+
+/** Mixed sessions reserve about half for vocabulary when both kinds exist. */
+export function selectStudyQuestions(candidates, count, mode, random = Math.random) {
+  if (mode !== 'mixed') return selectQuestions(candidates, count, random);
+  const terms = candidates.filter(c => c.questionType === 'term');
+  const thinking = candidates.filter(c => c.questionType !== 'term');
+  const chosenTerms = selectQuestions(terms, Math.ceil(count / 2), random);
+  const atoms = new Set(chosenTerms.map(c => c.knowledgeAtomId));
+  const distinctThinking = thinking.filter(c => !atoms.has(c.knowledgeAtomId));
+  const chosenThinking = selectQuestions(distinctThinking.length >= count - chosenTerms.length ? distinctThinking : thinking, count - chosenTerms.length, random);
+  const result = [];
+  for (let i = 0; i < Math.max(chosenTerms.length, chosenThinking.length); i++) {
+    if (chosenTerms[i]) result.push(chosenTerms[i]);
+    if (chosenThinking[i]) result.push(chosenThinking[i]);
+  }
+  const ids = new Set(result.map(c => c.id));
+  if (result.length < count) result.push(...selectQuestions(candidates.filter(c => !ids.has(c.id)), count - result.length, random));
+  return result;
 }
 
 export function advanceSession(session, action, hiddenIds = new Set()) {
