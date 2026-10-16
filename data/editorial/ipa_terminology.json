@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-16-ipa-spelling-v1",
+  "sources": [
+    {"id":"nw2017-8021x","title":"2017年度秋期 NW 午後Ⅱ 問2 設問5(1)","url":"https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000fqpm-att/2017h29a_nw_pm2_qs.pdf","location":"問2 設問5(1)"},
+    {"id":"nw2018-snmp","title":"2018年度秋期 NW 午後Ⅰ 解答例","url":"https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000f01f-att/2018h30a_nw_pm1_ans.pdf","location":"PDF2ページ 問2 設問4(1)〜(3)"},
+    {"id":"nw2025-proxy","title":"2025年度春期 NW 午後Ⅰ 問題冊子","url":"https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07h_nw_pm1_qs.pdf","location":"問3 フォワードプロキシ・リバースプロキシの記述"},
+    {"id":"nw-syllabus","title":"NWシラバス Ver.4.1","url":"https://www.ipa.go.jp/shiken/syllabus/nq6ept00000014fp-att/syllabus_nw_ver4_1.pdf","location":"2-2 ネットワークシステムの設計"},
+    {"id":"nw2024-routerid","title":"2024年度春期 NW 午後Ⅱ 問題冊子","url":"https://www.ipa.go.jp/shiken/mondai-kaiotu/m42obm000000afqx-att/2024r06h_nw_pm2_qs.pdf","location":"問1 設問2(2) ルータID"},
+    {"id":"nw2023-nexthop","title":"2023年度春期 NW 午後Ⅱ 解答例","url":"https://www.ipa.go.jp/shiken/mondai-kaiotu/ps6vr70000010d6y-att/2023r05h_nw_pm2_ans.pdf","location":"PDF2ページ 問1 設問3(3) ネクストホップ"},
+    {"id":"nw2023-session","title":"2023年度春期 NW 午後Ⅱ 解答例","url":"https://www.ipa.go.jp/shiken/mondai-kaiotu/ps6vr70000010d6y-att/2023r05h_nw_pm2_ans.pdf","location":"PDF3ページ 問2 設問5(2) セッションID"}
+  ],
+  "rules": [
+    {"canonical":"サプリカント","aliases":["Supplicant","supplicant"],"sourceIds":["nw2017-8021x"]},
+    {"canonical":"オーセンティケータ","aliases":["Authenticator","authenticator","オーセンティケーター"],"sourceIds":["nw2017-8021x"]},
+    {"canonical":"マネージャ","aliases":["Manager","マネージャー"],"sourceIds":["nw2018-snmp"]},
+    {"canonical":"エージェント","aliases":["Agent"],"sourceIds":["nw2018-snmp"]},
+    {"canonical":"ポーリング","aliases":["Polling"],"sourceIds":["nw2018-snmp"]},
+    {"canonical":"トラップ","aliases":["Trap"],"sourceIds":["nw2018-snmp"]},
+    {"canonical":"インフォーム","aliases":["Inform"],"sourceIds":["nw2018-snmp"]},
+    {"canonical":"フォワードプロキシ","aliases":["Forward Proxy","Forwardプロキシ"],"sourceIds":["nw2025-proxy"]},
+    {"canonical":"リバースプロキシ","aliases":["Reverse Proxy","Reverseプロキシ"],"sourceIds":["nw2025-proxy"]},
+    {"canonical":"プロキシ","aliases":["Proxy"],"sourceIds":["nw2025-proxy"]},
+    {"canonical":"サーバ","aliases":["Server","サーバー"],"sourceIds":["nw-syllabus"]},
+    {"canonical":"クライアント","aliases":["Client"],"sourceIds":["nw-syllabus"]},
+    {"canonical":"ルータID","aliases":["Router ID"],"sourceIds":["nw2024-routerid"]},
+    {"canonical":"ルータ","aliases":["Router","ルーター"],"sourceIds":["nw2024-routerid"]},
+    {"canonical":"ネクストホップ","aliases":["Next hop","Next-hop","next hop","next-hop"],"sourceIds":["nw2023-nexthop"]},
+    {"canonical":"プロトコル","aliases":["Protocol"],"sourceIds":["nw-syllabus"]},
+    {"canonical":"セッション","aliases":["Session"],"sourceIds":["nw2023-session"]}
+  ]
+}

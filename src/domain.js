@@ -1,5 +1,6 @@
 /** Pure domain logic; no browser or storage dependency. */
 import { buildLearningQuestions, validateEditorial } from './content.js';
+import { createIpaNormalizer, normalizeStudyFields, validateTerminology } from './terminology.js';
 export const studyModes = ['terms', 'thinking', 'mixed'];
 export const termDirections = ['both', 'meaning', 'name'];
 export const confidenceValues = ['understood', 'unclear', 'unknown'];
@@ -53,17 +54,23 @@ export function validateDataset(data) {
   }
   if (typeof manifest.datasetVersion !== 'string') fail('教材の版が不正です。');
   validateEditorial(data);
+  validateTerminology(data.terminology);
   return data;
 }
 
 export function createCatalog(data) {
   validateDataset(data);
-  const atomMap = new Map(data.atoms.map(a => [a.id, a]));
-  const groupMap = new Map(data.profile.groups.flatMap(g => g.knowledgeAtomIds.map(id => [id, g])));
+  const normalize = createIpaNormalizer(data.terminology);
+  const atoms = data.atoms.map(atom => normalizeStudyFields(atom, normalize));
+  const profile = { ...data.profile, groups: data.profile.groups.map(group => ({ ...group, label: normalize(group.label) })) };
+  const atomMap = new Map(atoms.map(a => [a.id, a]));
+  const groupMap = new Map(profile.groups.flatMap(g => g.knowledgeAtomIds.map(id => [id, g])));
   return {
     ...data,
+    atoms,
+    profile,
     first100Set: new Set(data.first100),
-    cards: buildLearningQuestions(data).map(q => ({ ...q, atom: atomMap.get(q.knowledgeAtomId), group: groupMap.get(q.knowledgeAtomId) })),
+    cards: buildLearningQuestions(data).map(q => ({ ...normalizeStudyFields(q, normalize), atom: atomMap.get(q.knowledgeAtomId), group: groupMap.get(q.knowledgeAtomId) })),
   };
 }
 

@@ -53,7 +53,7 @@
     {
       "id": "NEXT_HOP",
       "atomId": "KA_NEXT_HOP_MAC",
-      "term": "次ホップ（Next hop）",
+      "term": "ネクストホップ（次ホップ）",
       "meaning": "宛先へパケットを転送するとき、直近の送り先となるルータ。最終宛先のサーバとは区別する。"
     },
     {
@@ -125,7 +125,7 @@
     {
       "id": "ROUTER_ID",
       "atomId": "KA_ROUTER_ID",
-      "term": "Router ID",
+      "term": "ルータID",
       "meaning": "ルーティングプロトコルなどでルータを識別するための値。パケットの転送先インタフェースIPとは役割が異なる。"
     },
     {
@@ -233,13 +233,13 @@
     {
       "id": "SUPPLICANT",
       "atomId": "KA_EAP_ROLES",
-      "term": "Supplicant",
+      "term": "サプリカント",
       "meaning": "IEEE 802.1Xで、認証を要求する端末側の役割。"
     },
     {
       "id": "AUTHENTICATOR",
       "atomId": "KA_EAP_ROLES",
-      "term": "Authenticator",
+      "term": "オーセンティケータ",
       "meaning": "IEEE 802.1Xで、端末の接続を制御し、認証サーバとの間を仲介する装置側の役割。"
     },
     {
@@ -287,7 +287,7 @@
     {
       "id": "INFORM",
       "atomId": "KA_SNMP_INFORM",
-      "term": "SNMP Inform",
+      "term": "SNMPインフォーム",
       "meaning": "確認応答と再送によって通知の喪失に対処できるSNMPの通知方式。"
     },
     {

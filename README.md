@@ -50,6 +50,8 @@ node scripts/serve.mjs
 
 ## 理解度の記録と復習
 
+学習用語はIPAの試験資料で確認した表記を優先します。「サプリカント」「オーセンティケータ」をはじめ、問題・正答・解説・注意点まで統一しています。根拠と識別子をそのまま残す方針は [docs/IPA_TERMINOLOGY.md](docs/IPA_TERMINOLOGY.md) を参照してください。
+
 答えを見ると、解答のすぐ下に3つのボタンが表示されます。
 
 | 選択 | 意味 |
@@ -115,7 +117,7 @@ npmを利用できる環境では `npm ci`、`npm run check` でも同じ検証�
 3. **Actions → Deploy to GitHub Pages → Run workflow** で `main` を選択し、公開承認済みの確認項目をチェックして実行します。通常のpushでは公開されません。更新の公開時も承認後に手動実行します。
 4. deployジョブの公開URLをスマートフォンで開きます。
 
-`ci.yml` はpush・Pull Requestで教材検証、27件のドメイン／保存／教材編集テスト、ビルドを行います。`pages.yml` は手動実行かつ公開確認がtrueで、mainブランチの場合だけ検証・配信します。Pull Requestでは公開しません。トークン等の追加Secretは不要です。リポジトリ側でPagesの使用やActions権限が許可されている必要があります。
+`ci.yml` はpush・Pull Requestで教材検証、32件のドメイン／保存／教材編集／用語表記テスト、ビルドを行います。`pages.yml` は手動実行かつ公開確認がtrueで、mainブランチの場合だけ検証・配信します。Pull Requestでは公開しません。トークン等の追加Secretは不要です。リポジトリ側でPagesの使用やActions権限が許可されている必要があります。
 
 リポジトリは非公開で運用します。外部公開は未実施です。GitHub Actionsの設定は [GitHub公式ドキュメント](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) に基づいています。
 
