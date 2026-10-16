@@ -48,8 +48,9 @@ Codex内蔵ブラウザーで、ローカル開発サーバーへ接続しまし
 
 ## 未実施・制限
 
-- GitHub上でのActions実行、Pages公開：リポジトリ未指定のため未実施。ワークフローは作成済みです。
-- ローカル環境にnpmコマンドがないため、npm経由ではなく同等のNodeコマンドで検証しています。GitHub Actionsは標準のNode環境で `npm ci` と `npm run check` を実行します。
+- GitHub Actionsは2026-10-16に初回pushで成功しました。[初回実行結果](https://github.com/0125hnaka/NWordBook/actions/runs/38909133844)。Ubuntu上のNode.js 24で `npm ci`、`npm run check`（教材検証・16テスト・ビルド）が成功しています。
+- リポジトリ [0125hnaka/NWordBook](https://github.com/0125hnaka/NWordBook) は非公開です。Pages設定・Webサイトの公開・公開ワークフローの実行は未実施。通常のpushではCIだけを実行し、公開は都度承認後の手動実行に限定しています。
+- ローカル環境にnpmコマンドがないため、ローカルでは同等のNodeコマンドで検証しています。npm経由の実行は上記GitHub Actionsで確認済みです。
 - iPhone／Androidの実機操作：未実施。内蔵ブラウザーの幅変更で確認しています。
 - 852問すべての内容・公式PDFとの技術的再照合：未実施。今回は既存調査データを保持して実装しています。
 - 容量超過・壊れた保存領域・不正ファイル・未確認出典・本文PDFラベルはドメイン／保存テストで検証。全ケースをブラウザーの実環境で再現したわけではありません。

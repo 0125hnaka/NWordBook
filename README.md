@@ -2,6 +2,8 @@
 
 ネットワークスペシャリスト試験の午後対策を、スマートフォンで短問反復するWebアプリです。問題を見て頭の中で答え、解答・解説・思考トリガーを確認します。
 
+非公開リポジトリ：[0125hnaka/NWordBook](https://github.com/0125hnaka/NWordBook)。通常のpushで自動検証されます。Webサイトの外部公開は別途承認が必要です。
+
 このフォルダーは単独で動くプロジェクトです。隣の `nw-afternoon-flashcards` は引継ぎ資料として保持しており、実行時には参照しません。
 
 ## 起動する
@@ -69,6 +71,8 @@ node scripts/build.mjs
 npmを利用できる環境では `npm ci`、`npm run check` でも同じ検証ができます。依存パッケージは0件です。GitHub Actionsはこの方法を使います。
 
 ビルドは原本の件数・ハッシュ・参照整合を検証し、静的配信用の `dist/` を作ります。配信するのは `dist/` の中だけです。全監査JSONや研究CSV、README、テストは配信しません。相対URLで参照するため `https://ユーザー名.github.io/リポジトリ名/` に対応します。
+
+教材原本は `.gitattributes` で改行の自動変換を無効にしています。WindowsとLinuxの間でもファイルのバイト列とSHA-256を保持するため、この設定を維持してください。
 
 実行済みの結果と制限は [docs/VERIFICATION.md](docs/VERIFICATION.md) に記録しています。
 
