@@ -9,6 +9,35 @@ const data = await readDataset();
 const catalog = createCatalog(data);
 const filter = { groupId: 'all', preset: 'all', mode: 'terms', direction: 'both', review: 'all' };
 
+test('すべては各学習モードの候補を重複なく出し、分野・復習・非表示条件を守る', () => {
+  const state = initialState(catalog);
+  for (const mode of ['terms', 'thinking', 'mixed']) {
+    const candidates = eligibleCards(catalog, state, { ...filter, mode });
+    const selected = selectStudyQuestions(candidates, 'all', mode);
+    assert.equal(selected.length, candidates.length);
+    assert.deepEqual(new Set(selected.map(c => c.id)), new Set(candidates.map(c => c.id)));
+    assert.deepEqual(selectStudyQuestions([], 'all', mode), []);
+  }
+  const terms = eligibleCards(catalog, state, filter);
+  for (const card of terms.slice(0, 3)) state.questionStates[card.id] = { hidden: false, confidence: 'unknown' };
+  state.questionStates[terms[0].id].hidden = true;
+  const candidates = eligibleCards(catalog, state, { ...filter, review: 'weak', groupId: terms[1].group.id });
+  const selected = selectStudyQuestions(candidates, 'all', 'terms');
+  assert.ok(selected.length > 0);
+  assert.ok(selected.every(c => c.group.id === terms[1].group.id && !state.questionStates[c.id].hidden && state.questionStates[c.id].confidence === 'unknown'));
+});
+
+test('すべての設定は保存・再読込みとエクスポート・インポートで保持する', () => {
+  const state = initialState(catalog);
+  state.settings.questionCount = 'all';
+  const incoming = parseState(JSON.stringify(state));
+  assert.equal(importState(initialState(catalog), incoming).settings.questionCount, 'all');
+  const memory = new Map();
+  const storage = { getItem: k => memory.get(k) ?? null, setItem: (k, v) => memory.set(k, v) };
+  createStateStore(catalog, () => storage).save(state);
+  assert.equal(createStateStore(catalog, () => storage).state.settings.questionCount, 'all');
+});
+
 test('50用語の意味・名前カード100枚を追加し、原本852問は保持する', () => {
   assert.equal(data.questions.length, 852);
   assert.equal(data.editorial.terms.length, 50);

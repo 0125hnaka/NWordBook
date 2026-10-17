@@ -96,7 +96,7 @@ export function parseState(text) {
   try { value = JSON.parse(text); } catch { fail('状態JSONを読み取れません。'); }
   if (!record(value) || value.schemaVersion !== 1 || typeof value.datasetVersion !== 'string' || value.datasetVersion.length > 200 || !record(value.settings) || !record(value.questionStates)) fail('対応する状態形式ではありません。');
   const s = value.settings;
-  if (!Array.isArray(s.enabledGroupIds) || s.enabledGroupIds.length > 1000 || s.enabledGroupIds.some(id => typeof id !== 'string' || !id || id.length > 200) || new Set(s.enabledGroupIds).size !== s.enabledGroupIds.length || typeof s.allowUnverifiedSupplement !== 'boolean' || ![5, 10, 20].includes(s.questionCount)) fail('学習設定が不正です。');
+  if (!Array.isArray(s.enabledGroupIds) || s.enabledGroupIds.length > 1000 || s.enabledGroupIds.some(id => typeof id !== 'string' || !id || id.length > 200) || new Set(s.enabledGroupIds).size !== s.enabledGroupIds.length || typeof s.allowUnverifiedSupplement !== 'boolean' || ![5, 10, 20, 'all'].includes(s.questionCount)) fail('学習設定が不正です。');
   if ((s.studyMode !== undefined && !studyModes.includes(s.studyMode)) || (s.termDirection !== undefined && !termDirections.includes(s.termDirection))) fail('学習モードが不正です。');
   for (const [id, state] of Object.entries(value.questionStates)) {
     if (!id || id.length > 200 || ['__proto__', 'prototype', 'constructor'].includes(id) || !record(state) || typeof state.hidden !== 'boolean') fail('問題の保存状態が不正です。');
@@ -133,6 +133,7 @@ export function eligibleCards(catalog, state, filter) {
 
 export function selectQuestions(candidates, count, random = Math.random) {
   const pool = [...new Map(candidates.map(card => [card.id, card])).values()];
+  if (count === 'all') count = pool.length;
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -161,6 +162,7 @@ export function recordConfidence(state, questionId, confidence, now = new Date()
 
 /** Mixed sessions reserve about half for vocabulary when both kinds exist. */
 export function selectStudyQuestions(candidates, count, mode, random = Math.random) {
+  if (count === 'all') return selectQuestions(candidates, count, random);
   if (mode !== 'mixed') return selectQuestions(candidates, count, random);
   const terms = candidates.filter(c => c.questionType === 'term');
   const thinking = candidates.filter(c => c.questionType !== 'term');

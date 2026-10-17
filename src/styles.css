@@ -471,8 +471,16 @@ main{
   margin-top:22px
 }
 .count-options{
-  display:flex;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:10px
+}
+.setup-heading{
+  font-size:22px;
+  margin:0
+}
+.study-setup{
+  max-width:760px
 }
 .count-option{
   position:relative;
@@ -489,6 +497,9 @@ main{
 .count-option strong{
   font-size:25px;
   font-weight:500
+}
+.count-option[data-action="count-all"] strong{
+  font-size:16px
 }
 .count-option>span{
   font-size:11px

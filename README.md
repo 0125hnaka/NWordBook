@@ -32,7 +32,9 @@ node scripts/serve.mjs
 
 ## 実装した機能
 
-- 有効分野の全分野ランダム／分野指定、5・10・20問（既定10問）
+- 紹介エリアを省き、開始画面から直接学習設定を操作
+- 有効分野の全分野ランダム／分野指定、5・10・20問・すべて（既定10問）
+- 「すべて」は現在の学び方・分野・復習・非表示設定に合う全カードを重複なく出題。設定の保存・バックアップにも対応
 - 学び方は「用語を覚える」「仕組み・判断」「両方を学ぶ」から選択。初期値は用語学習
 - 用語カードは「用語→意味・役割」「説明→用語名」の両方向に対応
 - 優先度Aの100知識を対象にする「まず覚える100」
@@ -119,7 +121,7 @@ npmを利用できる環境では `npm ci`、`npm run check` でも同じ検証�
 3. **Actions → Deploy to GitHub Pages → Run workflow** で `main` を選択し、公開承認済みの確認項目をチェックして実行します。通常のpushでは公開されません。更新の公開時も承認後に手動実行します。
 4. deployジョブの公開URLをスマートフォンで開きます。
 
-`ci.yml` はpush・Pull Requestで教材検証、32件のドメイン／保存／教材編集／用語表記テスト、ビルドを行います。`pages.yml` は手動実行かつ公開確認がtrueで、mainブランチの場合だけ検証・配信します。Pull Requestでは公開しません。トークン等の追加Secretは不要です。リポジトリ側でPagesの使用やActions権限が許可されている必要があります。
+`ci.yml` はpush・Pull Requestで教材検証、34件のドメイン／保存／教材編集／用語表記テスト、ビルドを行います。`pages.yml` は手動実行かつ公開確認がtrueで、mainブランチの場合だけ検証・配信します。Pull Requestでは公開しません。トークン等の追加Secretは不要です。リポジトリ側でPagesの使用やActions権限が許可されている必要があります。
 
 2026年10月17日にリポジトリを公開へ変更し、GitHub Pagesで初回公開しました。[公開処理の実行結果](https://github.com/0125hnaka/NWordBook/actions/runs/39026320934)は成功しています。GitHub Actionsの設定は [GitHub公式ドキュメント](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) に基づいています。
 
