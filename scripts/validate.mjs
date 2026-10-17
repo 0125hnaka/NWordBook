@@ -4,11 +4,14 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { createCatalog, eligibleCards, initialState } from '../src/domain.js';
 import { readDataset, root } from './data.mjs';
+import { parsePredictionSource } from './import-predictions.mjs';
 
 export async function validate() {
   const data = await readDataset();
   const catalog = createCatalog({ ...data, editorial: undefined });
   createCatalog(data); // Also validate separate editorial references and added cards.
+  const predictionSource = await readFile(join(root, data.predictions.source.path), 'utf8');
+  if (JSON.stringify(parsePredictionSource(predictionSource)) !== JSON.stringify(data.predictions)) throw new Error('予想教材と取り込み元が一致しません。');
   for (const file of data.manifest.files) {
     const hash = createHash('sha256').update(await readFile(join(root, file.path))).digest('hex');
     if (hash !== file.sha256) throw new Error(`原本ハッシュ不一致: ${file.path}`);

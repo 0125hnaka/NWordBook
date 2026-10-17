@@ -8,7 +8,7 @@ export async function build() {
   const data = await validate();
   await mkdir(join(root, 'dist/src'), { recursive: true });
   await mkdir(join(root, 'dist/study-data'), { recursive: true });
-  const paths = ['index.html', 'favicon.svg', 'src/app.js', 'src/domain.js', 'src/content.js', 'src/terminology.js', 'src/storage.js', 'src/styles.css', 'src/learning.css'];
+  const paths = ['index.html', 'favicon.svg', 'src/app.js', 'src/domain.js', 'src/content.js', 'src/terminology.js', 'src/storage.js', 'src/predictions.js', 'src/styles.css', 'src/learning.css'];
   const sources = await Promise.all(paths.map(path => readFile(join(root, path), 'utf8')));
   const revision = createHash('sha256').update(sources.join('\n')).update(JSON.stringify(data)).digest('hex').slice(0, 16);
   for (const [index, path] of paths.entries()) {

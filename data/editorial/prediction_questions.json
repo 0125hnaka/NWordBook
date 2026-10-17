@@ -1,0 +1,2269 @@
+{
+  "schemaVersion": 1,
+  "version": "prediction-20261017-v1",
+  "source": {
+    "path": "data/predictions/source.md",
+    "originalFolder": "追加調査_2026-10-17",
+    "sha256": "185c4c2716d45a15c70e0b212a8f9c4bbedb7b3e0e8099d53b7ac88642f72989"
+  },
+  "questions": [
+    {
+      "id": "PRED_N001",
+      "code": "N001",
+      "title": "同じ配線でも、サブネットマスクの不整合で通信経路が変わる",
+      "section": "L2・接続の前提",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "Aは192.0.2.10/24、Bは192.0.2.130/25。同じVLANにある。AとBは相手を同一サブネットと判断するか。",
+      "answer": "Aは同一サブネットと判断するが、Bは別サブネットと判断する。AはBへ直接ARPし、Bは戻りをデフォルトゲートウェイ等へ送ろうとする。",
+      "explanation": "ローカル／リモートの判定は各端末の経路表に依存する。Bに適切な経路がなければ返信できない。ゲートウェイが同じIFへ転送するなどの条件次第で通る場合もあり、マスク不整合だけで必ず断と断定しない。",
+      "caution": "「同じVLANだからIP通信も正常」としない。両端で別々に宛先判定を行う。",
+      "difference": "KA_SUBNET_RANGE・KA_NEXT_HOP_MAC・KA_RETURN_ROUTEを、両端で異なる判断をする例へ展開。",
+      "relatedAtomIds": [
+        "KA_SUBNET_RANGE",
+        "KA_NEXT_HOP_MAC",
+        "KA_RETURN_ROUTE"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 1122 §3.3.1.1。アドレス例と経路の比較は独自演習。",
+      "technicalSources": [
+        {
+          "label": "RFC 1122 §3.3.1.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc1122.html#section-3.3.1.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N002",
+      "code": "N002",
+      "title": "ARP表とMACアドレス表は別々に失効する",
+      "section": "L2・接続の前提",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "mechanism",
+      "question": "端末のARP表には宛先MACが残っているが、スイッチのMACアドレス表ではそのMACが消えた。最初のフレームは必ず廃棄されるか。",
+      "answer": "通常の未知ユニキャストをフラッディングする構成なら廃棄されず、同じVLANの転送可能ポートへ複製される。",
+      "explanation": "ARP表はIP→MAC、MACアドレス表はMAC→ポートを保持する。別の装置・別の寿命なので、一方だけ有効な状態は起こり得る。返信フレームの送信元MACから再学習できる。",
+      "caution": "未知ユニキャストを抑止する設定があれば結果は変わる。「端末が宛先を知る」と「スイッチが出口を知る」を分ける。",
+      "difference": "KA_ARP_TARGET・KA_MAC_LEARN・KA_FLOODを二種類のキャッシュの不整合として接続。",
+      "relatedAtomIds": [
+        "KA_ARP_TARGET",
+        "KA_MAC_LEARN",
+        "KA_FLOOD"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 826のARP処理、CiscoのL2切り分け資料。組合せの故障例は独自整理。",
+      "technicalSources": [
+        {
+          "label": "RFC 826のARP処理",
+          "url": "https://www.rfc-editor.org/rfc/rfc826.html"
+        },
+        {
+          "label": "CiscoのL2切り分け資料",
+          "url": "https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N003",
+      "code": "N003",
+      "title": "許可VLANの一致だけではタグなし通信を保証できない",
+      "section": "L2・接続の前提",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "トランク両端でVLAN 10と20を許可したのに、APの管理通信だけ失敗する。両端のネイティブVLANが10と20なら何を疑うか。",
+      "answer": "タグなし管理フレームが、両端で異なるVLANへ分類されている可能性を疑う。",
+      "explanation": "タグ付きフレームのVLAN番号が一致しても、タグなしフレームの収容先はPVID・ネイティブVLAN等の設定で決まる。APの管理通信がタグ付きかどうかも確認する。",
+      "caution": "ネイティブVLANもタグ付けする設定や、不整合を検出して閉塞する実装もある。機種名だけで結果を固定しない。",
+      "difference": "KA_VLAN_TAGをタグなしフレームの扱いまで広げる。",
+      "relatedAtomIds": [
+        "KA_VLAN_TAG"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：PVID・Type不整合の切り分け。",
+      "technicalSources": [
+        {
+          "label": "Cisco：PVID・Type不整合の切り分け",
+          "url": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24063-pvid-inconsistency-24063.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N004",
+      "code": "N004",
+      "title": "エッジポートの高速化とループ保護を分ける",
+      "section": "L2・接続の前提",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "change",
+      "question": "PC用ポートのSTP待ち時間を短縮したい。一方、そのポートに利用者がスイッチをつなぐことは防ぎたい。どの役割を組み合わせるか。",
+      "answer": "エッジポート化で転送開始を早め、BPDU Guard等で想定外のBPDU受信時にポートを保護する。",
+      "explanation": "高速な転送開始は、接続先が端末であるという前提に基づく。BPDU受信を検出する保護は別機能。Root Guardは優れたBPDUによるルート変更を抑える機能で、役割が違う。",
+      "caution": "PortFastを「STPを完全に無効化する機能」と覚えない。遮断後の回復条件は実装・設定による。",
+      "difference": "KA_STP_PORT_ROLE・KA_STP_DELAYに、設計前提を守る保護機能を補充。",
+      "relatedAtomIds": [
+        "KA_STP_PORT_ROLE",
+        "KA_STP_DELAY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：PortFastとBPDU Guard、Root Guard。",
+      "technicalSources": [
+        {
+          "label": "Cisco：PortFastとBPDU Guard",
+          "url": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+        },
+        {
+          "label": "Root Guard",
+          "url": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10588-74.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N005",
+      "code": "N005",
+      "title": "CRCエラーと出力廃棄を同じ原因にしない",
+      "section": "L2・接続の前提",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "case",
+      "question": "受信CRCエラーが増える場合と、CRCエラーなしで出力キューの廃棄だけ増える場合では、最初に確認する対象はどう違うか。",
+      "answer": "前者はケーブル・光部品・ポート等の伝送品質を、後者は出口帯域・バースト・バッファ・QoSを優先して確認する。",
+      "explanation": "CRCエラーはフレームの完全性異常、キュー廃棄は正常に受信した通信でも出口資源が足りないと起きる。どちらも再送を招くが、対処は異なる。",
+      "caution": "カウンター名だけで原因を確定しない。旧10/100Mb/s環境ではデュプレックス不整合も候補になる。増加時刻と対向側も照合する。",
+      "difference": "KA_DIAG_SYMPTOM・KA_TCP_DROPに、下位層の観測による原因分岐を追加。",
+      "relatedAtomIds": [
+        "KA_DIAG_SYMPTOM",
+        "KA_TCP_DROP"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：スイッチポート・インタフェースの切り分け。",
+      "technicalSources": [
+        {
+          "label": "Cisco：スイッチポート・インタフェースの切り分け",
+          "url": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N006",
+      "code": "N006",
+      "title": "複数装置LAGはピア間通信も故障対象にする",
+      "section": "L2・接続の前提",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "端末をMLAG等で2台のスイッチへ接続した。両スイッチは稼働中だがピア間リンクだけ切れた場合、端末側の2本がUpなら安全か。",
+      "answer": "安全とは限らない。相互状態の確認や同期を失い、二重稼働や保護によるポート停止などが起こり得る。",
+      "explanation": "端末から1組のLAGに見えても、装置間には制御・同期の依存がある。ピアリンクと別経路の生存確認、片側だけ接続した端末、障害後の転送を試験する。",
+      "caution": "スタック・MLAG・EVPNマルチホームの障害動作は同一ではない。ピア断後の動作を機種・設定で確認する。",
+      "difference": "KA_LACP・KA_STACK・KA_SPLIT_BRAINを、装置間リンク単独故障へ展開。",
+      "relatedAtomIds": [
+        "KA_LACP",
+        "KA_STACK",
+        "KA_SPLIT_BRAIN"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Arista EOS：MLAGとdual-primary対策。特定製品の動作を全方式へ一般化しない。",
+      "technicalSources": [
+        {
+          "label": "Arista EOS：MLAGとdual-primary対策",
+          "url": "https://www.arista.com/en/um-eos/eos-multi-chassis-link-aggregation"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N007",
+      "code": "N007",
+      "title": "OSPFの2-Wayは正常な場合がある",
+      "section": "経路・収束・到達性",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "ブロードキャスト型ネットワークで、DRでもBDRでもない2台のOSPFルータ間が2-Wayのままになっている。必ず障害か。",
+      "answer": "必ずしも障害ではない。その2台が互いにFullへ進まないことは通常の動作である。",
+      "explanation": "同一セグメントの全組合せで隣接関係を完成させる代わりに、DR・BDRとの隣接を使う。Fullが必要な相手と必要でない相手を、ネットワークタイプと役割から判断する。",
+      "caution": "ポイントツーポイント型での停止へ、そのまま適用しない。「状態名」より「その相手とFullが必要か」。",
+      "difference": "KA_OSPF_DR0・KA_OSPF_LSDBに正常状態の条件を追加。",
+      "relatedAtomIds": [
+        "KA_OSPF_DR0",
+        "KA_OSPF_LSDB"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 2328 §10.1・§10.4。",
+      "technicalSources": [
+        {
+          "label": "RFC 2328 §10.1・§10.4",
+          "url": "https://www.rfc-editor.org/rfc/rfc2328.html#section-10.4"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N008",
+      "code": "N008",
+      "title": "OSPFでHelloは通るのにLSDB同期が進まない",
+      "section": "経路・収束・到達性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "OSPFネイバーが見えるのにExStart／Exchange付近で止まる。片側だけMTUを変更していた場合、何を確認するか。",
+      "answer": "両端のMTUと、Database Descriptionパケットで通知するMTUの整合を確認する。",
+      "explanation": "Hello受信とLSDB同期は別段階。受信側が扱える値より大きいInterface MTUを通知したDDパケットは拒否されるため、Helloだけ成功する状態になり得る。",
+      "caution": "ExStart停止の原因を全てMTUと決めない。MTUチェックの無効化だけでデータ転送のMTU問題まで直ったとは言えない。",
+      "difference": "KA_OSPF_LSDB・KA_PMTUに、制御パケットの段階別故障を追加。",
+      "relatedAtomIds": [
+        "KA_OSPF_LSDB",
+        "KA_PMTU"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 2328 §10.6・付録A.3.3。",
+      "technicalSources": [
+        {
+          "label": "RFC 2328 §10.6・付録A.3.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc2328.html#section-10.6"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N009",
+      "code": "N009",
+      "title": "BGP受信・最良選択・転送を三段階に分ける",
+      "section": "経路・収束・到達性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "BGPピアがEstablishedで宛先プレフィックスも受信済みなのに、通信が通らない。NEXT_HOPについて何を調べるか。",
+      "answer": "NEXT_HOPが到達可能な経路へ解決できるか、対象経路が最良経路・経路表・転送表へ反映されたかを確認する。",
+      "explanation": "受信経路の存在だけでは転送可能性は決まらない。特にiBGPで外部側のNEXT_HOPを保持した場合、そのアドレスへのIGP・静的経路や、必要に応じたnext-hop-selfの設計が関係する。",
+      "caution": "「BGPがUp」と「その宛先へ実際に転送できる」を分ける。",
+      "difference": "KA_BGP_NEXTHOP・KA_BGP_BESTを、切り分けの確認順に整理。内容が近いため独立追加より既存解説の拡張にも向く。",
+      "relatedAtomIds": [
+        "KA_BGP_NEXTHOP",
+        "KA_BGP_BEST"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4271 §5.1.3・§9.1.2.1。",
+      "technicalSources": [
+        {
+          "label": "RFC 4271 §5.1.3・§9.1.2.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc4271.html#section-9.1.2.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N010",
+      "code": "N010",
+      "title": "RPKIのValidは通信経路全体の安全証明ではない",
+      "section": "経路・収束・到達性",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "mechanism",
+      "question": "BGP経路がROVでValidになった。AS_PATHの全ASが正当で、通信内容も暗号化されると言えるか。",
+      "answer": "言えない。ROVは主にプレフィックス・許可された長さ・起点ASの組合せを検証し、AS_PATH全体やデータ暗号化は保証しない。",
+      "explanation": "例えばROAが/24まで許可していても、/25広告は許可長を超え得る。NotFoundは対応する検証情報がない状態で、Invalidと同義ではない。受理・拒否は運用ポリシーで決める。",
+      "caution": "「何を検証した結果か」を限定する。状態名を業務上の安全／危険へ直結させない。",
+      "difference": "KA_BGP_ASPATH・KA_BGP_ATTRに経路起点の検証という別軸を補充。",
+      "relatedAtomIds": [
+        "KA_BGP_ASPATH",
+        "KA_BGP_ATTR"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 6811 §2～§3。",
+      "technicalSources": [
+        {
+          "label": "RFC 6811 §2～§3",
+          "url": "https://www.rfc-editor.org/rfc/rfc6811.html#section-2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N011",
+      "code": "N011",
+      "title": "BFDのUpが保証する範囲を限定する",
+      "section": "経路・収束・到達性",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "BFDはUpだがWebサービスが使えない。矛盾するか。また、BFD間隔を最小にすれば必ず可用性は上がるか。",
+      "answer": "矛盾しない。BFDの対象経路が生存してもWeb処理は失敗し得る。間隔の過度な短縮は負荷・遅延による誤検知や経路変動を増やし得る。",
+      "explanation": "BFDの検知対象、実装位置、通信経路を確認する。検知後の経路切替時間とアプリケーション回復時間は別に評価する。",
+      "caution": "「速い検知＝常に良い」としない。要求停止時間と、正常時の揺らぎからタイマーを設計する。",
+      "difference": "KA_BFD・KA_HEALTH_L7を、検知範囲と誤検知のトレードオフで接続。",
+      "relatedAtomIds": [
+        "KA_BFD",
+        "KA_HEALTH_L7"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 5880 §3・§6.8。",
+      "technicalSources": [
+        {
+          "label": "RFC 5880 §3・§6.8",
+          "url": "https://www.rfc-editor.org/rfc/rfc5880.html#section-3"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N012",
+      "code": "N012",
+      "title": "集約経路は残っているのに特定サブネットだけ消える",
+      "section": "経路・収束・到達性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "/16集約を外部へ広告するルータで、その配下の/24への経路だけ失われた。外部からの/24宛て通信はどうなるか。",
+      "answer": "外部は/16を頼りに送り続ける場合がある。集約ルータは有効な詳細経路がなければ転送できず、集約用の廃棄経路で捨てる設計がある。",
+      "explanation": "例えば詳細経路を失った通信を上流へのデフォルトへ戻すと、上流の集約経路と循環するおそれがある。詳細経路は最長一致で選び、穴の部分は廃棄してループを抑える。",
+      "caution": "廃棄経路は到達性を復旧するものではない。集約で隠れた内部故障を別途監視する。",
+      "difference": "KA_ROUTE_AGG・KA_IPV6_SUMMARY_DISCARD・KA_LONGESTを、IPv4も含む故障時判断へ展開。",
+      "relatedAtomIds": [
+        "KA_ROUTE_AGG",
+        "KA_IPV6_SUMMARY_DISCARD",
+        "KA_LONGEST"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4632 §5.1～§5.2。",
+      "technicalSources": [
+        {
+          "label": "RFC 4632 §5.1～§5.2",
+          "url": "https://www.rfc-editor.org/rfc/rfc4632.html#section-5.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N013",
+      "code": "N013",
+      "title": "受信ウィンドウと輻輳ウィンドウを分ける",
+      "section": "TCP・UDP・通信状態",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "1Gb/s・RTT 40msの経路で、TCPの有効な未確認データ量が1MBに制約されている。損失等を無視すると、1フローで帯域を使い切れるか。",
+      "answer": "使い切れない。概算上限は1MB×8÷0.04秒＝200Mb/s。1Gb/sを満たす帯域遅延積は5MBである。",
+      "explanation": "送信可能な未確認データ量は、受信側のrwndと送信側のcwndの小さい方などで制限される。rwndを広げても、損失等でcwndが小さければ伸びない。",
+      "caution": "これは定常・理想条件の目安で、実測保証値ではない。Window Scale、RTT、損失、アプリケーションの供給速度も確認する。",
+      "difference": "KA_TCP_WINDOW_RTTを二種類の制御と具体的な計算へ展開。",
+      "relatedAtomIds": [
+        "KA_TCP_WINDOW_RTT"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 5681 §2、RFC 7323 §1.1・§2。数値例は独自作成。",
+      "technicalSources": [
+        {
+          "label": "RFC 5681 §2",
+          "url": "https://www.rfc-editor.org/rfc/rfc5681.html#section-2"
+        },
+        {
+          "label": "RFC 7323 §1.1・§2",
+          "url": "https://www.rfc-editor.org/rfc/rfc7323.html#section-1.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N014",
+      "code": "N014",
+      "title": "TCP Zero Windowはネットワーク輻輳とは限らない",
+      "section": "TCP・UDP・通信状態",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "回線使用率が低いのに転送が止まり、受信側からWindow=0のACKが続く。まずどこを調べるか。",
+      "answer": "受信側のバッファと、データを読み出すアプリケーションの処理停滞を調べる。",
+      "explanation": "受信可能量を広告するフロー制御なので、受信処理が追い付かないと送信が抑えられる。送信側はZero Window Probeで再開可能か確認する。",
+      "caution": "小さい広告ウィンドウと、損失に対する輻輳制御を混同しない。CPU・ディスク・アプリケーション待ち等も候補になる。",
+      "difference": "KA_TCP_WINDOW_RTT・KA_THROUGHPUT_BOTTLENECKへ、受信側処理が原因となる観測を追加。",
+      "relatedAtomIds": [
+        "KA_TCP_WINDOW_RTT",
+        "KA_THROUGHPUT_BOTTLENECK"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9293 §3.8.6.1。",
+      "technicalSources": [
+        {
+          "label": "RFC 9293 §3.8.6.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.6.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N015",
+      "code": "N015",
+      "title": "MSS調整はPMTU問題の全てを解決しない",
+      "section": "TCP・UDP・通信状態",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "VPN経由で小さいPingは通るが、大きいHTTPS通信が止まる。ICMPを一括遮断していた。TCP MSSを小さくすれば、UDPも含め全て直るか。",
+      "answer": "直るとは限らない。PMTU通知の遮断とトンネルMTUを確認する。MSS調整は主にTCPのデータサイズへ作用し、UDPには作用しない。",
+      "explanation": "IPv4でDF付きパケットが経路MTUを超えると、ルータは廃棄してICMPで通知する。通知が届かないと、大きいデータだけが通らないブラックホールになり得る。",
+      "caution": "「Ping成功」にはサイズ条件を付ける。MSSはIPパケット長ではなくTCPデータ長。既存接続への効果や両方向も別に確認する。",
+      "difference": "KA_PMTU・KA_TUNNEL_MTUに症状、通知、回避策の適用範囲を追加。",
+      "relatedAtomIds": [
+        "KA_PMTU",
+        "KA_TUNNEL_MTU"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 1191 §2・§4、RFC 9293 §3.7.1。",
+      "technicalSources": [
+        {
+          "label": "RFC 1191 §2・§4",
+          "url": "https://www.rfc-editor.org/rfc/rfc1191.html#section-2"
+        },
+        {
+          "label": "RFC 9293 §3.7.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.7.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N016",
+      "code": "N016",
+      "title": "UDP上でも信頼性を実装できる",
+      "section": "TCP・UDP・通信状態",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "mechanism",
+      "question": "「UDPを使うQUICは再送を行わないので、ファイル転送に向かない」という説明は正しいか。",
+      "answer": "正しくない。UDP自体は再送を行わないが、QUICはその上で損失検出・再送による回復・輻輳制御などを実装する。",
+      "explanation": "下位プロトコルにない機能を上位で補える。QUICの通常のストリームでは信頼できる順序付き転送を提供する。一方、同じUDP利用でもアプリケーションによって回復の有無は違う。",
+      "caution": "「UDP＝全部非信頼」とせず、必要機能をどの層が担当するか考える。",
+      "difference": "KA_UDP_RELIABILITYを、具体的な標準プロトコルに接続。",
+      "relatedAtomIds": [
+        "KA_UDP_RELIABILITY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9000 §2、RFC 9002。",
+      "technicalSources": [
+        {
+          "label": "RFC 9000 §2",
+          "url": "https://www.rfc-editor.org/rfc/rfc9000.html#section-2"
+        },
+        {
+          "label": "RFC 9002",
+          "url": "https://www.rfc-editor.org/rfc/rfc9002.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N017",
+      "code": "N017",
+      "title": "TIME-WAITの多さだけで異常と決めない",
+      "section": "TCP・UDP・通信状態",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "case",
+      "question": "短時間のTCP接続を大量に行うプロキシでTIME-WAITが増えた。直ちにタイマーをゼロへ近づけるのは妥当か。",
+      "answer": "妥当ではない。TIME-WAITは正常な切断処理の一部であり、新規接続の失敗やポート・状態資源の不足が実際にあるか確認する。",
+      "explanation": "古い接続の遅延セグメント等から新しい接続を区別する役割がある。どちらが能動的に閉じたかを確認し、必要なら接続再利用や接続先・送信元資源の設計を見直す。",
+      "caution": "「クライアント側だけ」「全て異常」と固定しない。短縮や再利用の可否はOS・実装に依存する。",
+      "difference": "KA_TCP_HANDSHAKE・KA_KEEPALIVE_RESOURCEへ終了後の資源を補充。",
+      "relatedAtomIds": [
+        "KA_TCP_HANDSHAKE",
+        "KA_KEEPALIVE_RESOURCE"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9293 §3.6。",
+      "technicalSources": [
+        {
+          "label": "RFC 9293 §3.6",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.6"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N018",
+      "code": "N018",
+      "title": "長時間アイドルの後だけ接続が使えない",
+      "section": "TCP・UDP・通信状態",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "failure",
+      "question": "アプリケーションは接続中と認識しているが、30分無通信の後の要求だけ失敗する。再接続すると成功する。何を比較するか。",
+      "answer": "アプリケーション・OS・FW・NAT・LBのアイドルタイムアウトを比較し、中継装置の状態だけ先に失効していないか調べる。",
+      "explanation": "端点のTCP状態と中継装置の状態は同時に消えるとは限らない。必要に応じて適切な間隔の維持通信、接続プールの寿命、失敗時の安全な再接続を設計する。",
+      "caution": "装置によって維持通信を状態更新として扱う条件が違う。短すぎる維持間隔は負荷や無線端末の電力消費も増やす。",
+      "difference": "KA_NAT_TIMEOUT・KA_KEEPALIVE_RESOURCEを端点とのタイマー不整合として整理。",
+      "relatedAtomIds": [
+        "KA_NAT_TIMEOUT",
+        "KA_KEEPALIVE_RESOURCE"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 5382 §5。複数中継装置の比較手順は独自整理。",
+      "technicalSources": [
+        {
+          "label": "RFC 5382 §5",
+          "url": "https://www.rfc-editor.org/rfc/rfc5382.html#section-5"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N019",
+      "code": "N019",
+      "title": "存在しないという応答もキャッシュされる",
+      "section": "DNS・キャッシュ・名前解決",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "作成前に名前を検索して失敗した端末だけ、Aレコード作成後もしばらく接続できない。何を疑うか。",
+      "answer": "NXDOMAIN等の負の応答がキャッシュされている可能性を疑い、利用リゾルバの応答と残存時間を確認する。",
+      "explanation": "NXDOMAINは名前が存在しないこと、NODATAは名前に対する要求種別のデータがないことを表す。負のキャッシュ時間は、正のAレコードのTTLを後から短くするだけでは消せない。",
+      "caution": "「レコードを作れば全端末が即復旧」としない。名前・種別・キャッシュ主体を確認する。",
+      "difference": "KA_DNS_TTL・KA_DNS_CACHE_KEYへ負のキャッシュを補充。",
+      "relatedAtomIds": [
+        "KA_DNS_TTL",
+        "KA_DNS_CACHE_KEY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 2308 §2・§5。",
+      "technicalSources": [
+        {
+          "label": "RFC 2308 §2・§5",
+          "url": "https://www.rfc-editor.org/rfc/rfc2308.html#section-5"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N020",
+      "code": "N020",
+      "title": "TTLを過ぎても古いDNS応答が返る場合がある",
+      "section": "DNS・キャッシュ・名前解決",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "権威DNSへ到達できなくなった。TTLが過ぎたのに再帰リゾルバが旧IPを返す場合、必ず仕様違反と言えるか。",
+      "answer": "言えない。Serve Staleに対応し有効化されたリゾルバでは、更新できないときに期限切れの情報を一時的に提供する場合がある。",
+      "explanation": "名前解決の可用性を高める代わりに鮮度が下がる。切替時は権威DNSへの到達性、リゾルバの設定・ログ、旧環境への接続を併せて確認する。",
+      "caution": "全リゾルバが使う機能ではない。また、切替直前にTTLを短くしても取得済みキャッシュは短縮されないという既存の原則も残る。「TTL待ちだけで全利用が終了」としない。",
+      "difference": "KA_DNS_TTL・KA_OLD_DRAINへ、上流到達不能時の鮮度と可用性のトレードオフを補充。TTLを後から短縮できない点は既存設問にあるため、新規テーマとして重複計上しない。",
+      "relatedAtomIds": [
+        "KA_DNS_TTL",
+        "KA_OLD_DRAIN"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8767 §4～§5。",
+      "technicalSources": [
+        {
+          "label": "RFC 8767 §4～§5",
+          "url": "https://www.rfc-editor.org/rfc/rfc8767.html#section-4"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N021",
+      "code": "N021",
+      "title": "DNSSECとDNS暗号化は守る対象が違う",
+      "section": "DNS・キャッシュ・名前解決",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "mechanism",
+      "question": "DNSSECを導入すれば、途中のネットワークから問い合わせ名を読めなくなるか。",
+      "answer": "ならない。DNSSECはDNSデータの出所と完全性等を検証する仕組みで、問い合わせ・応答の秘匿は別途考える。",
+      "explanation": "DoT／DoHによる通信区間の暗号化と、DNSデータの署名検証を区別する。署名の信頼の連鎖や時刻に問題があれば、到達性があっても検証失敗になり得る。",
+      "caution": "「暗号技術を使う＝内容を暗号化する」としない。何の真正性を、誰が検証するかを答える。",
+      "difference": "KA_DNS_POISON・KA_CRYPTO_ROLEへ署名検証という対策軸を補充。",
+      "relatedAtomIds": [
+        "KA_DNS_POISON",
+        "KA_CRYPTO_ROLE"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4033 §3～§5・§8.2。",
+      "technicalSources": [
+        {
+          "label": "RFC 4033 §3～§5・§8.2",
+          "url": "https://www.rfc-editor.org/rfc/rfc4033.html#section-4"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N022",
+      "code": "N022",
+      "title": "ブラウザーのDoHで名前解決先が変わる",
+      "section": "DNS・キャッシュ・名前解決",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "横断",
+      "questionType": "failure",
+      "question": "OSの名前解決では社内サイトのIPを取得できるが、ブラウザーでは失敗する。ブラウザーが外部DoHを利用しているなら何を調べるか。",
+      "answer": "実際の問い合わせ先と社内名の解決ポリシーを確認し、社内DNSを使うべき名前が外部リゾルバへ送られていないか調べる。",
+      "explanation": "アプリケーションが独自に名前解決すると、OSのDNS設定やスプリットDNSの想定と異なる結果になる。暗号化は、問い合わせ先が必要な社内情報を持つことまで保証しない。",
+      "caution": "DoH利用が確認できていない段階で原因と断定しない。「どのプログラムが、どこへ質問したか」を確認する。",
+      "difference": "KA_DNS_SPLIT・KA_DNS_ROLESへアプリケーション固有の解決経路を追加。",
+      "relatedAtomIds": [
+        "KA_DNS_SPLIT",
+        "KA_DNS_ROLES"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8484 §3・§10。社内障害例は仕様からの独自推論。",
+      "technicalSources": [
+        {
+          "label": "RFC 8484 §3・§10",
+          "url": "https://www.rfc-editor.org/rfc/rfc8484.html#section-3"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N023",
+      "code": "N023",
+      "title": "DNS応答が大きいときはUDPとTCPを両方見る",
+      "section": "DNS・キャッシュ・名前解決",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "普通の名前は引けるが、大きなDNS応答を返す名前だけタイムアウトする。UDP/53は許可済み。何を追加確認するか。",
+      "answer": "EDNSでのUDPサイズ、IP断片化の途中廃棄、TCビット付き応答、TCP/53への再問い合わせを確認する。",
+      "explanation": "EDNSで大きなUDP応答を扱えても、経路がそのサイズを問題なく運べるとは限らない。応答を切り詰めてTCPで再取得する経路も必要になる。",
+      "caution": "「EDNS対応ならTCP不要」「DNSは常に512バイト以下」と固定しない。",
+      "difference": "KA_DNS_TCP・KA_PMTUにサイズ依存の観測順を追加。",
+      "relatedAtomIds": [
+        "KA_DNS_TCP",
+        "KA_PMTU"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 6891 §6.2.5、RFC 7766 §5～§6。",
+      "technicalSources": [
+        {
+          "label": "RFC 6891 §6.2.5",
+          "url": "https://www.rfc-editor.org/rfc/rfc6891.html#section-6.2.5"
+        },
+        {
+          "label": "RFC 7766 §5～§6",
+          "url": "https://www.rfc-editor.org/rfc/rfc7766.html#section-5"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N024",
+      "code": "N024",
+      "title": "CNAMEと参照先のアドレスは別のキャッシュになる",
+      "section": "DNS・キャッシュ・名前解決",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "自社名のCNAMEのTTLを60秒へ短縮した。参照先のAレコードのTTLが3,600秒なら、参照先のIP変更も必ず60秒で追従するか。",
+      "answer": "保証できない。CNAMEと参照先のAレコードはそれぞれのTTLでキャッシュされる。",
+      "explanation": "別名の対応と、正規名からIPへの対応を分けて考える。どの名前・種別のレコードを変更したかで、残る古い情報が違う。",
+      "caution": "DNS名が複数段になっていたら、各段のTTL・権威・管理主体を書き出す。",
+      "difference": "KA_DNS_CNAME・KA_DNS_CACHE_KEYを多段キャッシュへ展開。",
+      "relatedAtomIds": [
+        "KA_DNS_CNAME",
+        "KA_DNS_CACHE_KEY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 1034 §3.6.2・§4.3.4。",
+      "technicalSources": [
+        {
+          "label": "RFC 1034 §3.6.2・§4.3.4",
+          "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6.2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N025",
+      "code": "N025",
+      "title": "HTTP/2でもTCPのHOLブロッキングは残る",
+      "section": "HTTP・TLS・負荷分散",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "mechanism",
+      "question": "HTTP/2で複数ストリームを多重化しているのに、TCPセグメントの損失で複数の応答が一緒に遅れるのはなぜか。",
+      "answer": "全ストリームが同じTCPの順序付きバイト列を共有するため、欠けた部分の回復待ちが後続データの受渡しを止めることがあるから。",
+      "explanation": "HTTP/1.1の応答順序の制約を緩和することと、TCPの順序制御をなくすことは別。QUICはストリームごとの順序制御でこの種のストリーム間待ちを減らす。",
+      "caution": "HTTP/3でも共有する輻輳制御やアプリケーションの依存による遅れは残る。「待ちの原因がある層」を答える。",
+      "difference": "KA_HTTP2_STREAM・KA_HTTP_HOLにTCP層との区別を追加。",
+      "relatedAtomIds": [
+        "KA_HTTP2_STREAM",
+        "KA_HTTP_HOL"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9113 §1、RFC 9114 §2。",
+      "technicalSources": [
+        {
+          "label": "RFC 9113 §1",
+          "url": "https://www.rfc-editor.org/rfc/rfc9113.html#section-1"
+        },
+        {
+          "label": "RFC 9114 §2",
+          "url": "https://www.rfc-editor.org/rfc/rfc9114.html#section-2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N026",
+      "code": "N026",
+      "title": "TCP/443の成功はHTTP/3の通過を保証しない",
+      "section": "HTTP・TLS・負荷分散",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "FWでTCP/443を許可しHTTPSは使える。これだけでHTTP/3も利用可能と言えるか。",
+      "answer": "言えない。HTTP/3はQUICを使うため、通常はUDP/443側の到達性や中継装置の対応も必要になる。",
+      "explanation": "QUICが使えないとき、クライアントがTCP上のHTTPへフォールバックして、利用者には障害が見えない場合がある。性能比較では実際に合意したプロトコルを確認する。",
+      "caution": "UDPを開けば全製品で検査・認証まで同じ動作になるとは限らない。HTTP/3のポートはサービス設定にもよる。",
+      "difference": "KA_FW_FIELDS・KA_ALPNにトランスポート変更とフォールバックを追加。",
+      "relatedAtomIds": [
+        "KA_FW_FIELDS",
+        "KA_ALPN"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9114 §3.1。",
+      "technicalSources": [
+        {
+          "label": "RFC 9114 §3.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc9114.html#section-3.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N027",
+      "code": "N027",
+      "title": "TLS 1.3の0-RTTは再実行の安全性を考える",
+      "section": "HTTP・TLS・負荷分散",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "change",
+      "question": "接続を高速化するため、決済の確定要求を全てTLS 1.3の0-RTTで受け付けたい。何を評価する必要があるか。",
+      "answer": "Early Dataの再送・リプレイで同じ処理が複数回実行されても安全かを評価し、安全でない操作は拒否・延期する等の対策を取る。",
+      "explanation": "0-RTTは完全なハンドシェイク完了前にデータを送れるが、通常の1-RTTデータと同じリプレイ耐性は持たない。アプリケーションでの重複防止も必要になる。",
+      "caution": "「暗号化されているから再実行されない」としない。HTTPメソッド名だけで業務処理の安全性を断定しない。",
+      "difference": "KA_TLS_SESSION_REUSEへ性能向上の代償を補充。",
+      "relatedAtomIds": [
+        "KA_TLS_SESSION_REUSE"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8446 §8・付録E.5。",
+      "technicalSources": [
+        {
+          "label": "RFC 8446 §8・付録E.5",
+          "url": "https://www.rfc-editor.org/rfc/rfc8446.html#section-8"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N028",
+      "code": "N028",
+      "title": "SNI・HTTPの名前・証明書の名前を分ける",
+      "section": "HTTP・TLS・負荷分散",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "case",
+      "question": "新サーバをIP直指定で試験し、HTTPのHostだけ本番名に変えた。それでも別証明書が返る可能性があるのはなぜか。",
+      "answer": "HTTPより先のTLS確立時に使うSNIが本番名にならず、サーバが別の証明書を選ぶ可能性があるから。",
+      "explanation": "DNSは接続IPを求め、SNIはTLS側のサービス選択に、Hostまたは:authorityはHTTP側の対象識別に使う。証明書のSAN等で接続先の名前も検証する。",
+      "caution": "移行試験ではURLのホスト名を保って接続先IPだけ変える方法が有効。証明書のCNだけを無条件に照合根拠にしない。",
+      "difference": "KA_HOSTS_TEST・KA_CERT_NAME・KA_HTTP_HOSTを処理順で接続。",
+      "relatedAtomIds": [
+        "KA_HOSTS_TEST",
+        "KA_CERT_NAME",
+        "KA_HTTP_HOST"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 6066 §3、RFC 9525 §4・§6、RFC 9110 §7.2。",
+      "technicalSources": [
+        {
+          "label": "RFC 6066 §3",
+          "url": "https://www.rfc-editor.org/rfc/rfc6066.html#section-3"
+        },
+        {
+          "label": "RFC 9525 §4・§6",
+          "url": "https://www.rfc-editor.org/rfc/rfc9525.html#section-4"
+        },
+        {
+          "label": "RFC 9110 §7.2",
+          "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-7.2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N029",
+      "code": "N029",
+      "title": "X-Forwarded-Forは書いてあるだけでは信頼できない",
+      "section": "HTTP・TLS・負荷分散",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "change",
+      "question": "バックエンドでX-Forwarded-Forの先頭IPを使って社内からのアクセスか判定したい。利用者がそのヘッダーを付けられると何が問題か。",
+      "answer": "偽のIPを申告して制限を回避されるおそれがある。信頼するプロキシの範囲と、受信ヘッダーの除去・上書き・追記の規則を決める。",
+      "explanation": "転送ヘッダーは認証済みの事実とは限らない。バックエンドへの直接接続も制限し、信頼できる中継経路から渡された部分だけを解釈する。",
+      "caution": "先頭／末尾のどちらかを常に信頼する規則にはしない。前段装置の動作と信頼境界から決める。",
+      "difference": "KA_XFF・KA_XFF_HANDOFFへヘッダー自体の信頼性を追加。",
+      "relatedAtomIds": [
+        "KA_XFF",
+        "KA_XFF_HANDOFF"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 7239 §8.1。同RFCは標準のForwardedについての記述で、XFFの製品別書換え規則を定義するものではない。信頼境界の考え方を適用した。",
+      "technicalSources": [
+        {
+          "label": "RFC 7239 §8.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc7239.html#section-8.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N030",
+      "code": "N030",
+      "title": "DNS切替と既存接続の切替は同じ時点ではない",
+      "section": "HTTP・TLS・負荷分散",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "change",
+      "question": "DNSを新LBへ向け、TTL分の時間も待った。旧LBを直ちに停止してよいか。",
+      "answer": "それだけでは判断できない。旧LB上の長時間接続・WebSocket・接続再利用・セッション依存が残っていないか確認する。",
+      "explanation": "DNSの再問い合わせは、新しい接続先選択の一契機にすぎない。確立済み接続はDNS変更だけで移らないので、新規受付停止と既存接続の排出を分けて計画する。",
+      "caution": "最大接続時間、業務セッションの保持先、強制終了時の影響を決める。「TTL待ち＝旧環境未使用」としない。",
+      "difference": "KA_DNS_TTL・KA_OLD_DRAIN・KA_SITE_SESSIONを接続寿命と接続排出へ展開。",
+      "relatedAtomIds": [
+        "KA_DNS_TTL",
+        "KA_OLD_DRAIN",
+        "KA_SITE_SESSION"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9110 §7.1、RFC 6455 §1.2。移行手順は独自整理。",
+      "technicalSources": [
+        {
+          "label": "RFC 9110 §7.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-7.1"
+        },
+        {
+          "label": "RFC 6455 §1.2",
+          "url": "https://www.rfc-editor.org/rfc/rfc6455.html#section-1.2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N031",
+      "code": "N031",
+      "title": "認証前に使えない経路へ認証の前提を置かない",
+      "section": "認証・VPN・セキュリティ境界",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "change",
+      "question": "EAP-TLSで端末を接続させるが、必要なCA証明書の初回取得先は認証後ネットワーク内だけにある。新規端末で何が起こり得るか。",
+      "answer": "接続に必要な信頼情報を接続前に取得できず、認証を完了できない循環依存が起こり得る。",
+      "explanation": "CA証明書、端末証明書と秘密鍵、正しい時刻、必要な検証先等を、どの段階で用意するかを設計する。事前配布や、必要最小限の初期設定用ネットワーク等を検討する。",
+      "caution": "失効確認が常に端末からオンライン必須とは限らない。方式・実装に必要な依存先だけを洗い出す。検証無効化を解決策にしない。",
+      "difference": "KA_CERT_BOOTSTRAP・KA_CLIENT_KEY・KA_EAP_ROLESを接続の前提条件として統合。",
+      "relatedAtomIds": [
+        "KA_CERT_BOOTSTRAP",
+        "KA_CLIENT_KEY",
+        "KA_EAP_ROLES"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 5216 §2.2～§2.3。EAP-TLSの基礎仕様を参照したもので、旧TLS版を推奨する意味ではない。",
+      "technicalSources": [
+        {
+          "label": "RFC 5216 §2.2～§2.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc5216.html#section-2.2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N032",
+      "code": "N032",
+      "title": "IKE SAがあっても業務通信が暗号化されるとは限らない",
+      "section": "認証・VPN・セキュリティ境界",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "IKEv2の制御接続は確立済みだが、追加したLANだけ対向拠点へ通らない。何を照合するか。",
+      "answer": "Child SA、Traffic Selector、保護ポリシー、内側の経路・戻り経路・NAT条件を照合し、暗号化／復号カウンターの方向別増加を見る。",
+      "explanation": "IKE SAは制御の保護、Child SAはデータ保護を担う。新サブネットが保護対象に含まれない、別経路へ送られる、NAT後の値と不整合になる等で、対象通信だけ失敗し得る。",
+      "caution": "外側のVPN終端へのPing成功だけで内側の到達性を判断しない。送信側で暗号化され、受信側で復号される区間を追う。",
+      "difference": "KA_IKE_SA・KA_TUNNEL_ENDPOINTS・KA_NAT_FWへ拠点追加時の確認順を追加。",
+      "relatedAtomIds": [
+        "KA_IKE_SA",
+        "KA_TUNNEL_ENDPOINTS",
+        "KA_NAT_FW"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 7296 §1.3・§2.9、RFC 4301 §4.4.1。",
+      "technicalSources": [
+        {
+          "label": "RFC 7296 §1.3・§2.9",
+          "url": "https://www.rfc-editor.org/rfc/rfc7296.html#section-2.9"
+        },
+        {
+          "label": "RFC 4301 §4.4.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc4301.html#section-4.4.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N033",
+      "code": "N033",
+      "title": "一定時間ごとのVPN断は鍵更新と照合する",
+      "section": "認証・VPN・セキュリティ境界",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "VPNは最初に使えるが、約1時間ごとに短時間切れる。回線断ログはない。何を比較するか。",
+      "answer": "SAの寿命、Rekey／再認証の時刻と成否、更新時の提案・ログ・パケット損失を、切断時刻と比較する。",
+      "explanation": "初回確立と更新処理は別の交換である。初回成功だけでは継続運用を保証できない。アイドル後だけならNAT状態失効など別仮説とも比較する。",
+      "caution": "IKEv2では鍵更新と再認証は同じ処理ではない。「約1時間＝必ずRekey障害」と断定しない。",
+      "difference": "KA_IPSEC_REKEY・KA_NAT_TIMEOUTへ周期性を使う切り分けを追加。",
+      "relatedAtomIds": [
+        "KA_IPSEC_REKEY",
+        "KA_NAT_TIMEOUT"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 7296 §2.8・§2.8.3。",
+      "technicalSources": [
+        {
+          "label": "RFC 7296 §2.8・§2.8.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc7296.html#section-2.8.3"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N034",
+      "code": "N034",
+      "title": "TLS検査装置を挟むと相互TLSの相手が変わる",
+      "section": "認証・VPN・セキュリティ境界",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "横断",
+      "questionType": "change",
+      "question": "クライアント証明書で相互認証する通信へTLS復号プロキシを挟む。端末に検査用CAを信頼させるだけで、全てそのまま通るか。",
+      "answer": "保証できない。プロキシでTLSを分割すると、接続先サーバに対して証明書の秘密鍵所持を証明する主体が変わる。",
+      "explanation": "端末がサーバ側を信頼する問題と、サーバが端末を認証する問題は別。終端位置、プロキシの対応、業務上必要な本人性から、透過通過・検査除外・明示した委譲方式等を検討する。",
+      "caution": "クライアント証明書だけをコピーしても秘密鍵所持の証明はできない。共有すべきでない秘密鍵を安易に中継へ配布しない。",
+      "difference": "KA_TLS_ROOT・KA_TCP_SPLIT・KA_CLIENT_KEYを相互TLSの構成変更へ展開。",
+      "relatedAtomIds": [
+        "KA_TLS_ROOT",
+        "KA_TCP_SPLIT",
+        "KA_CLIENT_KEY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8446 §4.4.2～§4.4.3。プロキシ導入時の結論はTLS終端の性質からの独自推論。",
+      "technicalSources": [
+        {
+          "label": "RFC 8446 §4.4.2～§4.4.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.3"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N035",
+      "code": "N035",
+      "title": "VRFによる分離と暗号化は別の機能",
+      "section": "認証・VPN・セキュリティ境界",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "通信をVRFで分離したIP-VPNを使えば、事業者網内も暗号化済みと言えるか。",
+      "answer": "言えない。経路・転送の論理分離と、通信内容の暗号化は別である。",
+      "explanation": "分離は別顧客のネットワークとの混線を防ぐ設計要素。盗聴への要求があるなら、信頼する範囲と脅威を定義し、必要に応じてIPsecやTLS等で保護する。",
+      "caution": "「閉域」「専用」という契約上の説明から、暗号方式や終端位置を推測しない。",
+      "difference": "KA_VRF・KA_MPLS_TENANT・KA_IPSEC_INTEGRITYをセキュリティ要件へ接続。",
+      "relatedAtomIds": [
+        "KA_VRF",
+        "KA_MPLS_TENANT",
+        "KA_IPSEC_INTEGRITY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4364 §13.1。",
+      "technicalSources": [
+        {
+          "label": "RFC 4364 §13.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc4364.html#section-13.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N036",
+      "code": "N036",
+      "title": "ステートレスACLでは返信側の宛先ポートも考える",
+      "section": "認証・VPN・セキュリティ境界",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "change",
+      "question": "ステートレスACLで、端末からサーバへのTCP宛先443だけ許可した。返信は送信元443だから自動的に通るか。",
+      "answer": "自動的には通らない。返信は端末の一時ポート宛てになるため、返信方向のアドレス・ポート条件も許可する必要がある。",
+      "explanation": "接続状態を追わないACLでは、行きの許可と戻りの許可は別。実際の一時ポート範囲、適用方向、NATの評価位置を確認する。",
+      "caution": "TCPのACKビットを見る簡易な「established」条件も、完全な状態追跡と同一ではない。",
+      "difference": "KA_FW_FIELDS・KA_STATEFUL・KA_NAT_FWへ状態を持たない場合の反例を追加。",
+      "relatedAtomIds": [
+        "KA_FW_FIELDS",
+        "KA_STATEFUL",
+        "KA_NAT_FW"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "AWS VPC：ネットワークACLと一時ポート。クラウド固有の番号を暗記するのでなく、返信の組合せを学ぶ。",
+      "technicalSources": [
+        {
+          "label": "AWS VPC：ネットワークACLと一時ポート",
+          "url": "https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N037",
+      "code": "N037",
+      "title": "SLAAC・DHCPv6・デフォルトルータを別々に確認する",
+      "section": "IPv6・デュアルスタック",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "IPv6端末がDHCPv6でアドレスを取得できた。これだけで外部へ通信できるか。",
+      "answer": "判断できない。通常の構成ではデフォルトルータをRAで発見するため、RAと端末の経路表も確認する。",
+      "explanation": "RAのM/OフラグはDHCPv6から得られる情報を示す一方、SLAACはプレフィックス情報のAフラグ等に従う。アドレス・DNS情報・デフォルトルータの供給元を分ける。",
+      "caution": "M=1ならSLAACが必ず無効になる、と覚えない。端末OSの対応差、静的設定、実際に採用した情報も確認する。",
+      "difference": "KA_IPV6_DHCPV6・KA_IPV6_RA・KA_SLAAC_PREFIXを設定情報別に整理。",
+      "relatedAtomIds": [
+        "KA_IPV6_DHCPV6",
+        "KA_IPV6_RA",
+        "KA_SLAAC_PREFIX"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4861 §4.2、RFC 4862 §5.5.3、RFC 8415 §1。",
+      "technicalSources": [
+        {
+          "label": "RFC 4861 §4.2",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861.html#section-4.2"
+        },
+        {
+          "label": "RFC 4862 §5.5.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc4862.html#section-5.5.3"
+        },
+        {
+          "label": "RFC 8415 §1",
+          "url": "https://www.rfc-editor.org/rfc/rfc8415.html#section-1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N038",
+      "code": "N038",
+      "title": "IPv6アドレスが残っていてもルータ情報は失効する",
+      "section": "IPv6・デュアルスタック",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "端末にはグローバルIPv6アドレスが残るが、しばらくすると外部へ出られなくなった。RA受信が止まった場合、何の寿命を確認するか。",
+      "answer": "デフォルトルータのRouter Lifetimeと、プレフィックス・アドレスの寿命を別々に確認する。",
+      "explanation": "RA内の全情報が一つのタイマーで失効するわけではない。Router Lifetimeが尽きれば、そのルータをデフォルトとして使えなくなる。一方、アドレスは独自のValid／Preferred Lifetimeを持つ。",
+      "caution": "Preferred Lifetime切れは通常、新規通信の送信元選択で避ける状態。直ちにアドレス自体が無効になることと区別する。",
+      "difference": "KA_IPV6_RA・KA_SLAAC_PREFIXへ情報ごとの寿命を補充。",
+      "relatedAtomIds": [
+        "KA_IPV6_RA",
+        "KA_SLAAC_PREFIX"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4861 §4.2・§6.3.5、RFC 4862 §5.5.4。",
+      "technicalSources": [
+        {
+          "label": "RFC 4861 §4.2・§6.3.5",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861.html#section-6.3.5"
+        },
+        {
+          "label": "RFC 4862 §5.5.4",
+          "url": "https://www.rfc-editor.org/rfc/rfc4862.html#section-5.5.4"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N039",
+      "code": "N039",
+      "title": "IPv6の途中ルータは断片化して救済しない",
+      "section": "IPv6・デュアルスタック",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "mechanism",
+      "question": "IPv6パケットが次のリンクのMTUを超えた。途中ルータが小さく分割して転送するか。",
+      "answer": "しない。ルータは廃棄し、送信元へICMPv6 Packet Too Bigを通知する。必要なサイズ調整や断片化は送信元側で行う。",
+      "explanation": "IPv4のルータによる断片化をIPv6へ持ち込まない。トンネル追加時は内側で使えるMTUと通知の到達性を確認する。",
+      "caution": "Packet Too Bigだけが唯一のサイズ探索方式とは限らないが、一括遮断してよい根拠にはならない。",
+      "difference": "KA_IPV6_PTB・KA_PMTUにルータと送信元の役割を明示。",
+      "relatedAtomIds": [
+        "KA_IPV6_PTB",
+        "KA_PMTU"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8200 §4.5・§5。",
+      "technicalSources": [
+        {
+          "label": "RFC 8200 §4.5・§5",
+          "url": "https://www.rfc-editor.org/rfc/rfc8200.html#section-5"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N040",
+      "code": "N040",
+      "title": "ICMPv6の一括遮断で通常通信も壊れる",
+      "section": "IPv6・デュアルスタック",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "change",
+      "question": "セキュリティ強化のためICMPv6を全て拒否した。名前解決やTCP許可が正しくても通信できなくなる理由は何か。",
+      "answer": "近隣探索やルータ発見、MTU調整など、IPv6の正常動作に必要な制御メッセージまで遮断するから。",
+      "explanation": "IPv4でARPが担った役割の一部もIPv6ではICMPv6に含まれる。タイプ・方向・スコープ・正当な送信元に応じて許可を設計する。",
+      "caution": "全許可か全拒否の二択にしない。リンク内のNDと、経路途中から来るエラー通知の条件は異なる。",
+      "difference": "KA_IPV6_NDP・KA_IPV6_PTB・KA_FW_FIELDSを一つのポリシー判断へ接続。",
+      "relatedAtomIds": [
+        "KA_IPV6_NDP",
+        "KA_IPV6_PTB",
+        "KA_FW_FIELDS"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4890 §4。",
+      "technicalSources": [
+        {
+          "label": "RFC 4890 §4",
+          "url": "https://www.rfc-editor.org/rfc/rfc4890.html#section-4"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N041",
+      "code": "N041",
+      "title": "IPv4だけのFWルールではデュアルスタックを守れない",
+      "section": "IPv6・デュアルスタック",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "change",
+      "question": "IPv4側で部門間アクセスを制限した。端末とサーバがIPv6も使える場合、同じ制限が有効と言えるか。",
+      "answer": "言えない。IPv6の経路、FW／ACL、名前解決、監視にも対応する制御が必要である。",
+      "explanation": "同じサービスへ別のアドレスファミリーで到達できれば、IPv4のみの制限を経由しない経路になり得る。OSで自動的に有効になる経路も含め、実際の到達可能性を確認する。",
+      "caution": "IPv6ではNATがないから危険、と単純化しない。必要なのはアドレスファミリーをまたぐ一貫した境界制御。",
+      "difference": "KA_IPV6_TRANS_SECURITY・KA_FW_FIELDS・KA_SECURE_SEGMENTを二重の通信経路へ展開。",
+      "relatedAtomIds": [
+        "KA_IPV6_TRANS_SECURITY",
+        "KA_FW_FIELDS",
+        "KA_SECURE_SEGMENT"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9099：IPv6の運用セキュリティ。",
+      "technicalSources": [
+        {
+          "label": "RFC 9099：IPv6の運用セキュリティ",
+          "url": "https://www.rfc-editor.org/rfc/rfc9099.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N042",
+      "code": "N042",
+      "title": "自動フォールバックがIPv6障害を隠す",
+      "section": "IPv6・デュアルスタック",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "ブラウザーでは正常だが、IPv6だけを使うアプリケーションは接続できない。同じ端末だからネットワークは正常と言えるか。",
+      "answer": "言えない。ブラウザーがHappy Eyeballs等でIPv4接続を選び、IPv6障害を回避している可能性がある。",
+      "explanation": "A／AAAA応答と、実際に採用した接続を確認する。アドレスファミリーを固定した試験と通常の利用試験を両方実施する。",
+      "caution": "全アプリケーションが同じ競合接続・待ち時間を実装するとは限らない。",
+      "difference": "KA_IPV6_FALLBACKを具体的な接続選択と試験方法へ展開。既存解説への統合にも向く。",
+      "relatedAtomIds": [
+        "KA_IPV6_FALLBACK"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8305 §2～§5。",
+      "technicalSources": [
+        {
+          "label": "RFC 8305 §2～§5",
+          "url": "https://www.rfc-editor.org/rfc/rfc8305.html#section-2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N043",
+      "code": "N043",
+      "title": "Gb/sだけでなくppsの処理限界も見る",
+      "section": "性能・帯域・QoS",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "case",
+      "question": "1Gb/s分のIPパケットを、平均1,000バイトから100バイトへ変えた。L2の付加分を一旦無視すると、必要な毎秒パケット処理数はどう変わるか。",
+      "answer": "125,000ppsから1,250,000ppsへ10倍になる。",
+      "explanation": "pps＝bit/s÷（1パケットのバイト数×8）。FW・ルータは小パケットで先に処理数限界へ達することがある。新規接続/秒、同時接続数、暗号化・検査機能の有無も別の資源である。",
+      "caution": "公称スループットのパケットサイズと有効機能を確認する。実際の回線占有量ではL2等の付加分も含める。",
+      "difference": "KA_THROUGHPUT_BOTTLENECK・KA_NAT_ENTRYへサイズ依存の処理能力を補充。",
+      "relatedAtomIds": [
+        "KA_THROUGHPUT_BOTTLENECK",
+        "KA_NAT_ENTRY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：帯域・pps・性能指標。計算例は独自作成。",
+      "technicalSources": [
+        {
+          "label": "Cisco：帯域・pps・性能指標",
+          "url": "https://sec.cloudapps.cisco.com/security/center/resources/network_performance_metrics.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N044",
+      "code": "N044",
+      "title": "音声の回線帯域はコーデック速度より大きい",
+      "section": "性能・帯域・QoS",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "64kb/sの音声を20msごとに送る。IPv4/UDP/RTPは合計40バイト、タグなしEthernetヘッダー＋FCSは18バイト、プリアンブル等8バイト、IFG相当12バイトとする。片方向の回線占有量は概算いくらか。",
+      "answer": "音声160バイト＋付加78バイト＝238バイト。毎秒50パケットなので、238×8×50＝95.2kb/s。",
+      "explanation": "ペイロード速度、IP層速度、回線上の占有量は異なる。VLANやVPNがあればさらに増える。全二重回線では上下方向を各々評価する。",
+      "caution": "IFGはフレーム本体ではなく送信間隔の占有時間。設問がどの層の帯域を求めるかで含める値を変える。",
+      "difference": "KA_VOICE_BWへ層ごとの数値分解を追加。",
+      "relatedAtomIds": [
+        "KA_VOICE_BW"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：Ethernetの付加分と性能計算、RFC 3550 §5.1。数値条件は独自演習。",
+      "technicalSources": [
+        {
+          "label": "Cisco：Ethernetの付加分と性能計算",
+          "url": "https://sec.cloudapps.cisco.com/security/center/resources/network_performance_metrics.html"
+        },
+        {
+          "label": "RFC 3550 §5.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc3550.html#section-5.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N045",
+      "code": "N045",
+      "title": "バッファを増やせば応答もよくなるとは限らない",
+      "section": "性能・帯域・QoS",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "10Mb/sの出口に1MBのデータが滞留している。単純なFIFOで、後着パケットは概算どれだけ待つか。バッファ増設で遅延は必ず改善するか。",
+      "answer": "1MB×8÷10Mb/s＝約0.8秒待つ。バッファ増設は廃棄を減らしても、待ち時間を増やす場合がある。",
+      "explanation": "大量転送が長い待ち行列を維持すると、対話・音声の遅延が悪化する。出口の整形、キューの分離、AQM等を要求に合わせて検討する。",
+      "caution": "使用率・損失率だけでなく、負荷中のRTTも測る。優先制御の有無等で各パケットの待ちは変わる。",
+      "difference": "KA_QUEUE_BACKLOG・KA_VOICE_JITTERへBufferbloatと遅延計算を追加。",
+      "relatedAtomIds": [
+        "KA_QUEUE_BACKLOG",
+        "KA_VOICE_JITTER"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 7567 §1～§2。計算は独自演習。",
+      "technicalSources": [
+        {
+          "label": "RFC 7567 §1～§2",
+          "url": "https://www.rfc-editor.org/rfc/rfc7567.html#section-1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N046",
+      "code": "N046",
+      "title": "シェーピングとポリシングの超過時動作を分ける",
+      "section": "性能・帯域・QoS",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "change",
+      "question": "1Gb/sの物理IFで、事業者契約は100Mb/s。短いバーストが事業者側で廃棄される。送出を平準化したいなら何を検討するか。",
+      "answer": "契約の計数範囲やバースト許容量を確認し、出口のシェーピングで契約条件に合わせることを検討する。",
+      "explanation": "シェーピングは超過分を待たせて送出を調整し、ポリシングは超過分を廃棄・再マーキング等する。平均値が100Mb/s以下でも瞬間的な超過はあり得る。",
+      "caution": "シェーピングには待ち時間とバッファ上限がある。どこで、どの層のバイトを数えるかも一致させる。",
+      "difference": "KA_SHAPING・KA_SNMP_BURSTへ契約帯域と超過処理の違いを追加。",
+      "relatedAtomIds": [
+        "KA_SHAPING",
+        "KA_SNMP_BURST"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 2475 §2.3.3～§2.3.4。",
+      "technicalSources": [
+        {
+          "label": "RFC 2475 §2.3.3～§2.3.4",
+          "url": "https://www.rfc-editor.org/rfc/rfc2475.html#section-2.3.3"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N047",
+      "code": "N047",
+      "title": "全通信を最優先にすると優先制御の意味が失われる",
+      "section": "性能・帯域・QoS",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "change",
+      "question": "苦情を減らすため全アプリケーションを厳密優先キューへ入れたい。何が問題か。",
+      "answer": "本当に遅延に敏感な通信を区別できなくなる。優先トラフィックが過大なら、低優先キューの飢餓や優先クラス内の廃棄も起こり得る。",
+      "explanation": "分類・信頼境界・マーキング・キュー配分・優先クラスの上限を合わせて設計する。端末のDSCPを無条件に信用するかも判断対象。",
+      "caution": "DSCPを書いただけで全経路の遅延が保証されるわけではない。対向網の再マーキングや廃棄条件も確認する。",
+      "difference": "KA_QOS_DIFFSERV・KA_QOS_COSに優先資源と信頼境界の設計を追加。",
+      "relatedAtomIds": [
+        "KA_QOS_DIFFSERV",
+        "KA_QOS_COS"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 2475 §2.3、Cisco：LLQと輻輳管理。",
+      "technicalSources": [
+        {
+          "label": "RFC 2475 §2.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc2475.html#section-2.3"
+        },
+        {
+          "label": "Cisco：LLQと輻輳管理",
+          "url": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/qos_conmgt/configuration/xe-17/qos-conmgt-xe-17-book/qos-conmgt-oview.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N048",
+      "code": "N048",
+      "title": "パケット廃棄なしでもECNで輻輳を通知できる",
+      "section": "性能・帯域・QoS",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "mechanism",
+      "question": "ECN対応の通信でCEマーキングが増えているが廃棄は少ない。「輻輳はない」と言えるか。",
+      "answer": "言えない。対応する装置はパケットを落とす代わりに輻輳をマーキングし、端点へ送信量の抑制を促せる。",
+      "explanation": "ECN対応の合意・IPヘッダーの通知・トランスポート側の応答を区別する。輻輳が消える機能ではなく、通知と制御の手段である。",
+      "caution": "対応しない通信やバッファ不足では廃棄も起きる。損失だけでなく遅延・キュー・マーキングを確認する。",
+      "difference": "KA_TCP_DROP・KA_QOS_DIFFSERVへ廃棄以外の輻輳通知を補充。",
+      "relatedAtomIds": [
+        "KA_TCP_DROP",
+        "KA_QOS_DIFFSERV"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 3168 §5～§6。",
+      "technicalSources": [
+        {
+          "label": "RFC 3168 §5～§6",
+          "url": "https://www.rfc-editor.org/rfc/rfc3168.html#section-5"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N049",
+      "code": "N049",
+      "title": "端末数よりairtimeが先に詰まることがある",
+      "section": "無線LANの実効性能・移動・隔離",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "同量のデータを送る低速端末と高速端末がいる。台数だけを同じに分散すれば、APごとの負荷も同じになるか。",
+      "answer": "同じになるとは限らない。低い変調速度や再送が多い端末は、同じデータ量でも長い無線送信時間を使う。",
+      "explanation": "無線の共有資源は送信時間。端末数・リンク速度に加え、チャネル使用率、再送率、実際の通信量と端末ごとのairtimeを調べる。",
+      "caution": "低速端末が1台いると全端末のリンク速度が同じ値へ落ちる、と説明しない。送信時間の消費で説明する。",
+      "difference": "KA_WIFI_CSMA・KA_WLAN_UPLINKと追加問題/1.txtのairtime項目へ、低速端末による負荷差を追加。",
+      "relatedAtomIds": [
+        "KA_WIFI_CSMA",
+        "KA_WLAN_UPLINK"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：Airtime Fairness。",
+      "technicalSources": [
+        {
+          "label": "Cisco：Airtime Fairness",
+          "url": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/17-5/config-guide/b_wl_17_5_cg/m_air_time_fairness.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N050",
+      "code": "N050",
+      "title": "APの送信電力だけ上げても上りは改善しない",
+      "section": "無線LANの実効性能・移動・隔離",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "change",
+      "question": "遠い端末でAPの電波は強く見えるのに通信が不安定。APの送信電力をさらに上げれば解決するか。",
+      "answer": "解決するとは限らない。端末→APの上りは端末側の送信能力等に制約され、APの下り電力だけでは改善しないから。",
+      "explanation": "双方向で受信レベル・SNR・再送を確認する。過大なセルは隣接APとの競合や、遠いAPに留まる端末を増やす場合もある。",
+      "caution": "AP配置、端末能力、アンテナ、障害物を含めて設計する。電波強度のアイコンだけで双方向品質を評価しない。",
+      "difference": "KA_WIFI_SURVEYへ上り／下りの非対称を補充。",
+      "relatedAtomIds": [
+        "KA_WIFI_SURVEY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：5GHzセル設計とAP・端末の送信電力。同資料の特定端末向け電力値を一般的な必須値にはしていない。",
+      "technicalSources": [
+        {
+          "label": "Cisco：5GHzセル設計とAP・端末の送信電力",
+          "url": "https://www.cisco.com/c/en/us/support/docs/wireless/catalyst-9800-series-wireless-controllers/226331-wi-fi-cell-sizing-and-overlapping-with.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N051",
+      "code": "N051",
+      "title": "高速認証とIPセッション維持は別の条件",
+      "section": "無線LANの実効性能・移動・隔離",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "case",
+      "question": "802.11rで認証を高速化した。移動先APが別サブネットへ収容する場合も、音声接続が必ず切れずに続くか。",
+      "answer": "保証できない。高速な認証切替と、IPアドレス・転送経路・セッションの継続性は別に確保する必要がある。",
+      "explanation": "同一サブネットの維持、モビリティトンネル等の構成、状態を持つ装置の経路、DHCP処理の要否を確認する。認証時間だけ測って試験を終えない。",
+      "caution": "同一SSIDも同一IPサブネットの証明にはならない。音声・TCP等の既存通信を流して移動試験を行う。",
+      "difference": "KA_WIFI_ASSOC・KA_DYNAMIC_VLANと追加無線案のローミングを、認証とL3連続性に分ける。",
+      "relatedAtomIds": [
+        "KA_WIFI_ASSOC",
+        "KA_DYNAMIC_VLAN"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：無線LAN設計ガイド。構成ごとの連続性の整理は独自編集。",
+      "technicalSources": [
+        {
+          "label": "Cisco：無線LAN設計ガイド",
+          "url": "https://www.cisco.com/c/dam/en/us/td/docs/wireless/controller/technotes/8-5/cisco-enterprise-mobility-design-guide-8-5.pdf"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N052",
+      "code": "N052",
+      "title": "SSIDを増やすことにも通信コストがある",
+      "section": "無線LANの実効性能・移動・隔離",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "change",
+      "question": "部署ごとにSSIDを大量に分けても、利用者が少なければ無線資源への影響はないか。",
+      "answer": "影響はある。ビーコンやProbe Response等の管理通信が増え、データに使えるairtimeが減る場合がある。",
+      "explanation": "利用者のデータ送信がなくても管理フレームは送られる。少数SSIDと認証連動VLAN等で要件を満たせるか検討する。",
+      "caution": "SSID数だけから損失率や使用率を固定値で断定しない。Multiple BSSID等の方式、基本速度、周囲のAP数で変わる。",
+      "difference": "KA_DYNAMIC_VLAN・KA_WIFI_CSMAへSSID分割の性能コストを補充。",
+      "relatedAtomIds": [
+        "KA_DYNAMIC_VLAN",
+        "KA_WIFI_CSMA"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco Meraki：Multi-SSID Deployment Considerations。",
+      "technicalSources": [
+        {
+          "label": "Cisco Meraki：Multi-SSID Deployment Considerations",
+          "url": "https://documentation.meraki.com/Wireless/Design_and_Configure/Architecture_and_Best_Practices/Multi-SSID_Deployment_Considerations"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N053",
+      "code": "N053",
+      "title": "広いチャネルが高密度環境で最適とは限らない",
+      "section": "無線LANの実効性能・移動・隔離",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "change",
+      "question": "全APを80MHz幅へ広げると、フロア全体の同時利用性能も必ず向上するか。",
+      "answer": "向上するとは限らない。1通信の高速化と引換えに、独立して再利用できるチャネルが減り、AP間の競合が増える場合がある。",
+      "explanation": "AP密度、利用可能チャネル、周囲の占有、端末対応、必要なSNRを合わせて評価する。単一端末の速度試験だけでは高密度時の容量は分からない。",
+      "caution": "「80MHzは悪い」「20MHzなら必ずよい」とも固定しない。同時利用要件と周波数再利用で選ぶ。",
+      "difference": "KA_WIFI_BONDと追加無線案を、フロア全体の容量評価へ展開。",
+      "relatedAtomIds": [
+        "KA_WIFI_BOND"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：Wireless High Client Density Design Guide。",
+      "technicalSources": [
+        {
+          "label": "Cisco：Wireless High Client Density Design Guide",
+          "url": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/technotes/8-7/b_wireless_high_client_density_design_guide.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N054",
+      "code": "N054",
+      "title": "無線クライアント隔離の適用範囲を確認する",
+      "section": "無線LANの実効性能・移動・隔離",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "case",
+      "question": "APで端末間通信を遮断する機能を有効にした。別APの端末や有線LANの端末との通信も必ず遮断されるか。",
+      "answer": "保証できない。機能の適用範囲、集中／ローカル転送、L2・L3経路を確認する。",
+      "explanation": "同一AP内だけに効く方式では、別APや上位スイッチ経由の通信を抑えられない場合がある。要件に応じてVLAN・ACL・FW等と組み合わせる。",
+      "caution": "端末の組合せを、同一AP・別AP・有線・別サブネットに分けて試験する。",
+      "difference": "KA_PORT_ISOLATION・KA_SECURE_SEGMENTへ無線の機能適用範囲を追加。",
+      "relatedAtomIds": [
+        "KA_PORT_ISOLATION",
+        "KA_SECURE_SEGMENT"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：Peer-to-Peer Client Support。特定版の制約例であり、全製品共通の仕様ではない。",
+      "technicalSources": [
+        {
+          "label": "Cisco：Peer-to-Peer Client Support",
+          "url": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/17-4/config-guide/b_wl_17_4_cg/peer-to-peer-client-support.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N055",
+      "code": "N055",
+      "title": "EVPN経路の存在とVXLAN転送の成功を分ける",
+      "section": "仮想化・WAN・マルチキャスト",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "EVPNで相手のMAC情報は学習しているが、VXLAN経由の通信は通らない。何を別に調べるか。",
+      "answer": "VTEP間のアンダーレイ到達性、カプセル化後のMTU、使用UDPポートの許可、VNI対応を調べる。",
+      "explanation": "制御プレーンで転送先情報を学べても、外側IPパケットを運ぶ経路が使えなければ内側の通信は届かない。内側と外側のヘッダーを別々に追う。",
+      "caution": "BGPピアへの小さいPing成功だけで、大きいVXLANパケットの通過を保証しない。",
+      "difference": "KA_EVPN_LEARN・KA_VXLAN_ENCAP・KA_LOOPBACK_VTEPを故障時の確認順へ展開。",
+      "relatedAtomIds": [
+        "KA_EVPN_LEARN",
+        "KA_VXLAN_ENCAP",
+        "KA_LOOPBACK_VTEP"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8365 §5。",
+      "technicalSources": [
+        {
+          "label": "RFC 8365 §5",
+          "url": "https://www.rfc-editor.org/rfc/rfc8365.html#section-5"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N056",
+      "code": "N056",
+      "title": "RDが異なってもRTの誤設定で経路を取り込む",
+      "section": "仮想化・WAN・マルチキャスト",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "顧客AとBに異なるRDを付けた。BのVRFでAのRTをimportすると、Aの経路は取り込まれないか。",
+      "answer": "取り込まれ得る。RDは同じアドレス範囲の経路を区別するための値で、取込み先を決めるRTのポリシーとは役割が違う。",
+      "explanation": "経路の一意化と配布範囲を分けて確認する。意図した共有サービスへのリークでも、到達経路・戻り・フィルターを設計する。",
+      "caution": "RT自体は暗号鍵やデータを検査するFWではない。RDだけで顧客間の分離を保証しない。",
+      "difference": "KA_RD・KA_RT・KA_VRFへ誤設定の反例を追加。",
+      "relatedAtomIds": [
+        "KA_RD",
+        "KA_RT",
+        "KA_VRF"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4364 §4.1・§4.3.1。EVPNでも同種の取込みポリシーを考える際の土台になる。",
+      "technicalSources": [
+        {
+          "label": "RFC 4364 §4.1・§4.3.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc4364.html#section-4.3.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N057",
+      "code": "N057",
+      "title": "ARP抑制は正しい対応情報を持つことが前提",
+      "section": "仮想化・WAN・マルチキャスト",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "EVPN網で代理ARP／NDによってBUMを減らしている。端末移動後だけ古い場所へ通信する場合、何を調べるか。",
+      "answer": "MAC・IP・VTEPの対応、移動通知、古いエントリーの更新・失効、代理応答の元情報を調べる。",
+      "explanation": "代理応答は実端末へ問い合わせず、保持情報で応答する仕組み。配送量を減らせる一方、古い対応が残ると、その情報を信じて誤った転送を続け得る。",
+      "caution": "全キャッシュ消去だけを恒久対策にしない。情報の生成元と更新経路を確認する。",
+      "difference": "KA_VXLAN_BUM・KA_EVPN_LEARN・KA_ARP_PROXYへ制御情報の鮮度を補充。",
+      "relatedAtomIds": [
+        "KA_VXLAN_BUM",
+        "KA_EVPN_LEARN",
+        "KA_ARP_PROXY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 9161 §3～§4。",
+      "technicalSources": [
+        {
+          "label": "RFC 9161 §3～§4",
+          "url": "https://www.rfc-editor.org/rfc/rfc9161.html#section-3"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N058",
+      "code": "N058",
+      "title": "IGMP Snoopingには参加情報を維持する仕組みも必要",
+      "section": "仮想化・WAN・マルチキャスト",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "深掘り",
+      "questionType": "failure",
+      "question": "IGMP Snooping導入後、参加直後は映像が見えるが、時間がたつと止まる。Querierがいない場合、何を疑うか。",
+      "answer": "定期的なQueryとReportによる更新がなく、受信参加情報が失効した可能性を疑う。",
+      "explanation": "スイッチは受信参加を永続的に記憶するわけではない。Querierの存在、参加表の寿命、ルータ接続ポート、未知グループの転送動作を確認する。",
+      "caution": "失効後に廃棄するか広く転送するかは実装・設定による。「時間経過で必ず停止」と一般化しない。",
+      "difference": "KA_IGMP_SNOOPのQuerier・寿命という既存の注意を、時間依存障害の短問へ具体化。統合候補。",
+      "relatedAtomIds": [
+        "KA_IGMP_SNOOP"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 4541 §2.1。",
+      "technicalSources": [
+        {
+          "label": "RFC 4541 §2.1",
+          "url": "https://www.rfc-editor.org/rfc/rfc4541.html#section-2.1"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N059",
+      "code": "N059",
+      "title": "マルチキャストは宛先へ行けるだけでは足りない",
+      "section": "仮想化・WAN・マルチキャスト",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "failure",
+      "question": "ユニキャストでは受信者へ到達できるのに、PIMの映像が経路変更後に届かない。RPFではどの方向を確認するか。",
+      "answer": "対象の配信状態に応じた送信元またはRPへの逆方向経路と、実際の受信インタフェースの整合を確認する。",
+      "explanation": "マルチキャストは複製ループ等を防ぐため、想定する上流から来たパケットかを検査する。配信木・RPFの選択と、実際の流入がずれると廃棄され得る。",
+      "caution": "共有木と送信元木を混同しない。uRPFによる送信元偽装対策とも目的を区別する。",
+      "difference": "KA_MULTICAST_TREE・KA_URPFへPIM側のRPF判定を補充。",
+      "relatedAtomIds": [
+        "KA_MULTICAST_TREE",
+        "KA_URPF"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 7761：PIM-SM。",
+      "technicalSources": [
+        {
+          "label": "RFC 7761：PIM-SM",
+          "url": "https://www.rfc-editor.org/rfc/rfc7761.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N060",
+      "code": "N060",
+      "title": "SD-WANの回線Upとアプリケーション品質を分ける",
+      "section": "仮想化・WAN・マルチキャスト",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "change",
+      "question": "WAN回線はリンクUpだが音声の損失・ジッタが悪化した。SD-WANで経路を変えるとき、何を基準にし、何に注意するか。",
+      "answer": "アプリケーションに必要な遅延・損失・ジッタ等の品質条件を使い、しきい値周辺で頻繁に切り替わらない評価期間や復帰条件を設計する。",
+      "explanation": "帯域や生死だけでなく、劣化状態を測って経路を選ぶ。切替に伴う順序逆転、NAT出口の変更、FW状態、全経路が条件未達の場合も考える。",
+      "caution": "製品の測定周期・平均方法・既存フローの扱いを確認する。制御装置へ接続できることとデータトンネルの品質は別。",
+      "difference": "KA_BREAKOUT・KA_BFD・KA_ECMP_ORDERへ品質駆動の経路選択を補充。",
+      "relatedAtomIds": [
+        "KA_BREAKOUT",
+        "KA_BFD",
+        "KA_ECMP_ORDER"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：Application-Aware Routing。評価・復帰条件の設計は独自整理。",
+      "technicalSources": [
+        {
+          "label": "Cisco：Application-Aware Routing",
+          "url": "https://www.cisco.com/c/en/us/td/docs/routers/sdwan/configuration/policies/vedge/policies-book/m-application-aware-routing.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N061",
+      "code": "N061",
+      "title": "監視元が違えば「正常」の意味も違う",
+      "section": "監視・パケット解析・証拠の読み方",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "case",
+      "question": "監視サーバからのHTTPS監視は成功するが、利用者だけ接続に失敗する。サービス正常と結論してよいか。",
+      "answer": "よくない。監視元と利用者のDNS、接続先、経路、プロキシ、送信元IP、認証条件等を比較する。",
+      "explanation": "監視は「その観測点・条件での成功」を示す。LB直下の監視が、利用者側の名前解決や出口制限、TLS検査、業務認証を通っていないことがある。",
+      "caution": "単に監視項目を増やすのでなく、利用者と共通する区間・異なる区間を図にする。",
+      "difference": "KA_HEALTH_L7・KA_MONITOR_PATH_CHANGE・KA_DIAG_SYMPTOMを観測条件の比較へ展開。",
+      "relatedAtomIds": [
+        "KA_HEALTH_L7",
+        "KA_MONITOR_PATH_CHANGE",
+        "KA_DIAG_SYMPTOM"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 2330 §5～§6.3。監視構成の比較手順は独自整理。",
+      "technicalSources": [
+        {
+          "label": "RFC 2330 §5～§6.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc2330.html#section-6.2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N062",
+      "code": "N062",
+      "title": "キャプチャのチェックサム異常が実際の破損とは限らない",
+      "section": "監視・パケット解析・証拠の読み方",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "case",
+      "question": "送信元PCで取ったキャプチャにTCPチェックサム異常があるのに、通信は正常。回線故障と判断できるか。",
+      "answer": "できない。NICのチェックサムオフロード前のデータを取得している可能性がある。",
+      "explanation": "OSからNICへ渡す時点では計算が未完了で、送信時にNICが補う方式がある。相手側や途中の観測と照合し、取得位置・設定を確認する。",
+      "caution": "オフロードによる大きな見かけのセグメントもあり得る。送信元キャプチャだけを、そのまま回線上の状態としない。",
+      "difference": "KA_PROMISC・KA_MIRROR_FUNCTIONへ観測方法が表示へ与える影響を補充。",
+      "relatedAtomIds": [
+        "KA_PROMISC",
+        "KA_MIRROR_FUNCTION"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Wireshark User's Guide §7.10。",
+      "technicalSources": [
+        {
+          "label": "Wireshark User's Guide §7.10",
+          "url": "https://www.wireshark.org/docs/wsug_html_chunked/ChAdvChecksums.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N063",
+      "code": "N063",
+      "title": "SPANにないパケットを「送られていない」と決めない",
+      "section": "監視・パケット解析・証拠の読み方",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "本番通信の受信側にはデータが届いているが、ミラー先のキャプチャでは一部が欠ける。何を調べるか。",
+      "answer": "ミラー出力の帯域超過、対象・方向・フィルター、キャプチャPCの取りこぼしを確認する。",
+      "explanation": "本番の転送と複製先への出力は別。全二重の1Gb/sポートで両方向各800Mb/sなら、1Gb/sの出力先に1.6Gb/s分を完全には複製できない。",
+      "caution": "キャプチャにないことを不在の証明にするには、観測範囲と欠落がないことの確認が必要。",
+      "difference": "KA_MIRROR_CAP・KA_IDS_POSITIONを証拠の読み方へ展開。既存解説への統合にも向く。",
+      "relatedAtomIds": [
+        "KA_MIRROR_CAP",
+        "KA_IDS_POSITION"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：SPANの転送と取りこぼし。数値例は独自作成。",
+      "technicalSources": [
+        {
+          "label": "Cisco：SPANの転送と取りこぼし",
+          "url": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/mgmt/management-configuration-guide/span.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N064",
+      "code": "N064",
+      "title": "NTP設定済みでもログの前後関係は要確認",
+      "section": "監視・パケット解析・証拠の読み方",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "FWログでは10:00:00、サーバログでは09:59:59に異常がある。NTP設定があるだけで、サーバが先に壊れたと断定できるか。",
+      "answer": "できない。実際の同期状態、時計のずれ、タイムゾーン、ログ粒度、記録遅延を確認する。",
+      "explanation": "設定の存在と同期成功は別。時計誤差がイベント差より大きければ、表示時刻だけで因果順を決められない。パケットや要求ID等も照合する。",
+      "caution": "同期先が多いことだけで精度が保証されるわけではない。証明書や認証の時刻依存にも影響する。",
+      "difference": "KA_LOG_TIME・KA_LOG_ANOMALYへ時刻の不確かさを追加。",
+      "relatedAtomIds": [
+        "KA_LOG_TIME",
+        "KA_LOG_ANOMALY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 5905 §8～§11。ログの因果判断は独自整理。",
+      "technicalSources": [
+        {
+          "label": "RFC 5905 §8～§11",
+          "url": "https://www.rfc-editor.org/rfc/rfc5905.html#section-8"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N065",
+      "code": "N065",
+      "title": "平均応答時間だけでは遅い利用者を見落とす",
+      "section": "監視・パケット解析・証拠の読み方",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "case",
+      "question": "100件中95件は10ms、残る5件は2,000ms。平均が許容範囲なら、利用者体験に問題はないと言えるか。",
+      "answer": "言えない。平均は109.5msだが、5％の要求は2秒かかる。分布、p95・p99等、失敗率、対象別の偏りを確認する。",
+      "explanation": "少数の遅い処理が平均で薄まる。パーセンタイルの定義・補間方法にも注意し、複数サーバのp95を単純平均して全体のp95にはしない。",
+      "caution": "この例のp95の数値は計算法で境界の扱いが変わるため固定していない。何％の利用をどの条件で守る要求かを決める。",
+      "difference": "KA_SNMP_BURST・KA_TRAFFIC_PATTERNへ平均以外の品質指標を補充。",
+      "relatedAtomIds": [
+        "KA_SNMP_BURST",
+        "KA_TRAFFIC_PATTERN"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Prometheus：Histograms and summaries。分布と平均の例は独自演習。",
+      "technicalSources": [
+        {
+          "label": "Prometheus：Histograms and summaries",
+          "url": "https://prometheus.io/docs/practices/histograms/"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N066",
+      "code": "N066",
+      "title": "カウンターの減少は周回だけではない",
+      "section": "監視・パケット解析・証拠の読み方",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "前回よりインタフェースの累積オクテット数が小さい。32ビット周回分を足して速度を求めてよいか。",
+      "answer": "直ちにはよくない。周回だけでなく、再起動・インタフェース再初期化・カウンターリセットを確認する。",
+      "explanation": "差分が連続する同じカウンターから得られたかが前提。sysUpTimeやifCounterDiscontinuityTime等も使い、不連続をまたぐ区間を通常の速度として扱わない。",
+      "caution": "64ビット化は周回対策であり、再起動や観測対象の変更まで防ぐものではない。",
+      "difference": "KA_SNMP_RATE・KA_SNMP_WRAPへ不連続の判定を追加。",
+      "relatedAtomIds": [
+        "KA_SNMP_RATE",
+        "KA_SNMP_WRAP"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 2863 §3.1.6・IF-MIBの定義。",
+      "technicalSources": [
+        {
+          "label": "RFC 2863 §3.1.6・IF-MIBの定義",
+          "url": "https://www.rfc-editor.org/rfc/rfc2863.html#section-3.1.6"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N067",
+      "code": "N067",
+      "title": "障害検知時間と業務復旧時間を分ける",
+      "section": "設計・移行・復旧・可用性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "case",
+      "question": "BFDで300ms以内に障害を検知した。業務も300ms以内に復旧すると説明してよいか。",
+      "answer": "よくない。経路再計算・転送表反映、近隣情報の更新、状態引継ぎ、再接続・認証等にかかる時間も評価する。",
+      "explanation": "「検知→切替→到達性回復→業務回復」の各段階を測る。並列に進む処理もあるので、全タイマーの単純加算ではなく、依存する処理の経路で考える。",
+      "caution": "新規通信の成功と既存通信の継続は別の測定項目。利用者が使う操作を流した試験を含める。",
+      "difference": "KA_BFD・KA_CONVERGE_FIRST・KA_TEST_FAILOVERへ測定区間と復旧段階を追加。",
+      "relatedAtomIds": [
+        "KA_BFD",
+        "KA_CONVERGE_FIRST",
+        "KA_TEST_FAILOVER"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 5880 §6.8.4。業務までの復旧モデルは複数既存原則の独自統合。",
+      "technicalSources": [
+        {
+          "label": "RFC 5880 §6.8.4",
+          "url": "https://www.rfc-editor.org/rfc/rfc5880.html#section-6.8.4"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N068",
+      "code": "N068",
+      "title": "再試行は障害中の負荷を増幅する",
+      "section": "設計・移行・復旧・可用性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "change",
+      "question": "3段のサービスで、各段が1要求につき最大3回試行する。下流障害時の最深部への試行数は最大いくつになり得るか。",
+      "answer": "この条件では3×3×3＝27回になり得る。再試行を重ねると、復旧中の下流へ負荷を集中させるおそれがある。",
+      "explanation": "「最大3回試行」は初回を含む。タイムアウトと全体の期限、試行回数、バックオフとジッタ、重複実行の安全性を合わせて設計する。",
+      "caution": "タイムアウトは処理が未実行だった証明にはならない。結果を返せなかっただけなら、同じ更新の再実行が問題になる。",
+      "difference": "KA_BACKOFF・KA_RETRY_SYNC・KA_FLOW_COUNTを階層的増幅と業務の重複へ展開。",
+      "relatedAtomIds": [
+        "KA_BACKOFF",
+        "KA_RETRY_SYNC",
+        "KA_FLOW_COUNT"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Amazon Builders' Library：Timeouts, retries, and backoff with jitter。3段の数値例は独自作成。",
+      "technicalSources": [
+        {
+          "label": "Amazon Builders' Library：Timeouts, retries, and backoff with jitter",
+          "url": "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N069",
+      "code": "N069",
+      "title": "復旧用の管理経路も依存関係を調べる",
+      "section": "設計・移行・復旧・可用性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "補完",
+      "questionType": "change",
+      "question": "遠隔拠点のFW設定を変える。失敗時は同じFWを通るVPNでログインして戻す予定。この切戻し計画は十分か。",
+      "answer": "十分ではない。変更対象の障害で管理経路も失われるため、独立した管理・コンソール経路や現地対応、条件付き自動復元等を準備する。",
+      "explanation": "管理用VLANだけを分けても、同じ回線・電源・認証基盤に依存すれば同時に使えなくなる。DNS、認証、設定バックアップへの到達性も確認する。",
+      "caution": "緊急アクセスは事前に認可し、保護・記録する。復旧のための仕組みが、壊れる仕組みそのものに依存していないかを見る。",
+      "difference": "KA_ROLLBACK・KA_INDEPENDENT_PATH・KA_POWER_DIVERSITYへ管理面の依存分析を補充。",
+      "relatedAtomIds": [
+        "KA_ROLLBACK",
+        "KA_INDEPENDENT_PATH",
+        "KA_POWER_DIVERSITY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Cisco：Out-of-band best practices。",
+      "technicalSources": [
+        {
+          "label": "Cisco：Out-of-band best practices",
+          "url": "https://www.cisco.com/c/en/us/solutions/collateral/service-provider/out-of-band-best-practices-wp.html"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N070",
+      "code": "N070",
+      "title": "MTU変更の試験は双方向・大小・既存／新規を分ける",
+      "section": "設計・移行・復旧・可用性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "横断",
+      "questionType": "change",
+      "question": "VPN機器の更新後、小さいPingが通ったので移行成功とした。追加する試験は何か。",
+      "answer": "双方向の大きい通信、実際のTCP／UDP業務、PMTU通知、既存接続と新規接続、必要なら障害切替後の経路を確認する。",
+      "explanation": "新しいカプセル化や迂回経路で実効MTUが変わり得る。TCP MSS調整が効く通信と効かない通信を分け、通知がどの区間で失われるかも見る。",
+      "caution": "全組合せを無目的に増やすのでなく、変更したヘッダー・経路・状態に対応する試験を選ぶ。",
+      "difference": "KA_TEST_PURPOSE・KA_TUNNEL_MTU・KA_TEST_FAILOVERを具体的な試験マトリクスへ展開。",
+      "relatedAtomIds": [
+        "KA_TEST_PURPOSE",
+        "KA_TUNNEL_MTU",
+        "KA_TEST_FAILOVER"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "RFC 8201 §3～§5、RFC 1191 §2。試験の組立ては独自整理。",
+      "technicalSources": [
+        {
+          "label": "RFC 8201 §3～§5",
+          "url": "https://www.rfc-editor.org/rfc/rfc8201.html#section-3"
+        },
+        {
+          "label": "RFC 1191 §2",
+          "url": "https://www.rfc-editor.org/rfc/rfc1191.html#section-2"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N071",
+      "code": "N071",
+      "title": "冗長化の可用性計算には独立故障の仮定がある",
+      "section": "設計・移行・復旧・可用性",
+      "kind": "short",
+      "priority": "A",
+      "relationship": "深掘り",
+      "questionType": "case",
+      "question": "稼働率99％の装置を2台にした。両方が止まる確率は必ず0.01％になるか。",
+      "answer": "必ずではない。独立故障かつ1台で機能を満たせる等の仮定が必要。共通電源・共通設定不良等では同時停止確率を単純に掛けられない。",
+      "explanation": "理想的な並列構成では1−(1−0.99)^2＝0.9999、直列で両装置が必要なら0.99^2＝0.9801。切替失敗・保守・残存容量を無視した値である。",
+      "caution": "先に「何が同時に動けばサービス成立か」と故障の相関を決める。装置台数だけでSLAを約束しない。",
+      "difference": "KA_CAP_FAIL・KA_FAIL_DOMAIN・KA_POWER_DIVERSITYへ計算モデルの前提を追加。",
+      "relatedAtomIds": [
+        "KA_CAP_FAIL",
+        "KA_FAIL_DOMAIN",
+        "KA_POWER_DIVERSITY"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "独立事象の確率からの独自計算。IPA NWシラバス §2-2の高可用性・信頼性設計へ対応する学習演習。特定サービスの実稼働率を示すものではない。",
+      "technicalSources": [
+        {
+          "label": "IPA NWシラバス §2-2",
+          "url": "https://www.ipa.go.jp/shiken/syllabus/nq6ept00000014fp-att/syllabus_nw_ver4_1.pdf"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_N072",
+      "code": "N072",
+      "title": "監視失敗時の動作は「除外」と「再起動」で違う",
+      "section": "設計・移行・復旧・可用性",
+      "kind": "short",
+      "priority": "B",
+      "relationship": "補完",
+      "questionType": "change",
+      "question": "共通DBへ接続できないとき、全Webサーバを自動再起動する監視にした。なぜ障害を悪化させることがあるか。",
+      "answer": "再起動してもDB障害は直らず、再接続・初期化を集中させ、復旧を妨げる場合があるから。",
+      "explanation": "生存確認による再起動、受付可能性の確認による振分け除外、起動完了の待機を分ける。外部依存の異常を、再起動で回復する自装置異常と混同しない。",
+      "caution": "正常判定を厳しくすれば必ず安全になるわけではない。全台同時除外や、復帰時の負荷集中も評価する。",
+      "difference": "KA_HEALTH_L7・KA_LB_SPOF・KA_SCALINGへ監視結果に対する自動処置の設計を補充。",
+      "relatedAtomIds": [
+        "KA_HEALTH_L7",
+        "KA_LB_SPOF",
+        "KA_SCALING"
+      ],
+      "relatedPredictionCodes": [],
+      "technicalEvidence": "Kubernetes：Liveness, Readiness, and Startup Probes。コンテナ固有の設定暗記ではなく、監視の目的と処置の違いを一般化した。",
+      "technicalSources": [
+        {
+          "label": "Kubernetes：Liveness, Readiness, and Startup Probes",
+          "url": "https://kubernetes.io/docs/concepts/workloads/pods/probes/"
+        }
+      ],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_EX01",
+      "code": "演習1",
+      "title": "VPN導入後、ページの一部だけ読み込めない",
+      "section": "複数技術を組み合わせる独自演習6題",
+      "kind": "composite",
+      "priority": null,
+      "relationship": "複合演習",
+      "questionType": "case",
+      "question": "条件：名前解決とTCP接続は成功。小さいページは表示できる。大きいファイルは停止する。回線利用率は低い。VPN導入時にICMPを一括遮断した。\n\n最初の仮説と、受信側の処理詰まりとの区別方法を答える。",
+      "answer": "トンネルでの実効MTU減少とPMTU通知遮断を第一候補にする。両端・VPN前後で、送信サイズ、再送、ICMP、広告ウィンドウを比較する。サイズを小さくした試験で改善するか確かめる。Window=0が続くなら受信側処理という別仮説が強くなる。",
+      "explanation": "複数の技術を組み合わせて、症状・仮説・観測・対策のつながりを確認する独自演習です。解答の骨子と自己確認を照合してください。",
+      "caution": "「回線帯域不足」だけで終えていないか。PMTUとフロー制御の観測差を説明できるか。",
+      "difference": "N013～N015、N032、N070。",
+      "relatedAtomIds": [],
+      "relatedPredictionCodes": [
+        "N013",
+        "N015",
+        "N032",
+        "N070",
+        "N014"
+      ],
+      "technicalEvidence": "",
+      "technicalSources": [],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_EX02",
+      "code": "演習2",
+      "title": "DNS切替後、新旧環境へアクセスが分かれる",
+      "section": "複数技術を組み合わせる独自演習6題",
+      "kind": "composite",
+      "priority": null,
+      "relationship": "複合演習",
+      "questionType": "case",
+      "question": "条件：CNAMEは60秒、参照先Aは3,600秒。切替前に一部端末は存在しない新名称を検索した。WebSocketで数時間接続する利用者もいる。\n\n1分後に旧環境を止められない理由を三つ挙げ、確認対象を示す。",
+      "answer": "①参照先Aの正のキャッシュ、②新名称の負のキャッシュ、③DNS再問い合わせを伴わない既存接続が残る。各名前・種別の応答とTTL、利用リゾルバ、旧LBの接続・アクセス記録を調べる。新環境の試験はホスト名とSNIも本番条件へ合わせる。",
+      "explanation": "複数の技術を組み合わせて、症状・仮説・観測・対策のつながりを確認する独自演習です。解答の骨子と自己確認を照合してください。",
+      "caution": "CNAMEのTTLだけで全段の寿命を判断していないか。旧環境に残る通信と、新環境へ行けない通信を分けたか。",
+      "difference": "N019、N020、N024、N028、N030。",
+      "relatedAtomIds": [],
+      "relatedPredictionCodes": [
+        "N019",
+        "N020",
+        "N024",
+        "N028",
+        "N030"
+      ],
+      "technicalEvidence": "",
+      "technicalSources": [],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_EX03",
+      "code": "演習3",
+      "title": "認証基盤停止でも既存端末は通信できる",
+      "section": "複数技術を組み合わせる独自演習6題",
+      "kind": "composite",
+      "priority": null,
+      "relationship": "複合演習",
+      "questionType": "case",
+      "question": "条件：無線はローカル転送。既存端末は通信可能だが、新規接続端末は認証失敗。移動時の鍵情報共有は制御基盤に依存する構成。\n\nデータ経路が正常でも新規接続・移動が失敗し得る理由と、試験項目を示す。",
+      "answer": "既存データ通信は制御基盤を通らなくても、新規の認証や必要な鍵情報の取得は依存している。既存通信、新規接続、再認証、AP間移動を分けて試験し、サプリカント・オーセンティケータ・認証サーバ間のどこまで処理が進むかを追う。",
+      "explanation": "複数の技術を組み合わせて、症状・仮説・観測・対策のつながりを確認する独自演習です。解答の骨子と自己確認を照合してください。",
+      "caution": "「既存通信が継続＝障害なし」としていないか。本文で与えた依存関係の範囲で説明したか。",
+      "difference": "N031、N051、N061、N067、および既存KA_WLC_DATA。",
+      "relatedAtomIds": [
+        "KA_WLC_DATA"
+      ],
+      "relatedPredictionCodes": [
+        "N031",
+        "N051",
+        "N061",
+        "N067"
+      ],
+      "technicalEvidence": "",
+      "technicalSources": [],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_EX04",
+      "code": "演習4",
+      "title": "EVPNの経路は正常、小パケットだけ通る",
+      "section": "複数技術を組み合わせる独自演習6題",
+      "kind": "composite",
+      "priority": null,
+      "relationship": "複合演習",
+      "questionType": "case",
+      "question": "条件：BGP Established。MAC・VNI・RTは設計どおり。VTEPへの小さいPingは成功。大きい内側フレームのみ失敗。更新した中間装置だけMTUが小さい。\n\nなぜ制御は正常でもデータは失敗するか。確認する長さを示す。",
+      "answer": "内側フレームへ外側Ethernet/IP/UDP/VXLAN等が付くため、カプセル化後のサイズが経路MTUを超え得る。機器がMTUをどの層で数えるかを合わせ、パケット長と必要な付加分を区間ごとに比較する。実通信を双方向で試験する。",
+      "explanation": "複数の技術を組み合わせて、症状・仮説・観測・対策のつながりを確認する独自演習です。解答の骨子と自己確認を照合してください。",
+      "caution": "EVPN経路の再配布だけを直そうとしていないか。内側MTUと外側MTUを混同していないか。",
+      "difference": "N008、N015、N055、N057、N070。",
+      "relatedAtomIds": [],
+      "relatedPredictionCodes": [
+        "N008",
+        "N015",
+        "N055",
+        "N057",
+        "N070"
+      ],
+      "technicalEvidence": "",
+      "technicalSources": [],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_EX05",
+      "code": "演習5",
+      "title": "障害切替後、帯域は余るのにFWが詰まる",
+      "section": "複数技術を組み合わせる独自演習6題",
+      "kind": "composite",
+      "priority": null,
+      "relationship": "複合演習",
+      "questionType": "case",
+      "question": "条件：2台で分散していたFWが1台へ切替。残ったFWの回線利用率は40％。更新後のアプリケーションは小パケット・短時間接続が多い。業務の失敗率だけ増えた。\n\n帯域以外で比較すべき資源と、切替試験に不足した点を示す。",
+      "answer": "pps、新規接続/秒、同時接続・NAT状態、検査機能を有効にした処理能力、状態同期とタイムアウトを確認する。正常時と障害後で本番相当のパケットサイズ・接続寿命を再現し、新規・既存通信を分けて測る。",
+      "explanation": "複数の技術を組み合わせて、症状・仮説・観測・対策のつながりを確認する独自演習です。解答の骨子と自己確認を照合してください。",
+      "caution": "公称Gb/sだけで容量十分と結論していないか。故障後に片側へ集中する負荷を含めたか。",
+      "difference": "N018、N043、N063、N067、N071、および既存KA_CAP_FAIL。",
+      "relatedAtomIds": [
+        "KA_CAP_FAIL"
+      ],
+      "relatedPredictionCodes": [
+        "N018",
+        "N043",
+        "N063",
+        "N067",
+        "N071"
+      ],
+      "technicalEvidence": "",
+      "technicalSources": [],
+      "examMapping": "unresearched"
+    },
+    {
+      "id": "PRED_EX06",
+      "code": "演習6",
+      "title": "DB復旧後もサービスが戻らない",
+      "section": "複数技術を組み合わせる独自演習6題",
+      "kind": "composite",
+      "priority": null,
+      "relationship": "複合演習",
+      "questionType": "case",
+      "question": "条件：DB障害中、各サービスが短い間隔で再試行。外部依存の失敗を生存監視に使ったためWebサーバ全台が再起動する。DB復旧直後に接続要求が急増する。\n\n再試行と自動復旧が逆効果になる因果を示し、二つの改善方針を答える。",
+      "answer": "再試行の階層的増幅と再起動後の初期化・接続が集中し、復旧直後のDBを再び過負荷にする。①全体期限・試行回数・バックオフ・ジッタで負荷を制御し、②受付可否と再起動要否を分け、起動・復帰を段階化する。更新要求では重複実行対策も要る。",
+      "explanation": "複数の技術を組み合わせて、症状・仮説・観測・対策のつながりを確認する独自演習です。解答の骨子と自己確認を照合してください。",
+      "caution": "正常判定を緩めるだけの提案になっていないか。処理が失敗した場合と、結果だけ受信できなかった場合を分けたか。",
+      "difference": "N045、N065、N068、N072。",
+      "relatedAtomIds": [],
+      "relatedPredictionCodes": [
+        "N045",
+        "N065",
+        "N068",
+        "N072"
+      ],
+      "technicalEvidence": "",
+      "technicalSources": [],
+      "examMapping": "unresearched"
+    }
+  ]
+}
