@@ -2,7 +2,9 @@
 
 ネットワークスペシャリスト試験の午後対策を、スマートフォンで短問反復するWebアプリです。問題を見て頭の中で答え、解答・解説・思考トリガーを確認します。
 
-非公開リポジトリ：[0125hnaka/NWordBook](https://github.com/0125hnaka/NWordBook)。通常のpushで自動検証されます。Webサイトの外部公開は別途承認が必要です。
+公開アプリ：[NWordBook](https://0125hnaka.github.io/NWordBook/)。スマートフォンのブラウザーから利用できます。
+
+公開リポジトリ：[0125hnaka/NWordBook](https://github.com/0125hnaka/NWordBook)。2026年10月17日にユーザーの承認を受けて公開しました。通常のpushで自動検証されます。今後のWebサイト更新の公開も、別途承認後に手動で行います。
 
 このフォルダーは単独で動くプロジェクトです。隣の `nw-afternoon-flashcards` は引継ぎ資料として保持しており、実行時には参照しません。
 
@@ -119,7 +121,7 @@ npmを利用できる環境では `npm ci`、`npm run check` でも同じ検証�
 
 `ci.yml` はpush・Pull Requestで教材検証、32件のドメイン／保存／教材編集／用語表記テスト、ビルドを行います。`pages.yml` は手動実行かつ公開確認がtrueで、mainブランチの場合だけ検証・配信します。Pull Requestでは公開しません。トークン等の追加Secretは不要です。リポジトリ側でPagesの使用やActions権限が許可されている必要があります。
 
-リポジトリは非公開で運用します。外部公開は未実施です。GitHub Actionsの設定は [GitHub公式ドキュメント](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) に基づいています。
+2026年10月17日にリポジトリを公開へ変更し、GitHub Pagesで初回公開しました。[公開処理の実行結果](https://github.com/0125hnaka/NWordBook/actions/runs/39026320934)は成功しています。GitHub Actionsの設定は [GitHub公式ドキュメント](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) に基づいています。
 
 ## ファイル構成
 
