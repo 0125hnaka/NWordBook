@@ -152,7 +152,19 @@ export function selectQuestions(candidates, count, random = Math.random) {
 }
 
 export function createSession(cards, filter, requestedCount) {
-  return { queue: cards.map(card => card.id), index: 0, completed: 0, hidden: 0, ratings: {}, filter: { ...filter }, requestedCount };
+  return { queue: cards.map(card => card.id), index: 0, reviewIndex: null, cardViews: {}, completed: 0, hidden: 0, ratings: {}, filter: { ...filter }, requestedCount };
+}
+
+export const sessionViewIndex = session => session.reviewIndex ?? session.index;
+
+/** Viewing an earlier card never moves the learning frontier. */
+export function reviewSession(session, index, hiddenIds = new Set()) {
+  if (!Number.isInteger(index) || index < 0 || index > session.index || index >= session.queue.length || hiddenIds.has(session.queue[index])) return session;
+  return { ...session, reviewIndex: index === session.index ? null : index };
+}
+
+export function returnToCurrent(session) {
+  return { ...session, reviewIndex: null };
 }
 
 export function recordConfidence(state, questionId, confidence, now = new Date().toISOString()) {
@@ -182,6 +194,9 @@ export function selectStudyQuestions(candidates, count, mode, random = Math.rand
 
 export function advanceSession(session, action, hiddenIds = new Set()) {
   if (session.index >= session.queue.length) return session;
+  if (session.reviewIndex != null) {
+    return { ...session, reviewIndex: null, completed: session.completed - (action === 'hide' ? 1 : 0), hidden: session.hidden + (action === 'hide' ? 1 : 0) };
+  }
   const next = { ...session, index: session.index + 1, completed: session.completed + (action === 'next' ? 1 : 0), hidden: session.hidden + (action === 'hide' ? 1 : 0) };
   while (next.index < next.queue.length && hiddenIds.has(next.queue[next.index])) { next.index++; next.hidden++; }
   return next;

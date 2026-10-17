@@ -1,4 +1,4 @@
-import { createCatalog, eligibleCards, selectStudyQuestions, createSession, advanceSession, recordConfidence, parseState, importState, safeUrl, sourceLabel, MAX_IMPORT_BYTES } from './domain.js';
+import { createCatalog, eligibleCards, selectStudyQuestions, createSession, advanceSession, sessionViewIndex, reviewSession, returnToCurrent, recordConfidence, parseState, importState, safeUrl, sourceLabel, MAX_IMPORT_BYTES } from './domain.js';
 import { createStateStore } from './storage.js';
 
 // Only escaped text enters templates. Source content is never interpreted as HTML.
@@ -51,14 +51,42 @@ function sources(card) {
   return `<details class="sources"><summary>出典と根拠を確認する <span>${card.sourceRefs.length}件</span></summary><p class="field-note">${card.editorialAdded ? '既存知識から編集した追加用語カードです。以下は元の知識の根拠であり、このカード自体のIPA出題を確認したものではありません。' : '独自編集の短問です。'}出題趣旨は公式の解答例PDFに含まれます。</p>${card.sourceRefs.map(source => `<article class="source-item"><strong>${esc(sourceLabel(source))}</strong><p>${esc(relationLabels[source.relationship] || source.relationship)} · ${source.countedForFrequency ? '直接出題回数に算入' : '直接出題回数には含めない'}${source.classification ? ` · 原問の分類 ${esc(source.classification)}` : ''}</p>${source.note ? `<p>${esc(source.note)}</p>` : ''}<div class="inline-links">${[['officialProblemUrl', '公式問題'], ['officialAnswerUrl', '公式解答例・出題趣旨'], ['officialCommentaryUrl', '公式採点講評']].map(([key, label]) => { const url = safeUrl(source[key]); return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>` : ''; }).join('')}</div></article>`).join('')}<p class="field-note">知識の確認済み頻度：原設問 ${card.atom.frequency.subQuestionCount}件 / 大問 ${card.atom.frequency.majorQuestionCount}件 / 試験回 ${card.atom.frequency.examSessionCount}回。カード枚数とは異なります。</p></details>`;
 }
 
+function rememberStudyView() {
+  const id = session.queue[sessionViewIndex(session)];
+  const details = [...document.querySelectorAll('.question-card details')].map(d => ({ name: d.className, open: d.open }));
+  session = { ...session, cardViews: { ...session.cardViews, [id]: { revealed, details } } };
+}
+
+function restoreStudyView(rethink = false) {
+  const saved = session.cardViews[session.queue[sessionViewIndex(session)]];
+  revealed = !rethink && saved?.revealed === true;
+  render(true);
+  if (revealed) for (const detail of saved.details) document.querySelector(`.question-card details.${CSS.escape(detail.name)}`)?.toggleAttribute('open', detail.open);
+}
+
+function showSessionQuestion(index) {
+  if (!session || view !== 'study' || index === sessionViewIndex(session)) return;
+  rememberStudyView();
+  const next = reviewSession(session, index, hiddenIds());
+  if (next === session) return;
+  session = next;
+  restoreStudyView(session.reviewIndex != null);
+}
+
 function study() {
-  const card = cardsById.get(session.queue[session.index]);
-  const position = session.index + 1;
+  const viewedIndex = sessionViewIndex(session);
+  const card = cardsById.get(session.queue[viewedIndex]);
+  const position = viewedIndex + 1;
+  const visited = session.queue.map((id, index) => ({ id, index })).filter(q => q.index <= session.index && !hiddenIds().has(q.id));
+  const previous = visited.filter(q => q.index < viewedIndex).at(-1);
+  const reviewing = session.reviewIndex != null;
   const isDiagram = /[┌┐└┘│─]|\+[-+]{2,}|\[.+\].*(?:--|→|->).+\[/.test(card.question);
   return `<div class="study-top"><div><p class="eyebrow">SHORT STUDY</p><h1>ひとつずつ、理解する。</h1></div><span class="progress-label">${position}<span> / ${session.queue.length} 問</span></span></div><progress value="${session.index}" max="${session.queue.length}" aria-label="学習の進捗"></progress>
+    <nav class="session-navigation" aria-label="学習中の問題移動">${button('previous-question', '← 前の問題', 'button secondary', previous ? `data-index="${previous.index}"` : 'disabled')}<label for="session-position">問題を選ぶ<select id="session-position">${visited.map(q => `<option value="${q.index}" ${q.index === viewedIndex ? 'selected' : ''}>${q.index + 1}問目${q.index === session.index ? '（学習中）' : ''}</option>`).join('')}</select></label>${reviewing ? button('return-current', `元の${session.index + 1}問目に戻る`, 'button secondary') : ''}</nav>
+    ${reviewing ? `<p class="review-notice" role="status">${position}問目を見直しています。学習の進捗は${session.index + 1}問目のまま保持しています。</p>` : ''}
     <section class="panel question-card"><div class="card-meta"><span class="category-pill">${esc(card.group.label)}</span><span>${esc(typeLabels[card.questionType])}${card.questionType === 'term' ? ` · ${card.termDirection === 'meaning' ? '用語 → 意味' : '説明 → 用語'}` : ''} · 難易度 ${card.difficulty}/3${card.level ? ` · Level ${card.level}` : ''}</span></div>${!card.atom.verified ? '<p class="unverified-label">IPA設問対応未確認の技術補充</p>' : ''}<p class="question-number">QUESTION ${String(position).padStart(2, '0')}</p><h2 class="question-text ${isDiagram ? 'diagram' : ''}">${esc(card.question)}</h2><div class="answer-guide"><strong>答えること</strong><p>${esc(card.answerFocus)}</p></div>
     ${revealed ? `<section class="answer" aria-label="解答と解説"><p class="eyebrow">ANSWER</p><h3>${esc(card.answer)}</h3>${confidenceControls(card)}<details class="explanation-details" ${card.questionType === 'term' ? '' : 'open'}><summary>解説と、午後につながる考え方</summary><p class="explanation">${esc(card.explanation)}</p><div class="trigger"><span aria-hidden="true">↳</span><div><strong>午後につながる思考トリガー</strong><p>${esc(card.thinkingTrigger || card.atom.thinkingTrigger)}</p></div></div></details><details class="more-details"><summary>間違えやすい点・学習の目安</summary><p class="explanation">${esc(card.atom.commonTrap)}</p><p>重要度 <span class="stars">${'★'.repeat(card.importance)}</span>（${card.importance}/3） · 優先度 ${esc(card.priority)} · カードの分類 ${esc(card.classification)}</p><p class="field-note">K＝知識、R＝読解、KR＝両方。重要度・優先度・難易度・Levelは別の指標です。</p></details> ${sources(card)}</section>` : `<div class="thinking-hint"><span aria-hidden="true">◎</span> ${card.questionType === 'term' ? '用語の名前や意味を、短く思い出してみましょう。' : '「答えること」を確認し、頭の中で答えてみましょう。'}</div>`}
-    <div class="card-actions">${button('hide', 'この問題を非表示', 'button quiet')}${button(revealed ? 'next' : 'reveal', revealed ? `${position === session.queue.length ? '結果を見る' : '次の問題へ'} <span aria-hidden="true">→</span>` : '答えを見る', 'button primary')}</div><p class="field-note">非表示はこのカードだけに適用され、一覧からいつでも戻せます。</p></section>`;
+    <div class="card-actions">${button('hide', 'この問題を非表示', 'button quiet')}${button(revealed ? 'next' : 'reveal', revealed ? `${reviewing ? `元の${session.index + 1}問目に戻る` : position === session.queue.length ? '結果を見る' : '次の問題へ'} <span aria-hidden="true">→</span>` : '答えを見る', 'button primary')}</div><p class="field-note">非表示はこのカードだけに適用され、一覧からいつでも戻せます。</p></section>`;
 }
 
 function result() {
@@ -130,10 +158,15 @@ app.addEventListener('click', event => {
   if (action.startsWith('preset-')) { filter.preset = action.slice(7); render(); return; }
   if (action.startsWith('mode-')) { filter.mode = action.slice(5); save({ ...state(), settings: { ...state().settings, studyMode: filter.mode } }); render(); return; }
   if (action.startsWith('count-')) { save({ ...state(), settings: { ...state().settings, questionCount: action.slice(6) === 'all' ? 'all' : Number(action.slice(6)) } }); render(); return; }
+  if (action === 'previous-question') { showSessionQuestion(Number(target.dataset.index)); return; }
+  if (action === 'return-current') {
+    if (!session || view !== 'study') return;
+    rememberStudyView(); session = returnToCurrent(session); restoreStudyView(); return;
+  }
   if (action === 'reveal') { revealed = true; render(); document.querySelector('.answer h3').setAttribute('tabindex', '-1'); document.querySelector('.answer h3').focus({ preventScroll: true }); return; }
   if (action.startsWith('rate-')) {
     if (!session || view !== 'study' || !revealed) return;
-    const confidence = action.slice(5), id = session.queue[session.index];
+    const confidence = action.slice(5), id = session.queue[sessionViewIndex(session)];
     save(recordConfidence(state(), id, confidence));
     session = { ...session, ratings: { ...session.ratings, [id]: confidence } };
     const detailStates = [...document.querySelectorAll('.question-card details')].map(d => ({ name: d.className, open: d.open }));
@@ -143,12 +176,15 @@ app.addEventListener('click', event => {
   }
   if (action === 'hide' || action === 'next') {
     if (!session || view !== 'study') return;
+    const wasReviewing = session.reviewIndex != null;
+    rememberStudyView();
     if (action === 'hide') {
-      const id = session.queue[session.index];
+      const id = session.queue[sessionViewIndex(session)];
       save({ ...state(), questionStates: { ...state().questionStates, [id]: { ...state().questionStates[id], hidden: true } } });
       const ratings = { ...session.ratings }; delete ratings[id]; session = { ...session, ratings };
     }
     session = advanceSession(session, action, hiddenIds());
+    if (wasReviewing) { restoreStudyView(); return; }
     revealed = false;
     if (session.index >= session.queue.length) view = 'result';
     render(true);
@@ -180,6 +216,7 @@ app.addEventListener('click', event => {
 app.addEventListener('change', async event => {
   const input = event.target;
   message = '';
+  if (input.id === 'session-position') { showSessionQuestion(Number(input.value)); return; }
   if (input.id === 'group') { filter.groupId = input.value; render(); }
   if (input.id === 'term-direction') { filter.direction = input.value; save({ ...state(), settings: { ...state().settings, termDirection: filter.direction } }); render(); }
   if (input.id === 'weak-only') { filter.review = input.checked ? 'weak' : 'all'; render(); }
