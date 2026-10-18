@@ -196,3 +196,21 @@
   color:var(--muted);
   white-space:nowrap
 }
+.question-number{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px
+}
+.question-code{
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:normal;
+  font-weight:400
+}
+.question-code code{
+  color:var(--ink);
+  font-size:12px;
+  user-select:all
+}

@@ -36,6 +36,7 @@ node scripts/serve.mjs
 - 通常の開始ボタン下の「予想問題を解く」から、追加調査資料の短問72問・複合演習6問を別枠で学習（通常出題には混在しない）
 - 有効分野の全分野ランダム／分野指定、5・10・20問・すべて（既定10問）
 - 「すべて」は現在の学び方・分野・復習・非表示設定に合う全カードを重複なく出題。設定の保存・バックアップにも対応
+- 全問題に質問用の固定番号（通常Q001～Q952、予想P01～P78）を小さく表示。詳しくは [docs/QUESTION_CODES.md](docs/QUESTION_CODES.md) を参照
 - 学び方ボタンと画面上部に、現在の分野・向き・非表示・復習条件に合う問題数を表示。予想問題の種類別件数も動的に表示
 - 学び方は「用語を覚える」「仕組み・判断」「両方を学ぶ」から選択。初期値は用語学習
 - 用語カードは「用語→意味・役割」「説明→用語名」の両方向に対応
@@ -126,7 +127,7 @@ npmを利用できる環境では `npm ci`、`npm run check` でも同じ検証�
 3. **Actions → Deploy to GitHub Pages → Run workflow** で `main` を選択し、公開承認済みの確認項目をチェックして実行します。通常のpushでは公開されません。更新時も変更依頼の継続承認に基づいて手動実行します。
 4. deployジョブの公開URLをスマートフォンで開きます。
 
-`ci.yml` はpush・Pull Requestで教材検証、48件のドメイン／保存／教材編集／用語表記／予想問題テスト、ビルドを行います。`pages.yml` は手動実行かつ公開確認がtrueで、mainブランチの場合だけ検証・配信します。Pull Requestでは公開しません。トークン等の追加Secretは不要です。リポジトリ側でPagesの使用やActions権限が許可されている必要があります。
+`ci.yml` はpush・Pull Requestで教材検証、52件のドメイン／保存／教材編集／用語表記／予想問題テスト、ビルドを行います。`pages.yml` は手動実行かつ公開確認がtrueで、mainブランチの場合だけ検証・配信します。Pull Requestでは公開しません。トークン等の追加Secretは不要です。リポジトリ側でPagesの使用やActions権限が許可されている必要があります。
 
 2026年10月17日にリポジトリを公開へ変更し、GitHub Pagesで初回公開しました。[公開処理の実行結果](https://github.com/0125hnaka/NWordBook/actions/runs/39026320934)は成功しています。GitHub Actionsの設定は [GitHub公式ドキュメント](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) に基づいています。
 
@@ -180,4 +181,4 @@ PWA・オフライン再起動・時間指定・検索・お気に入り・ロ�
 
 ## アプリ内AI質問機能の準備
 
-アプリ内でAIの回答を読む方式を希望されています。API・本人用の認証・サーバーの準備が必要なため、まだ接続していません。必要な準備と設計は [docs/AI_QUESTION_SETUP.md](docs/AI_QUESTION_SETUP.md) を参照してください。APIキーは公開サイトやGitHubへ保存しません。
+AI質問機能はユーザーが検討中のため、方針決定の指示があるまで保留しています。まだ接続していません。必要な準備と設計は [docs/AI_QUESTION_SETUP.md](docs/AI_QUESTION_SETUP.md) を参照してください。APIキーは公開サイトやGitHubへ保存しません。
