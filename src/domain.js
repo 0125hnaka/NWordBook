@@ -135,6 +135,10 @@ export function eligibleCards(catalog, state, filter) {
   return catalog.cards.filter(card => isEligible(card, state, filter, catalog.first100Set));
 }
 
+export function studyModeCounts(catalog, state, filter) {
+  return Object.fromEntries(studyModes.map(mode => [mode, eligibleCards(catalog, state, { ...filter, mode }).length]));
+}
+
 export function selectQuestions(candidates, count, random = Math.random) {
   const pool = [...new Map(candidates.map(card => [card.id, card])).values()];
   if (count === 'all') count = pool.length;

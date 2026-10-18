@@ -1,6 +1,6 @@
-import { createCatalog, eligibleCards, selectStudyQuestions, createSession, advanceSession, sessionViewIndex, reviewSession, returnToCurrent, recordConfidence, parseState, importState, safeUrl, sourceLabel, MAX_IMPORT_BYTES } from './domain.js';
+import { createCatalog, eligibleCards, studyModeCounts, selectStudyQuestions, createSession, advanceSession, sessionViewIndex, reviewSession, returnToCurrent, recordConfidence, parseState, importState, safeUrl, sourceLabel, MAX_IMPORT_BYTES } from './domain.js';
 import { createStateStore } from './storage.js';
-import { eligiblePredictionCards } from './predictions.js';
+import { eligiblePredictionCards, predictionScopeCounts } from './predictions.js';
 
 // Only escaped text enters templates. Source content is never interpreted as HTML.
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -25,17 +25,19 @@ function shell(content) {
   const inStudy = view === 'study';
   return `<header class="header"><div class="header-inner"><a class="brand" href="#home" aria-label="NWordBook ホーム"><span class="brand-mark" aria-hidden="true">N<span>↗</span></span><span>NWordBook<small>NETWORK SPECIALIST</small></span></a><span class="edition">午後対策 / SHORT STUDY</span></div></header>
     <div class="app-layout"><aside class="sidebar"><p class="nav-caption">MY STUDY</p><nav aria-label="メインメニュー">${inStudy ? button('interrupt', '← 中断して戻る', 'nav-item') : ['home', 'hidden', 'settings'].map((page, i) => `<a class="nav-item ${view === page ? 'active' : ''}" href="#${page}" ${view === page ? 'aria-current="page"' : ''}><span aria-hidden="true">${['▤', '◫', '⚙'][i]}</span>${['学習をはじめる', '非表示の問題', '学習設定'][i]}${page === 'hidden' ? `<span class="nav-count">${hiddenIds().size}</span>` : ''}</a>`).join('')}</nav><div class="sidebar-note"><span class="tiny-label">ONE QUESTION AT A TIME</span><p>知識をつなぐ。<br>判断する力にする。</p><span>用語から、構成変更の理由まで。</span></div><p class="local-label"><span class="status-dot"></span>${store.persistent ? 'このブラウザーに保存' : '一時保存モード'}</p></aside>
-    <main id="main" tabindex="-1">${store.notice ? `<div class="notice warning" role="status">${esc(store.notice)}</div>` : ''}<div id="feedback" role="status" aria-live="polite">${message ? `<div class="notice">${esc(message)}</div>` : ''}</div>${content}<footer>${filter.collection === 'predictions' ? '独自の予想教材です。IPA出題対応は未調査で、出題を保証するものではありません。' : 'IPAの過去問から一般化した独自編集の短問です。IPAの公式・監修教材ではありません。'}<br><span>教材 ${esc(filter.collection === 'predictions' ? catalog.predictions.version : catalog.manifest.datasetVersion)} · NWordBook v0.3.0</span></footer></main></div>`;
+    <main id="main" tabindex="-1">${store.notice ? `<div class="notice warning" role="status">${esc(store.notice)}</div>` : ''}<div id="feedback" role="status" aria-live="polite">${message ? `<div class="notice">${esc(message)}</div>` : ''}</div>${content}<footer>${filter.collection === 'predictions' ? '独自の予想教材です。IPA出題対応は未調査で、出題を保証するものではありません。' : 'IPAの過去問から一般化した独自編集の短問です。IPAの公式・監修教材ではありません。'}<br><span>教材 ${esc(filter.collection === 'predictions' ? catalog.predictions.version : catalog.manifest.datasetVersion)} · NWordBook v0.3.1</span></footer></main></div>`;
 }
 
 function home() {
   const available = candidates();
   const enabledGroups = catalog.profile.groups.filter(g => state().settings.enabledGroupIds.includes(g.id));
   const count = state().settings.questionCount;
-  return `<section class="panel study-setup"><div class="section-title"><h1 class="setup-heading">今日の学習</h1></div>
-    <fieldset><legend>学び方</legend><div class="mode-options">${Object.entries(modeLabels).map(([mode, label]) => button(`mode-${mode}`, label, filter.mode === mode ? 'segment selected' : 'segment', `aria-pressed="${filter.mode === mode}"`)).join('')}</div><p class="field-note">${filter.mode === 'terms' ? '単語帳のように、用語の名前と意味・役割を覚えます。' : filter.mode === 'thinking' ? '構成や条件を読み、動作・理由・対処を答える練習です。' : (count === 'all' ? '条件に合う用語問題と考える問題をすべて出します。' : '候補があれば、用語問題と考える問題をおよそ半分ずつ出します。')}</p></fieldset>
+  const counts = studyModeCounts(catalog, state(), filter);
+  const reviewCount = eligibleCards(catalog, state(), { ...filter, review: 'weak' }).length;
+  return `<section class="panel study-setup"><div class="section-title"><h1 class="setup-heading">今日の学習</h1><span class="candidate-count" role="status">対象 ${available.length}問</span></div>
+    <fieldset><legend>学び方</legend><div class="mode-options">${Object.entries(modeLabels).map(([mode, label]) => button(`mode-${mode}`, `<span>${label}</span><small>${counts[mode]}問</small>`, filter.mode === mode ? 'segment selected' : 'segment', `aria-pressed="${filter.mode === mode}"`)).join('')}</div><p class="field-note">${filter.mode === 'terms' ? '単語帳のように、用語の名前と意味・役割を覚えます。' : filter.mode === 'thinking' ? '構成や条件を読み、動作・理由・対処を答える練習です。' : (count === 'all' ? '条件に合う用語問題と考える問題をすべて出します。' : '候補があれば、用語問題と考える問題をおよそ半分ずつ出します。')}</p></fieldset>
     ${filter.mode === 'terms' ? `<label class="field-label" for="term-direction">用語カードの向き</label><select id="term-direction"><option value="both" ${filter.direction === 'both' ? 'selected' : ''}>両方を混ぜる</option><option value="meaning" ${filter.direction === 'meaning' ? 'selected' : ''}>用語 → 意味・役割</option><option value="name" ${filter.direction === 'name' ? 'selected' : ''}>説明 → 用語名</option></select>` : ''}
-    <label class="review-choice"><input id="weak-only" type="checkbox" ${filter.review === 'weak' ? 'checked' : ''}><span>「わからない」「知らない」だけを復習</span></label>
+    <label class="review-choice"><input id="weak-only" type="checkbox" ${filter.review === 'weak' ? 'checked' : ''}><span>「わからない」「知らない」だけを復習（${reviewCount}問）</span></label>
     <fieldset><legend>学習範囲</legend><div class="segmented">${button('preset-all', '有効な分野すべて', filter.preset === 'all' ? 'segment selected' : 'segment', `aria-pressed="${filter.preset === 'all'}"`)}${button('preset-first100', 'まず覚える100', filter.preset === 'first100' ? 'segment selected' : 'segment', `aria-pressed="${filter.preset === 'first100'}"`)}</div><p class="field-note">${filter.preset === 'first100' ? '優先度Aの100知識を対象に、現在の分野・非表示設定で絞り込みます。100問固定ではありません。' : '設定で有効にした分野だけが出題されます。'}</p></fieldset>
     <label class="field-label" for="group">分野</label><select id="group"><option value="all">全分野ランダム</option>${enabledGroups.map(g => `<option value="${esc(g.id)}" ${filter.groupId === g.id ? 'selected' : ''}>${esc(g.label)}</option>`).join('')}</select>
     <fieldset><legend>問題数</legend><div class="count-options">${[5, 10, 20, 'all'].map(n => button(`count-${n}`, `<strong>${n === 'all' ? 'すべて' : n}</strong>${n === 'all' ? '' : '<span>問</span>'}${n === 10 ? '<small>おすすめ</small>' : ''}`, n === count ? 'count-option selected' : 'count-option', `aria-pressed="${n === count}"`)).join('')}</div></fieldset>
@@ -47,9 +49,11 @@ function home() {
 
 function predictions() {
   const available = candidates(), count = requestedCount();
+  const counts = predictionScopeCounts(catalog, state(), filter);
+  const reviewCount = eligiblePredictionCards(catalog, state(), { ...filter, review: 'weak' }).length;
   return `<section class="panel study-setup"><h1 class="setup-heading">予想問題</h1><p class="field-note">過去問由来の学習を終えた方向けの追加演習です。短問72問と複合演習6問を収録しています。IPA出題対応は未調査で、未出題を確認済みという意味ではありません。</p>
-    <label class="field-label" for="prediction-scope">予想問題の種類</label><select id="prediction-scope">${[['all', '短問と複合演習（78問）'], ['short', '短問（72問）'], ['composite', '複合演習（6問）']].map(([value, label]) => `<option value="${value}" ${filter.predictionScope === value ? 'selected' : ''}>${label}</option>`).join('')}</select>
-    <label class="review-choice"><input id="weak-only" type="checkbox" ${filter.review === 'weak' ? 'checked' : ''}><span>「わからない」「知らない」だけを復習</span></label>
+    <label class="field-label" for="prediction-scope">予想問題の種類</label><select id="prediction-scope">${[['all', `短問と複合演習（${counts.all}問）`], ['short', `短問（${counts.short}問）`], ['composite', `複合演習（${counts.composite}問）`]].map(([value, label]) => `<option value="${value}" ${filter.predictionScope === value ? 'selected' : ''}>${label}</option>`).join('')}</select>
+    <label class="review-choice"><input id="weak-only" type="checkbox" ${filter.review === 'weak' ? 'checked' : ''}><span>「わからない」「知らない」だけを復習（${reviewCount}問）</span></label>
     <fieldset><legend>問題数</legend><div class="count-options">${[5, 10, 20, 'all'].map(n => button(`count-${n}`, `<strong>${n === 'all' ? 'すべて' : n}</strong>${n === 'all' ? '' : '<span>問</span>'}`, n === count ? 'count-option selected' : 'count-option', `aria-pressed="${n === count}"`)).join('')}</div></fieldset>
     <div class="session-summary"><span>今回の出題</span><strong>${count === 'all' ? available.length : Math.min(count, available.length)}問 <span>/ 候補 ${available.length}問</span></strong></div>
     ${!available.length ? '<p class="shortage" role="status">条件に合う予想問題がありません。復習のチェックを外すか、問題の種類・非表示設定を見直してください。</p>' : ''}

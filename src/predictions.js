@@ -33,3 +33,7 @@ export function eligiblePredictionCards(catalog, state, filter = {}) {
     && (!filter.predictionScope || filter.predictionScope === 'all' || c.kind === filter.predictionScope)
     && (filter.review !== 'weak' || ['unclear', 'unknown'].includes(state.questionStates[c.id]?.confidence)));
 }
+
+export function predictionScopeCounts(catalog, state, filter = {}) {
+  return Object.fromEntries(['all', 'short', 'composite'].map(predictionScope => [predictionScope, eligiblePredictionCards(catalog, state, { ...filter, predictionScope }).length]));
+}
