@@ -20,7 +20,7 @@ function showMessage(text) { document.querySelector('#exam-message').textContent
 function pauseTimer() { if (practice && paper) practice.pause(practiceId(paper, question)); }
 function renderPractice() {
   const explanation = explanationFor(explanations, paper, question);
-  return `<section class="panel practice-panel" aria-label="計測と自己採点"><div class="practice-timer"><span class="field-note">この大問の学習時間</span><output id="exam-timer" aria-label="経過時間">00:00:00</output><div><button id="timer-toggle" class="button secondary">開始</button> <button id="timer-reset" class="button quiet">時間をリセット</button></div></div><div class="practice-grading"><button id="toggle-grading" class="button secondary" aria-pressed="${grading}">${grading ? '自己採点を閉じる' : '自己採点を始める'}</button><p id="grade-summary" role="status"></p><p class="field-note">独自の目安です。各回答項目を均等に換算（○100%・△50%・×0%）。未採点は暫定0点、複数欄のある項目はまとめて評価します。公式配点ではありません。</p></div><div>${explanation ? `<a id="open-explanation" class="button primary" href="./exam-explanation.html${selectionHash()}">解説を読む</a>` : '<p class="field-note">解説は2025年度の5大問から公開しています。</p>'}</div></section>`;
+  return `<section class="panel practice-panel" aria-label="計測と自己採点"><div class="practice-timer"><span class="field-note">この大問の学習時間</span><output id="exam-timer" aria-label="経過時間">00:00:00</output><div><button id="timer-toggle" class="button secondary">開始</button> <button id="timer-reset" class="button quiet">時間をリセット</button></div></div><div class="practice-grading"><button id="toggle-grading" class="button secondary" aria-pressed="${grading}">${grading ? '自己採点を閉じる' : '自己採点を始める'}</button><p id="grade-summary" role="status"></p><p class="field-note">独自の目安です。各回答項目を均等に換算（○100%・△50%・×0%）。未採点は暫定0点、複数欄のある項目はまとめて評価します。公式配点ではありません。</p></div><div>${explanation ? `<a id="open-explanation" class="button primary" href="./exam-explanation.html${selectionHash()}">解説を読む</a>` : '<p class="field-note">解説を読み込めませんでした。再読み込みしてください。</p>'}</div></section>`;
 }
 function updatePractice() {
   if (!practice || !document.querySelector('#exam-timer')) return;
@@ -213,7 +213,7 @@ try {
   practice = createPracticeStore(catalog); practice.pauseOthers(null);
   const explanationResponse = await fetch(new URL('../study-data/explanations.json', import.meta.url));
   if (!explanationResponse.ok) throw new Error('解説を取得できません。再読み込みしてください。');
-  explanations = validateExplanations(await explanationResponse.json(), catalog);
+  explanations = validateExplanations(await explanationResponse.json(), catalog, { complete: true });
   ({ paper, question } = parseExamSelection(location.hash, catalog));
   history.replaceState(null, '', selectionHash()); render();
 } catch (error) { main.innerHTML = `<h1>午後試験を読み込めませんでした</h1><p>${esc(error.message)}</p><a href="./exam.html">再読み込みする</a>`; }

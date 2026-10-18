@@ -5,13 +5,13 @@ import { root } from './data.mjs';
 import { validate } from './validate.mjs';
 import { validateExamCatalog } from '../src/exams.js';
 import { verifyExamAssets } from './exam-assets.mjs';
-import { validateExplanations } from '../src/exam-explanations.js';
+import { loadAllExplanations } from './explanation-data.mjs';
 
 export async function build() {
   const data = await validate();
   const exams = validateExamCatalog(JSON.parse(await readFile(join(root, 'data/exams/catalog.json'), 'utf8')));
   const pdfs = await verifyExamAssets(exams);
-  const explanations = validateExplanations(JSON.parse(await readFile(join(root, 'data/exams/explanations-2025.json'), 'utf8')), exams);
+  const explanations = await loadAllExplanations(exams);
   await mkdir(join(root, 'dist/src'), { recursive: true });
   await mkdir(join(root, 'dist/study-data'), { recursive: true });
   const paths = ['index.html', 'exam.html', 'exam-explanation.html', 'favicon.svg', 'src/app.js', 'src/domain.js', 'src/content.js', 'src/terminology.js', 'src/storage.js', 'src/predictions.js', 'src/question-codes.js', 'src/exams.js', 'src/exam-pdfs.js', 'src/exam-app.js', 'src/exam-practice.js', 'src/exam-grade-ui.js', 'src/exam-explanations.js', 'src/exam-explanation-app.js', 'src/pdf-viewer.js', 'src/styles.css', 'src/learning.css', 'src/exam.css'];

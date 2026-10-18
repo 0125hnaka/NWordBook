@@ -17,7 +17,7 @@ function render() {
   const backUrl = `./exam.html#${paper.id}-${question.number}`;
   document.querySelector('#back-to-exam').href = backUrl;
   document.title = `${examLabel(paper, question)}の解説 | NWordBook`;
-  if (!entry) { main.innerHTML = `<h1>この大問の解説は準備中です</h1><p>2025年度の5大問を公開しています。</p><a class="button secondary" href="${backUrl}">回答画面へ戻る</a>`; return; }
+  if (!entry) { main.innerHTML = `<h1>この大問の解説を読み込めませんでした</h1><p>再読み込みしてから、もう一度お試しください。</p><a class="button secondary" href="${backUrl}">回答画面へ戻る</a>`; return; }
   const problemUrl = examPdfUrl(paper.documents.find(d => d.kind === 'problem'));
   const answerUrl = examPdfUrl(paper.documents.find(d => d.kind === 'answer'));
   main.innerHTML = `<div class="exam-heading"><div><p class="eyebrow">EXPLANATION</p><h1>${esc(entry.title)}</h1><p>${esc(examLabel(paper, question))}</p></div><a class="button secondary" href="${backUrl}">回答画面へ戻る</a></div>
@@ -49,7 +49,7 @@ try {
   const responses = await Promise.all([fetch(new URL('../study-data/exams.json', import.meta.url)), fetch(new URL('../study-data/explanations.json', import.meta.url))]);
   if (responses.some(r => !r.ok)) throw new Error('解説を取得できません。再読み込みしてください。');
   catalog = validateExamCatalog(await responses[0].json());
-  data = validateExplanations(await responses[1].json(), catalog);
+  data = validateExplanations(await responses[1].json(), catalog, { complete: true });
   answers = createExamStore(catalog); practice = createPracticeStore(catalog); practice.pauseOthers(null);
   ({ paper, question } = parseExamSelection(location.hash, catalog));
   history.replaceState(null, '', `#${paper.id}-${question.number}`); render();
