@@ -1,6 +1,6 @@
 {
   "name": "nwordbook",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "type": "module",
   "description": "ネットワークスペシャリスト午後対策の単語帳",

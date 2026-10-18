@@ -2,6 +2,11 @@ export const EXAM_STORAGE_KEY = 'nwordbook:exam-answers:v1';
 export const MAX_ANSWER_LENGTH = 10000;
 export const MAX_EXAM_BACKUP_BYTES = 5 * 1024 * 1024;
 export const periodLabel = period => period === 1 ? '午後Ⅰ' : '午後Ⅱ';
+export function examYearLabel(year) {
+  const era = year >= 2019 ? '令和' : '平成';
+  const eraYear = year >= 2019 ? year - 2018 : year - 1988;
+  return `${era}${eraYear === 1 ? '元' : eraYear}年度`;
+}
 export const examLabel = (paper, question) => `${paper.year}年度 ${paper.session} ネットワークスペシャリスト ${periodLabel(paper.period)} 問${question.number}`;
 
 export function validateExamCatalog(data) {

@@ -1,4 +1,4 @@
-import { validateExamCatalog, periodLabel, examLabel, answerKeys, createExamStore, formatExamAnswers, parseExamSelection, MAX_ANSWER_LENGTH } from './exams.js';
+import { validateExamCatalog, periodLabel, examYearLabel, examLabel, answerKeys, createExamStore, formatExamAnswers, parseExamSelection, MAX_ANSWER_LENGTH } from './exams.js';
 import { mountPdfViewer, closePdfViewer } from './pdf-viewer.js';
 import { createPdfRepository, examPdfUrl } from './exam-pdfs.js';
 import { createPracticeStore, practiceId, elapsedTime, formatDuration, parseExamBackup, exportExamBackup, MAX_PRACTICE_BACKUP_BYTES } from './exam-practice.js';
@@ -13,6 +13,8 @@ const pdfRepository = createPdfRepository();
 let pdfRequest = 0, activeBlobUrl = null, savingAll = false, stopSaving = false, cacheMessage = '';
 const docFor = kind => paper.documents.find(d => d.kind === kind);
 const selectionHash = () => `#${paper.id}-${question.number}`;
+const closedAnswerGroups = new Set();
+const answerGroupKey = group => `${paper.id}-${question.number}:${group}`;
 
 function showMessage(text) { document.querySelector('#exam-message').textContent = text; }
 function pauseTimer() { if (practice && paper) practice.pause(practiceId(paper, question)); }
@@ -31,20 +33,21 @@ function updatePractice() {
 function render() {
   const years = [...new Set(catalog.papers.map(p => p.year))];
   main.innerHTML = `<div class="exam-heading"><div><p class="eyebrow">PAST PAPERS</p><h1>午後試験を解く</h1><p class="field-note">大問をひとつ選び、問題PDFを見ながら回答します。</p></div><a href="#answer-summary" class="button secondary">回答まとめへ ↓</a></div>
-  <section class="panel exam-setup" aria-label="問題の選択"><div class="exam-selectors"><label for="exam-year">年度<select id="exam-year">${years.map(y => `<option value="${y}" ${y === paper.year ? 'selected' : ''}>${y}年度 ${catalog.papers.find(p => p.year === y).session}</option>`).join('')}</select></label><label for="exam-period">時間区分<select id="exam-period">${[1, 2].map(p => `<option value="${p}" ${p === paper.period ? 'selected' : ''}>${periodLabel(p)}</option>`).join('')}</select></label><label for="exam-question">大問<select id="exam-question">${paper.questions.map(q => `<option value="${q.number}" ${q.number === question.number ? 'selected' : ''}>問${q.number}</option>`).join('')}</select></label></div>
+  <section class="panel exam-setup" aria-label="問題の選択"><div class="exam-selectors"><label for="exam-year">年度<select id="exam-year">${years.map(y => `<option value="${y}" ${y === paper.year ? 'selected' : ''}>${examYearLabel(y)} ${catalog.papers.find(p => p.year === y).session}</option>`).join('')}</select></label><label for="exam-period">時間区分<select id="exam-period">${[1, 2].map(p => `<option value="${p}" ${p === paper.period ? 'selected' : ''}>${periodLabel(p)}</option>`).join('')}</select></label><label for="exam-question">大問<select id="exam-question">${paper.questions.map(q => `<option value="${q.number}" ${q.number === question.number ? 'selected' : ''}>問${q.number}</option>`).join('')}</select></label></div>
   <p class="field-note pdf-auto-note">選んだ年度のPDFを自動で開きます。保存済みのPDFは、この端末から読み込みます。</p>
   <details class="exam-help"><summary>PDFの保存・使い方</summary><p>2009〜2019年・2021〜2025年の16回分（問題32冊・解答例32冊・採点講評32冊）をアプリに保存しています。初回はアプリの配信先から取得し、以後はブラウザー内の保存を優先します。IPAへ表示の都度取得しに行くことはありません。</p><div class="pdf-download-actions"><button id="save-all-pdfs" class="button secondary" ${savingAll ? 'disabled' : ''}>すべてのPDFをこの端末に保存（約122MB）</button><button id="stop-save-pdfs" class="button quiet" ${savingAll ? '' : 'hidden'}>保存を中断</button></div><p id="cache-progress" role="status">${esc(cacheMessage)}</p><p><a href="https://github.com/0125hnaka/NWordBook/tree/main/past-exams" target="_blank" rel="noopener noreferrer">公開PDFフォルダー ↗</a> · <a href="https://github.com/0125hnaka/NWordBook/archive/refs/heads/main.zip">PDFを含む一式をダウンロード</a></p><p>iPhone・iPadでも同じページから利用できます。Safariは「ファイル」アプリ内のフォルダーを自動では読めないため、ブラウザー内の保存を利用します。ブラウザーデータの削除・空き容量によって保存が消えた場合は、再取得します。</p><p>図・表・経路への回答は、機器名や行名を付けて文字で記入してください。字数・選択数などは問題PDFの指示に従ってください。自動採点は行いません。</p><a href="${esc(catalog.indexUrl)}" target="_blank" rel="noopener noreferrer">IPA公式の過去問題一覧 ↗</a></details></section>
   <p id="exam-message" role="status" aria-live="polite"></p>${renderPractice()}
   <div class="exam-workspace"><section class="panel pdf-panel" aria-label="問題資料"><div class="pdf-toolbar"><h2>資料</h2><label for="pdf-kind" class="sr-only">表示する資料</label><select id="pdf-kind">${Object.entries(kindLabels).map(([kind, label]) => `<option value="${kind}" ${selectedKind === kind ? 'selected' : ''}>${label}</option>`).join('')}</select></div><div id="pdf-view"></div></section>
   <section class="panel exam-answer-panel" aria-label="回答欄"><div class="section-title"><h2>${periodLabel(paper.period)} 問${question.number}</h2><span id="answer-progress" class="field-note"></span></div><p class="field-note">${paper.year}年度 ${esc(paper.session)} · <span id="save-status" role="status"></span></p><p id="save-warning" class="notice warning" ${store.notice ? '' : 'hidden'}>${esc(store.notice)}</p>
-  ${[...new Set(question.fields.map(f => f.group))].map(group => `<fieldset class="exam-fieldset"><legend>${esc(group)}</legend>${question.fields.filter(f => f.group === group).map((field, index) => {
+  <p class="field-note">設問の見出しを押すと、解答欄を開閉できます。</p>
+  ${[...new Set(question.fields.map(f => f.group))].map(group => `<details class="exam-answer-group" data-answer-group="${esc(group)}" data-fold-key="${esc(answerGroupKey(group))}" ${closedAnswerGroups.has(answerGroupKey(group)) ? '' : 'open'}><summary><span class="answer-group-title">${esc(group)}</span><span class="field-note" data-group-progress="${esc(group)}"></span><span class="answer-group-action"><span class="group-open">閉じる</span><span class="group-closed">開く</span></span></summary><fieldset class="exam-fieldset"><legend class="sr-only">${esc(group)}</legend>${question.fields.filter(f => f.group === group).map((field, index) => {
     const parts = field.parts?.length ? field.parts.map((label, i) => ({ label, key: `${field.id}#${i + 1}` })) : [{ label: '', key: field.id }];
     const detail = explanationFor(explanations, paper, question)?.fields.find(f => f.id === field.id);
     return `<div class="answer-unit">${field.invalid ? '<p class="invalid-question">IPAが設問の不備を公表しています。参考用の回答欄です。</p>' : ''}${parts.map((part, i) => {
       const id = `answer-${group.slice(2)}-${index}-${i}`;
       return `<label for="${id}">${esc(field.label.replace(group, '').trim() || group)}${part.label ? `［${esc(part.label)}］` : ''}</label><textarea id="${id}" data-answer-key="${esc(part.key)}" rows="${field.label.includes('空欄') ? 1 : 3}" maxlength="${MAX_ANSWER_LENGTH}" spellcheck="false" aria-describedby="${id}-length">${esc(store.answers[part.key] || '')}</textarea><span id="${id}-length" class="answer-length">${[...(store.answers[part.key] || '')].length}字</span>`;
     }).join('')}<div class="field-grading" ${grading ? '' : 'hidden'}>${detail ? `<details class="grading-answer"><summary>解答例・採点の観点を見る</summary><p>${esc(detail.answer)}</p><p class="field-note">${esc(detail.grading)}</p></details>` : '<p class="field-note">公式解答例のPDFと照合して自己採点してください。</p>'}<div data-grade-box="${esc(field.id)}"></div></div></div>`;
-  }).join('')}</fieldset>`).join('')}
+  }).join('')}</fieldset></details>`).join('')}
   </section></div>
   <section class="panel answer-summary" id="answer-summary"><div class="section-title"><h2>自分の回答まとめ</h2><button id="copy-answers" class="button primary">回答をコピー</button></div><p class="field-note">現在の大問の全回答です。設問番号を含めてコピーできます。</p><label class="sr-only" for="answers-text">設問番号付きの回答まとめ</label><textarea id="answers-text" readonly rows="14"></textarea><p id="copy-status" role="status" aria-live="polite"></p><div class="backup-actions"><button id="backup-answers" class="button secondary">全年度の回答をバックアップ</button><label class="button quiet file-label">回答バックアップを読み込む<input id="restore-answers" type="file" accept=".json,application/json"></label></div><p class="field-note">回答・採点・時間はこのブラウザーへ自動保存します。バックアップには3つとも含みます。別端末への移行やブラウザーデータ削除に備えて保存してください。PDFは含みません。</p><div id="import-preview"></div></section>
   <footer>出典：${esc(examLabel(paper, question))}（IPA）。問題PDFは原本をそのまま表示し、回答欄は独自に作成しています。<br>公式解答例は選択したときだけ表示します。</footer>`;
@@ -107,6 +110,10 @@ function updateAnswers() {
   document.querySelector('#answers-text').value = formatExamAnswers(paper, question, store.answers);
   const keys = answerKeys(question);
   document.querySelector('#answer-progress').textContent = `${keys.filter(k => store.answers[k]?.trim()).length} / ${keys.length}欄を記入`;
+  for (const summary of main.querySelectorAll('[data-group-progress]')) {
+    const groupKeys = answerKeys({ fields: question.fields.filter(field => field.group === summary.dataset.groupProgress) });
+    summary.textContent = `${groupKeys.filter(key => store.answers[key]?.trim()).length} / ${groupKeys.length}欄を記入`;
+  }
   const warning = document.querySelector('#save-warning'); warning.textContent = [store.notice, practice.notice].filter(Boolean).join(' '); warning.hidden = !warning.textContent;
   document.querySelector('#save-status').textContent = store.persistent && practice.persistent ? '回答・採点・時間をこのブラウザーに自動保存' : '一時保存（バックアップ推奨）';
 }
@@ -119,6 +126,13 @@ function select(nextPaper, nextQuestion) {
   pauseTimer(); paper = nextPaper; question = nextQuestion; selectedKind = 'problem'; grading = false;
   history.replaceState(null, '', selectionHash()); render();
 }
+
+main.addEventListener('toggle', event => {
+  const group = event.target;
+  if (!group.matches('.exam-answer-group')) return;
+  if (group.open) closedAnswerGroups.delete(group.dataset.foldKey);
+  else closedAnswerGroups.add(group.dataset.foldKey);
+}, true);
 
 main.addEventListener('input', event => {
   const input = event.target;
