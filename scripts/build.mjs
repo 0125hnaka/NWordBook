@@ -4,13 +4,15 @@ import { join } from 'node:path';
 import { root } from './data.mjs';
 import { validate } from './validate.mjs';
 import { validateExamCatalog } from '../src/exams.js';
+import { verifyExamAssets } from './exam-assets.mjs';
 
 export async function build() {
   const data = await validate();
   const exams = validateExamCatalog(JSON.parse(await readFile(join(root, 'data/exams/catalog.json'), 'utf8')));
+  const pdfs = await verifyExamAssets(exams);
   await mkdir(join(root, 'dist/src'), { recursive: true });
   await mkdir(join(root, 'dist/study-data'), { recursive: true });
-  const paths = ['index.html', 'exam.html', 'favicon.svg', 'src/app.js', 'src/domain.js', 'src/content.js', 'src/terminology.js', 'src/storage.js', 'src/predictions.js', 'src/question-codes.js', 'src/exams.js', 'src/exam-app.js', 'src/pdf-viewer.js', 'src/styles.css', 'src/learning.css', 'src/exam.css'];
+  const paths = ['index.html', 'exam.html', 'favicon.svg', 'src/app.js', 'src/domain.js', 'src/content.js', 'src/terminology.js', 'src/storage.js', 'src/predictions.js', 'src/question-codes.js', 'src/exams.js', 'src/exam-pdfs.js', 'src/exam-app.js', 'src/pdf-viewer.js', 'src/styles.css', 'src/learning.css', 'src/exam.css'];
   const sources = await Promise.all(paths.map(path => readFile(join(root, path), 'utf8')));
   const revision = createHash('sha256').update(sources.join('\n')).update(JSON.stringify(data)).update(JSON.stringify(exams)).digest('hex').slice(0, 16);
   for (const [index, path] of paths.entries()) {
@@ -27,6 +29,9 @@ export async function build() {
   await writeFile(join(root, 'dist/study-data/catalog.json'), JSON.stringify(data));
   await writeFile(join(root, 'dist/study-data/exams.json'), JSON.stringify(exams));
   await cp(join(root, 'vendor'), join(root, 'dist/vendor'), { recursive: true });
+  await mkdir(join(root, 'dist/past-exams'), { recursive: true });
+  for (const doc of pdfs.documents) await cp(join(root, 'past-exams', doc.filename), join(root, 'dist/past-exams', doc.filename));
+  await writeFile(join(root, 'dist/past-exams/manifest.json'), JSON.stringify(pdfs, null, 2) + '\n');
   await writeFile(join(root, 'dist/.nojekyll'), '');
   console.log('ビルド OK → dist/');
 }
