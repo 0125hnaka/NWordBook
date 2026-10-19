@@ -110,6 +110,20 @@
 .explanation-details {
   margin-bottom: 18px;
 }
+.question-context {
+  margin: 22px 0 20px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f7f8f3;
+  overflow-wrap: anywhere;
+}
+.question-context > strong { font-size: 13px; color: var(--green); }
+.question-context > p { margin: 10px 0 0; font-size: 15px; line-height: 1.95; white-space: pre-wrap; }
+@media (max-width: 430px) {
+  .question-context { padding: 15px; }
+  .question-context > p { font-size: 14px; }
+}
 @media (max-width: 430px) {
   .mode-options {
     grid-template-columns: 1fr;

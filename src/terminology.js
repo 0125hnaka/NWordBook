@@ -46,7 +46,7 @@ export function createIpaNormalizer(glossary) {
 /** Explicit fields ensure source URLs, stable IDs and verification flags stay untouched. */
 export function normalizeStudyFields(value, normalize) {
   const result = { ...value };
-  for (const key of ['question', 'answer', 'answerFocus', 'explanation', 'thinkingTrigger', 'term', 'subcategory', 'oneLineRule', 'mechanism', 'commonTrap', 'whyItMatters', 'priorityBasis', 'commentaryInsight']) {
+  for (const key of ['question', 'context', 'answer', 'answerFocus', 'explanation', 'thinkingTrigger', 'term', 'subcategory', 'oneLineRule', 'mechanism', 'commonTrap', 'whyItMatters', 'priorityBasis', 'commentaryInsight']) {
     if (typeof result[key] === 'string') result[key] = normalize(result[key]);
   }
   for (const key of ['tags', 'patterns']) if (Array.isArray(result[key])) result[key] = result[key].map(normalize);

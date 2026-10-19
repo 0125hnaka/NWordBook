@@ -9,7 +9,7 @@ if (!card) {
 } else {
   console.log(JSON.stringify({
     code: card.shortCode, questionId: card.id, collection: card.prediction ? '予想問題' : '通常問題',
-    category: card.group.label, question: card.question, answer: card.answer,
+    category: card.group.label, context: card.context, question: card.question, answer: card.answer,
     explanation: card.explanation, detailSections: card.detailSections, caution: card.atom.commonTrap,
     answerFocus: card.answerFocus, thinkingTrigger: card.thinkingTrigger || card.atom.thinkingTrigger,
     sourceRefs: card.sourceRefs, technicalSources: card.technicalSources,
