@@ -6,10 +6,11 @@ import { validate } from './validate.mjs';
 import { validateExamCatalog } from '../src/exams.js';
 import { verifyExamAssets } from './exam-assets.mjs';
 import { loadAllExplanations } from './explanation-data.mjs';
+import { loadExamAnswerLimits } from './exam-answer-limits.mjs';
 
 export async function build() {
   const data = await validate();
-  const exams = validateExamCatalog(JSON.parse(await readFile(join(root, 'data/exams/catalog.json'), 'utf8')));
+  const exams = await loadExamAnswerLimits(validateExamCatalog(JSON.parse(await readFile(join(root, 'data/exams/catalog.json'), 'utf8'))));
   const pdfs = await verifyExamAssets(exams);
   const explanations = await loadAllExplanations(exams);
   await mkdir(join(root, 'dist/src'), { recursive: true });

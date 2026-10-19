@@ -32,7 +32,21 @@ export function validateExamCatalog(data) {
       }
     }
   }
+  if (data.answerLimits !== undefined) {
+    const valid = new Set(data.papers.flatMap(p => p.questions.flatMap(answerKeys)));
+    if (!data.answerLimits || typeof data.answerLimits !== 'object' || Array.isArray(data.answerLimits)) throw new Error('文字数制限の形式が不正です。');
+    for (const [key, rule] of Object.entries(data.answerLimits)) {
+      if (!valid.has(key) || !rule || (rule.max !== null && (!Number.isInteger(rule.max) || rule.max < 1 || rule.max > MAX_ANSWER_LENGTH)) || (rule.note !== undefined && (typeof rule.note !== 'string' || !rule.note || rule.note.length > 100)) || (rule.max === null && !rule.note)) throw new Error('文字数制限の回答欄・値が不正です。');
+    }
+  }
   return data;
+}
+
+export function answerLengthStatus(value, rule) {
+  const count = [...value].length;
+  const exceeded = rule?.max != null && count > rule.max;
+  const text = rule?.max != null ? `${count}/${rule.max}字${exceeded ? '（上限超過）' : ''}` : `${count}字（${rule?.note || '字数指定なし'}）`;
+  return { text, exceeded };
 }
 
 export function answerKeys(question) {

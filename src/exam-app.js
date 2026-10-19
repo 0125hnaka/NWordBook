@@ -1,4 +1,4 @@
-import { validateExamCatalog, periodLabel, examYearLabel, examLabel, answerKeys, createExamStore, formatExamAnswers, parseExamSelection, MAX_ANSWER_LENGTH } from './exams.js';
+import { validateExamCatalog, periodLabel, examYearLabel, examLabel, answerKeys, createExamStore, formatExamAnswers, parseExamSelection, answerLengthStatus, MAX_ANSWER_LENGTH } from './exams.js';
 import { mountPdfViewer, closePdfViewer } from './pdf-viewer.js';
 import { createPdfRepository, examPdfUrl } from './exam-pdfs.js';
 import { createPracticeStore, practiceId, elapsedTime, formatDuration, parseExamBackup, exportExamBackup, MAX_PRACTICE_BACKUP_BYTES } from './exam-practice.js';
@@ -51,7 +51,8 @@ function render() {
     const detail = explanationFor(explanations, paper, question)?.fields.find(f => f.id === field.id);
     return `<div class="answer-unit">${field.invalid ? '<p class="invalid-question">IPAが設問の不備を公表しています。参考用の回答欄です。</p>' : ''}${parts.map((part, i) => {
       const id = `answer-${group.slice(2)}-${index}-${i}`;
-      return `<label for="${id}">${esc(field.label.replace(group, '').trim() || group)}${part.label ? `［${esc(part.label)}］` : ''}</label><textarea id="${id}" data-answer-key="${esc(part.key)}" rows="${field.label.includes('空欄') ? 1 : 3}" maxlength="${MAX_ANSWER_LENGTH}" spellcheck="false" aria-describedby="${id}-length">${esc(store.answers[part.key] || '')}</textarea><span id="${id}-length" class="answer-length">${[...(store.answers[part.key] || '')].length}字</span>`;
+      const value = store.answers[part.key] || '', length = answerLengthStatus(value, catalog.answerLimits?.[part.key]);
+      return `<label for="${id}">${esc(field.label.replace(group, '').trim() || group)}${part.label ? `［${esc(part.label)}］` : ''}</label><textarea id="${id}" data-answer-key="${esc(part.key)}" rows="${field.label.includes('空欄') ? 1 : 3}" maxlength="${MAX_ANSWER_LENGTH}" spellcheck="false" aria-invalid="${length.exceeded}" aria-describedby="${id}-length">${esc(value)}</textarea><span id="${id}-length" class="answer-length${length.exceeded ? ' is-over-limit' : ''}">${esc(length.text)}</span>`;
     }).join('')}<div class="field-grading" ${grading ? '' : 'hidden'}>${detail ? `<details class="grading-answer"><summary>解答例・採点の観点を見る</summary><p>${esc(detail.answer)}</p><p class="field-note">${esc(detail.grading)}</p></details>` : '<p class="field-note">公式解答例のPDFと照合して自己採点してください。</p>'}<div data-grade-box="${esc(field.id)}"></div></div></div>`;
   }).join('')}</fieldset></details>`).join('')}
   </section></div>
@@ -125,6 +126,14 @@ function updateAnswers() {
   document.querySelector('#save-status').textContent = store.persistent && practice.persistent ? '回答・採点・時間をこのブラウザーに自動保存' : '一時保存（バックアップ推奨）';
 }
 
+function updateAnswerLength(input) {
+  const status = answerLengthStatus(input.value, catalog.answerLimits?.[input.dataset.answerKey]);
+  const output = document.getElementById(`${input.id}-length`);
+  output.textContent = status.text;
+  output.classList.toggle('is-over-limit', status.exceeded);
+  input.setAttribute('aria-invalid', String(status.exceeded));
+}
+
 function syncSavedWork() {
   if (!paper || !store || !practice || !document.querySelector('#answers-text')) return;
   store.refresh(); practice.refresh();
@@ -135,7 +144,7 @@ function syncSavedWork() {
       const start = input.selectionStart, end = input.selectionEnd;
       input.value = value;
       if (focused) input.setSelectionRange(Math.min(start, value.length), Math.min(end, value.length));
-      document.getElementById(`${input.id}-length`).textContent = `${[...value].length}字`;
+      updateAnswerLength(input);
     }
   }
   updateAnswers(); updatePractice();
@@ -161,7 +170,7 @@ main.addEventListener('input', event => {
   const input = event.target;
   if (!input.dataset.answerKey) return;
   store.set(input.dataset.answerKey, input.value);
-  document.getElementById(`${input.id}-length`).textContent = `${[...input.value].length}字`;
+  updateAnswerLength(input);
   document.querySelector('#copy-status').textContent = '';
   updateAnswers(); updatePractice();
 });
