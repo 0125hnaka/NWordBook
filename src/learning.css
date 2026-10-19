@@ -214,3 +214,12 @@
   font-size:12px;
   user-select:all
 }
+
+/* Long explanations remain visible below the original short explanation. */
+.detailed-explanation{margin:24px 0 28px;padding:22px;background:#f6f7f1;border:1px solid var(--line);border-radius:12px;overflow-wrap:anywhere}
+.detailed-explanation>h4{font-size:18px;margin:0 0 8px;color:var(--green)}
+.detailed-explanation .detail-intro{font-size:13px;line-height:1.8;margin:0;color:var(--muted)}
+.detail-section{margin-top:22px}
+.detail-section h5{font-size:15px;margin:0 0 8px}
+.detail-section p{font-size:15px;line-height:2;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:430px){.detailed-explanation{padding:16px}.detail-section p{font-size:14px;line-height:1.95}}

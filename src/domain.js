@@ -2,6 +2,7 @@
 import { buildLearningQuestions, validateEditorial } from './content.js';
 import { createIpaNormalizer, normalizeStudyFields, validateTerminology } from './terminology.js';
 import { validatePredictions, createPredictionCards } from './predictions.js';
+import { validateDetailedExplanations, addDetailedExplanations } from './detailed-explanations.js';
 import { assignQuestionCodes } from './question-codes.js';
 export const studyModes = ['terms', 'thinking', 'mixed'];
 export const termDirections = ['both', 'meaning', 'name'];
@@ -58,6 +59,7 @@ export function validateDataset(data) {
   validateEditorial(data);
   validateTerminology(data.terminology);
   validatePredictions(data.predictions, atomIds);
+  validateDetailedExplanations(data);
   return data;
 }
 
@@ -69,7 +71,7 @@ export function createCatalog(data) {
   const atomMap = new Map(atoms.map(a => [a.id, a]));
   const groupMap = new Map(profile.groups.flatMap(g => g.knowledgeAtomIds.map(id => [id, g])));
   const normalCards = buildLearningQuestions(data).map(q => ({ ...normalizeStudyFields(q, normalize), atom: atomMap.get(q.knowledgeAtomId), group: groupMap.get(q.knowledgeAtomId) }));
-  const codedCards = assignQuestionCodes([...normalCards, ...createPredictionCards(data.predictions, normalize)], data.questionCodes);
+  const codedCards = addDetailedExplanations(assignQuestionCodes([...normalCards, ...createPredictionCards(data.predictions, normalize)], data.questionCodes), data.details, normalize);
   return {
     ...data,
     atoms,
