@@ -3,14 +3,19 @@ import { createPracticeStore, exportExamBackup } from './exam-practice.js';
 import { validateExplanations, explanationFor, EXPLANATION_TAGS } from './exam-explanations.js';
 import { updateGradeBoxes, scoreText, escapeHtml as esc } from './exam-grade-ui.js';
 import { examPdfUrl } from './exam-pdfs.js';
+import { isExamStorageChange } from './exam-storage.js';
+import { installExamSkipLink } from './exam-navigation.js';
 
 const main = document.querySelector('#main');
+installExamSkipLink(document);
 let catalog, data, paper, question, answers, practice;
+function ownAnswer(field) { return answerKeys({ fields: [field] }).map((key, part) => `${field.parts?.[part] ? `［${field.parts[part]}］` : ''}${answers.answers[key]?.trim() || '未回答'}`).join('\n'); }
 function renderGrades() {
   document.querySelector('#explanation-score').textContent = scoreText(question, answers.answers, practice.state.marks);
   updateGradeBoxes(main, question, answers.answers, practice.state.marks);
   const warning = document.querySelector('#explanation-warning');
-  warning.innerHTML = practice.notice ? `${esc(practice.notice)} <button id="backup-explanation" class="button secondary">回答・採点・時間をバックアップ</button>` : ''; warning.hidden = !practice.notice;
+  const notice = [answers.notice, practice.notice].filter(Boolean).join(' ');
+  warning.innerHTML = notice ? `${esc(notice)} <button id="backup-explanation" class="button secondary">回答・採点・時間をバックアップ</button>` : ''; warning.hidden = !notice;
 }
 function render() {
   const entry = explanationFor(data, paper, question);
@@ -26,8 +31,8 @@ function render() {
     const detail = entry.fields.find(f => f.id === field.id);
     const groupStart = i === 0 || question.fields[i - 1].group !== field.group;
     const groupIndex = [...new Set(question.fields.map(f => f.group))].indexOf(field.group);
-    const own = answerKeys({ fields: [field] }).map((key, part) => `${field.parts?.[part] ? `［${field.parts[part]}］` : ''}${answers.answers[key]?.trim() || '未回答'}`).join('\n');
-    return `${groupStart ? `<h2 id="explanation-group-${groupIndex}" class="explanation-group">${esc(field.group)}</h2>` : ''}<article class="panel explanation-card"><div class="section-title"><h3>${esc(field.label)}</h3><div class="explanation-tags">${detail.tags.map(tag => `<span class="explanation-tag tag-${tag}" title="${EXPLANATION_TAGS[tag].label}">${EXPLANATION_TAGS[tag].mark}<span class="sr-only">：${EXPLANATION_TAGS[tag].label}</span></span>`).join('')}</div></div><div class="explanation-answer"><h4>解答例</h4><p>${esc(detail.answer)}</p></div><details class="own-answer"><summary>自分の回答</summary><p>${esc(own)}</p></details><p class="grading-point"><strong>自己採点の観点</strong> ${esc(detail.grading)}</p><div data-grade-box="${esc(field.id)}"></div><h4><span class="explanation-tag tag-thinking">思</span> 解答までの道筋</h4><ol>${detail.steps.map(step => `<li>${esc(step)}</li>`).join('')}</ol><h4><span class="explanation-tag tag-knowledge">知</span> 必要な知識</h4><p>${esc(detail.knowledge)}</p><h4><span class="explanation-tag tag-passage">本</span> 本文の注目ポイント</h4><p>${esc(detail.focus.text)}</p><p class="field-note">問題冊子：${detail.focus.pages.map(page => `<a href="${esc(problemUrl)}#page=${page}" target="_blank" rel="noopener">PDF ${page}ページ ↗</a>`).join(' / ')}</p><h4><span class="explanation-tag tag-pattern">定</span> 解くときの定石</h4><p>${esc(detail.pattern)}</p></article>`;
+    const own = ownAnswer(field);
+    return `${groupStart ? `<h2 id="explanation-group-${groupIndex}" class="explanation-group">${esc(field.group)}</h2>` : ''}<article class="panel explanation-card"><div class="section-title"><h3>${esc(field.label)}</h3><div class="explanation-tags">${detail.tags.map(tag => `<span class="explanation-tag tag-${tag}" title="${EXPLANATION_TAGS[tag].label}">${EXPLANATION_TAGS[tag].mark}<span class="sr-only">：${EXPLANATION_TAGS[tag].label}</span></span>`).join('')}</div></div><div class="explanation-answer"><h4>解答例</h4><p>${esc(detail.answer)}</p></div><details class="own-answer" data-own-answer="${esc(field.id)}"><summary>自分の回答</summary><p>${esc(own)}</p></details><p class="grading-point"><strong>自己採点の観点</strong> ${esc(detail.grading)}</p><div data-grade-box="${esc(field.id)}"></div><h4><span class="explanation-tag tag-thinking">思</span> 解答までの道筋</h4><ol>${detail.steps.map(step => `<li>${esc(step)}</li>`).join('')}</ol><h4><span class="explanation-tag tag-knowledge">知</span> 必要な知識</h4><p>${esc(detail.knowledge)}</p><h4><span class="explanation-tag tag-passage">本</span> 本文の注目ポイント</h4><p>${esc(detail.focus.text)}</p><p class="field-note">問題冊子：${detail.focus.pages.map(page => `<a href="${esc(problemUrl)}#page=${page}" target="_blank" rel="noopener">PDF ${page}ページ ↗</a>`).join(' / ')}</p><h4><span class="explanation-tag tag-pattern">定</span> 解くときの定石</h4><p>${esc(detail.pattern)}</p></article>`;
   }).join('')}<footer>出典：IPA ${esc(examLabel(paper, question))} 問題・解答例・採点講評。<br>解説更新日：${esc(data.reviewedOn)} · <a href="${backUrl}">回答画面へ戻る</a></footer>`;
   renderGrades();
 }
@@ -42,9 +47,21 @@ main.addEventListener('click', event => {
   const button = event.target.closest('[data-grade]');
   if (button) { practice.mark(button.dataset.field, button.dataset.grade === 'clear' ? null : button.dataset.grade, answers.answers); renderGrades(); }
 });
+function syncSavedWork() {
+  if (!question || !answers || !practice || !document.querySelector('#explanation-score')) return;
+  answers.refresh(); practice.refresh();
+  for (const box of main.querySelectorAll('[data-own-answer]')) {
+    const field = question.fields.find(f => f.id === box.dataset.ownAnswer);
+    box.querySelector('p').textContent = ownAnswer(field);
+  }
+  renderGrades();
+}
+window.addEventListener('storage', event => { if (isExamStorageChange(event.key)) syncSavedWork(); });
+window.addEventListener('focus', syncSavedWork);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) syncSavedWork(); });
 window.addEventListener('hashchange', () => { if (catalog && /^#\d{4}-[12]-[123]$/.test(location.hash)) { ({ paper, question } = parseExamSelection(location.hash, catalog)); render(); } });
 window.addEventListener('pageshow', event => { if (event.persisted && catalog) { answers = createExamStore(catalog); practice = createPracticeStore(catalog); practice.pauseOthers(null); render(); } });
-window.addEventListener('beforeunload', event => { if (practice && !practice.persistent) { event.preventDefault(); event.returnValue = ''; } });
+window.addEventListener('beforeunload', event => { if (practice && (!practice.persistent || !answers.persistent)) { event.preventDefault(); event.returnValue = ''; } });
 try {
   const responses = await Promise.all([fetch(new URL('../study-data/exams.json', import.meta.url)), fetch(new URL('../study-data/explanations.json', import.meta.url))]);
   if (responses.some(r => !r.ok)) throw new Error('解説を取得できません。再読み込みしてください。');

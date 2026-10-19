@@ -1,4 +1,5 @@
 import { answerKeys, parseExamAnswers } from './exams.js';
+import { createExamEntries } from './exam-storage.js';
 
 export const PRACTICE_STORAGE_KEY = 'nwordbook:exam-practice:v1';
 export const GRADE_LABELS = { correct: '○', partial: '△', incorrect: '×' };
@@ -59,45 +60,91 @@ export function exportExamBackup(answers, practice, now = Date.now()) {
 }
 
 export function createPracticeStore(catalog, getStorage = () => globalThis.localStorage) {
-  let state = { schemaVersion: 1, marks: {}, timers: {} }, persistent = true, notice = '', storage;
-  try { storage = getStorage(); const raw = storage.getItem(PRACTICE_STORAGE_KEY); if (raw !== null) state = parsePracticeState(raw, catalog); }
-  catch { persistent = false; notice = '採点・タイマーを読み込めないため一時保存に切り替えました。元の保存内容は上書きしません。閉じる前に回答バックアップを保存してください。'; }
   const fields = new Map(catalog.papers.flatMap(p => p.questions.flatMap(q => q.fields.map(f => [f.id, f]))));
   const ids = new Set(catalog.papers.flatMap(p => p.questions.map(q => practiceId(p, q))));
-  function persist() {
-    if (persistent) try { storage.setItem(PRACTICE_STORAGE_KEY, JSON.stringify(state)); }
-    catch { persistent = false; notice = '採点・タイマーを端末に保存できません。閉じる前に回答バックアップを保存してください。'; }
+  const valid = new Set(['owner', ...[...fields.keys()].map(id => `mark/${id}`), ...[...ids].map(id => `timer/${id}`)]);
+  const session = globalThis.crypto.randomUUID();
+  let running = null;
+  const unpack = values => ({ schemaVersion: 1,
+    marks: Object.fromEntries(Object.entries(values).filter(([id]) => id.startsWith('mark/')).map(([id, value]) => [id.slice(5), value])),
+    timers: Object.fromEntries(Object.entries(values).filter(([id]) => id.startsWith('timer/')).map(([id, value]) => [id.slice(6), value])),
+  });
+  const entries = createExamEntries({ key: PRACTICE_STORAGE_KEY, valid, getStorage,
+    decodeLegacy(raw) {
+      const legacy = parsePracticeState(raw, catalog);
+      return Object.fromEntries([
+        ...Object.entries(legacy.marks).map(([id, mark]) => [`mark/${id}`, mark]),
+        // Legacy running clocks have no reliable crash checkpoint. Keep their
+        // accumulated duration, never add time since the old page disappeared.
+        ...Object.entries(legacy.timers).map(([id, t]) => [`timer/${id}`, { elapsedMs: t.elapsedMs, startedAt: null }]),
+      ]);
+    },
+    validate(values) {
+      const state = unpack(values);
+      parsePracticeState(JSON.stringify(state), catalog);
+      if (Object.values(state.timers).some(t => t.startedAt !== null)) throw new Error('Saved clocks must be paused');
+      if (values.owner && (typeof values.owner.id !== 'string' || !values.owner.id || !ids.has(values.owner.timerId))) throw new Error('Invalid clock owner');
+    },
+  });
+  function state() {
+    const saved = unpack(entries.entries);
+    return running ? { ...saved, timers: { ...saved.timers, [running.id]: { elapsedMs: running.elapsedMs, startedAt: running.startedAt } } } : saved;
+  }
+  function refresh() {
+    entries.refresh();
+    // The last tab to start a clock owns it. Losing ownership stops this tab
+    // at the saved checkpoint, without writing over the new owner's clock.
+    const owner = entries.entries.owner;
+    if (entries.persistent && running && (owner?.id !== session || owner.timerId !== running.id)) running = null;
+    return state();
   }
   function pause(id, now = Date.now()) {
-    const timer = state.timers[id];
-    if (!timer || timer.startedAt === null) return;
-    state = { ...state, timers: { ...state.timers, [id]: { elapsedMs: elapsedTime(timer, now), startedAt: null } } }; persist();
+    refresh();
+    if (running?.id !== id) return;
+    const timer = { elapsedMs: elapsedTime(running, now), startedAt: null };
+    running = null;
+    entries.write({ [`timer/${id}`]: timer });
   }
+  function pauseOthers(id, now = Date.now()) { if (running && running.id !== id) pause(running.id, now); }
   return {
-    get state() { return state; }, get notice() { return notice; }, get persistent() { return persistent; },
+    get state() { return state(); }, get notice() { return entries.notice; }, get persistent() { return entries.persistent; },
+    refresh,
     mark(id, value, answers) {
-      const field = fields.get(id); if (!field || field.invalid || (value !== null && !Object.hasOwn(GRADE_WEIGHTS, value))) throw new Error('この欄は採点できません。');
-      const marks = { ...state.marks };
-      if (value === null) delete marks[id]; else marks[id] = { value, snapshot: fieldSnapshot(field, answers) };
-      state = { ...state, marks }; persist();
+      const field = fields.get(id);
+      if (!field || field.invalid || (value !== null && !Object.hasOwn(GRADE_WEIGHTS, value))) throw new Error('この欄は採点できません。');
+      entries.write({ [`mark/${id}`]: value === null ? null : { value, snapshot: fieldSnapshot(field, answers) } });
     },
-    pause,
+    pause, pauseOthers,
     start(id, now = Date.now()) {
       if (!ids.has(id)) throw new Error('タイマーの大問IDが不正です。');
-      for (const other of Object.keys(state.timers)) if (other !== id) pause(other, now);
-      if (state.timers[id]?.startedAt != null) return;
-      state = { ...state, timers: { ...state.timers, [id]: { elapsedMs: state.timers[id]?.elapsedMs || 0, startedAt: now } } }; persist();
+      refresh(); pauseOthers(id, now);
+      if (running?.id === id) return;
+      const elapsedMs = state().timers[id]?.elapsedMs || 0;
+      entries.write({ owner: { id: session, timerId: id }, [`timer/${id}`]: { elapsedMs, startedAt: null } });
+      running = { id, elapsedMs, startedAt: now };
+    },
+    checkpoint(now = Date.now()) {
+      refresh();
+      if (running) entries.write({ [`timer/${running.id}`]: { elapsedMs: elapsedTime(running, now), startedAt: null } });
     },
     reset(id) {
       if (!ids.has(id)) throw new Error('タイマーの大問IDが不正です。');
-      state = { ...state, timers: { ...state.timers, [id]: { elapsedMs: 0, startedAt: null } } }; persist();
+      refresh();
+      if (running?.id === id) running = null;
+      entries.write({ [`timer/${id}`]: { elapsedMs: 0, startedAt: null }, ...(entries.entries.owner?.timerId === id ? { owner: null } : {}) });
     },
-    pauseOthers(id, now = Date.now()) { for (const other of Object.keys(state.timers)) if (other !== id) pause(other, now); },
-    backup(now = Date.now()) { return { ...state, timers: Object.fromEntries(Object.entries(state.timers).map(([id, timer]) => [id, { elapsedMs: elapsedTime(timer, now), startedAt: null }])) }; },
+    backup(now = Date.now()) {
+      const current = refresh();
+      return { ...current, timers: Object.fromEntries(Object.entries(current.timers).map(([id, timer]) => [id, { elapsedMs: elapsedTime(timer, now), startedAt: null }])) };
+    },
     merge(incoming, now = Date.now()) {
       const next = parsePracticeState(JSON.stringify(incoming), catalog);
-      for (const id of Object.keys(state.timers)) pause(id, now);
-      state = { schemaVersion: 1, marks: { ...state.marks, ...next.marks }, timers: { ...state.timers, ...Object.fromEntries(Object.entries(next.timers).map(([id, timer]) => [id, { elapsedMs: elapsedTime(timer, now), startedAt: null }])) } }; persist();
+      pauseOthers(null, now); refresh();
+      entries.write(Object.fromEntries([
+        ...Object.entries(next.marks).map(([id, value]) => [`mark/${id}`, value]),
+        ...Object.entries(next.timers).map(([id, timer]) => [`timer/${id}`, { elapsedMs: timer.elapsedMs, startedAt: null }]),
+        ...(Object.hasOwn(next.timers, entries.entries.owner?.timerId) ? [['owner', null]] : []),
+      ]));
     },
   };
 }

@@ -4,9 +4,12 @@ import { createPdfRepository, examPdfUrl } from './exam-pdfs.js';
 import { createPracticeStore, practiceId, elapsedTime, formatDuration, parseExamBackup, exportExamBackup, MAX_PRACTICE_BACKUP_BYTES } from './exam-practice.js';
 import { validateExplanations, explanationFor } from './exam-explanations.js';
 import { updateGradeBoxes, scoreText } from './exam-grade-ui.js';
+import { isExamStorageChange } from './exam-storage.js';
+import { installExamSkipLink } from './exam-navigation.js';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const main = document.querySelector('#main');
+installExamSkipLink(document);
 const kindLabels = { problem: '問題', answer: '公式解答例', commentary: '採点講評' };
 let catalog, store, practice, explanations, paper, question, selectedKind = 'problem', pendingImport = null, grading = false;
 const pdfRepository = createPdfRepository();
@@ -22,11 +25,14 @@ function renderPractice() {
   const explanation = explanationFor(explanations, paper, question);
   return `<section class="panel practice-panel" aria-label="計測と自己採点"><div class="practice-timer"><span class="field-note">この大問の学習時間</span><output id="exam-timer" aria-label="経過時間">00:00:00</output><div><button id="timer-toggle" class="button secondary">開始</button> <button id="timer-reset" class="button quiet">時間をリセット</button></div></div><div class="practice-grading"><button id="toggle-grading" class="button secondary" aria-pressed="${grading}">${grading ? '自己採点を閉じる' : '自己採点を始める'}</button><p id="grade-summary" role="status"></p><p class="field-note">独自の目安です。各回答項目を均等に換算（○100%・△50%・×0%）。未採点は暫定0点、複数欄のある項目はまとめて評価します。公式配点ではありません。</p></div><div>${explanation ? `<a id="open-explanation" class="button primary" href="./exam-explanation.html${selectionHash()}">解説を読む</a>` : '<p class="field-note">解説を読み込めませんでした。再読み込みしてください。</p>'}</div></section>`;
 }
-function updatePractice() {
+function updateTimer() {
   if (!practice || !document.querySelector('#exam-timer')) return;
   const timer = practice.state.timers[practiceId(paper, question)];
   document.querySelector('#exam-timer').textContent = formatDuration(elapsedTime(timer));
   document.querySelector('#timer-toggle').textContent = timer?.startedAt != null ? '中断' : timer?.elapsedMs ? '再開' : '開始';
+}
+function updatePractice() {
+  updateTimer();
   document.querySelector('#grade-summary').textContent = scoreText(question, store.answers, practice.state.marks);
   updateGradeBoxes(main, question, store.answers, practice.state.marks);
 }
@@ -107,7 +113,8 @@ async function saveAllPdfs() {
 }
 
 function updateAnswers() {
-  document.querySelector('#answers-text').value = formatExamAnswers(paper, question, store.answers);
+  const summary = document.querySelector('#answers-text'), value = formatExamAnswers(paper, question, store.answers);
+  if (summary.value !== value) summary.value = value;
   const keys = answerKeys(question);
   document.querySelector('#answer-progress').textContent = `${keys.filter(k => store.answers[k]?.trim()).length} / ${keys.length}欄を記入`;
   for (const summary of main.querySelectorAll('[data-group-progress]')) {
@@ -116,6 +123,22 @@ function updateAnswers() {
   }
   const warning = document.querySelector('#save-warning'); warning.textContent = [store.notice, practice.notice].filter(Boolean).join(' '); warning.hidden = !warning.textContent;
   document.querySelector('#save-status').textContent = store.persistent && practice.persistent ? '回答・採点・時間をこのブラウザーに自動保存' : '一時保存（バックアップ推奨）';
+}
+
+function syncSavedWork() {
+  if (!paper || !store || !practice || !document.querySelector('#answers-text')) return;
+  store.refresh(); practice.refresh();
+  for (const input of main.querySelectorAll('[data-answer-key]')) {
+    const value = store.answers[input.dataset.answerKey] || '';
+    if (input.value !== value) {
+      const focused = input === document.activeElement;
+      const start = input.selectionStart, end = input.selectionEnd;
+      input.value = value;
+      if (focused) input.setSelectionRange(Math.min(start, value.length), Math.min(end, value.length));
+      document.getElementById(`${input.id}-length`).textContent = `${[...value].length}字`;
+    }
+  }
+  updateAnswers(); updatePractice();
 }
 
 function renderImport() {
@@ -198,12 +221,17 @@ main.addEventListener('click', async event => {
 });
 
 window.addEventListener('hashchange', () => { if (!/^#\d{4}-[12]-[123]$/.test(location.hash) || !catalog) return; const next = parseExamSelection(location.hash, catalog); select(next.paper, next.question); });
+window.addEventListener('storage', event => { if (isExamStorageChange(event.key)) syncSavedWork(); });
+window.addEventListener('focus', syncSavedWork);
+document.addEventListener('visibilitychange', () => { practice?.checkpoint(); if (!document.hidden) syncSavedWork(); });
 window.addEventListener('pagehide', pauseTimer);
 window.addEventListener('pageshow', event => { if (event.persisted && catalog) { store = createExamStore(catalog); practice = createPracticeStore(catalog); practice.pauseOthers(null); render(); } });
 window.addEventListener('beforeunload', event => { if (store && (!store.persistent || !practice.persistent)) { event.preventDefault(); event.returnValue = ''; } });
 setInterval(() => {
   if (!practice || !paper) return;
-  const output = document.querySelector('#exam-timer'); if (output) output.textContent = formatDuration(elapsedTime(practice.state.timers[practiceId(paper, question)]));
+  const persistent = practice.persistent;
+  practice.checkpoint(); updateTimer();
+  if (persistent !== practice.persistent) updateAnswers();
 }, 1000);
 
 try {

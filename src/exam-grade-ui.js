@@ -14,7 +14,8 @@ export function updateGradeBoxes(root, question, answers, marks) {
   const active = document.activeElement;
   const focus = active?.matches('[data-grade]') ? { field: active.dataset.field, grade: active.dataset.grade } : null;
   for (const box of root.querySelectorAll('[data-grade-box]')) {
-    box.innerHTML = gradeControls(question.fields.find(f => f.id === box.dataset.gradeBox), answers, marks);
+    const html = gradeControls(question.fields.find(f => f.id === box.dataset.gradeBox), answers, marks);
+    if (box.innerHTML !== html) box.innerHTML = html;
   }
   if (focus) [...root.querySelectorAll('[data-grade]')].find(button => button.dataset.field === focus.field && button.dataset.grade === focus.grade)?.focus({ preventScroll: true });
 }

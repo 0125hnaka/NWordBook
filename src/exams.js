@@ -1,3 +1,4 @@
+import { createExamEntries } from './exam-storage.js';
 export const EXAM_STORAGE_KEY = 'nwordbook:exam-answers:v1';
 export const MAX_ANSWER_LENGTH = 10000;
 export const MAX_EXAM_BACKUP_BYTES = 5 * 1024 * 1024;
@@ -49,26 +50,20 @@ export function parseExamAnswers(raw, catalog) {
 }
 
 export function createExamStore(catalog, getStorage = () => globalThis.localStorage) {
-  let storage, persistent = true, notice = '', answers = {};
-  try {
-    storage = getStorage(); const raw = storage.getItem(EXAM_STORAGE_KEY);
-    if (raw !== null) answers = parseExamAnswers(raw, catalog).answers;
-  } catch {
-    persistent = false; notice = '保存済みの回答を読み込めません。元の保存内容は上書きしません。回答は一時保存になるため、閉じる前にバックアップしてください。';
-  }
   const valid = new Set(catalog.papers.flatMap(p => p.questions.flatMap(answerKeys)));
-  const persist = () => {
-    if (persistent) try { storage.setItem(EXAM_STORAGE_KEY, JSON.stringify({ schemaVersion: 1, answers })); }
-    catch { persistent = false; notice = '回答をブラウザーに保存できません。閉じる前に「回答をバックアップ」で保存してください。'; }
-  };
+  const entries = createExamEntries({ key: EXAM_STORAGE_KEY, valid, getStorage,
+    decodeLegacy: raw => parseExamAnswers(raw, catalog).answers,
+    validate: answers => parseExamAnswers(JSON.stringify({ schemaVersion: 1, answers }), catalog),
+  });
   return {
-    get answers() { return answers; }, get persistent() { return persistent; }, get notice() { return notice; },
+    get answers() { return entries.entries; }, get persistent() { return entries.persistent; }, get notice() { return entries.notice; },
+    refresh: entries.refresh,
     set(key, value) {
       if (!valid.has(key) || typeof value !== 'string' || value.length > MAX_ANSWER_LENGTH) throw new Error('回答を保存できません。');
-      answers = { ...answers, [key]: value }; persist();
+      entries.write({ [key]: value });
     },
-    merge(data) { answers = { ...answers, ...parseExamAnswers(JSON.stringify(data), catalog).answers }; persist(); },
-    export() { return JSON.stringify({ schemaVersion: 1, answers }, null, 2); },
+    merge(data) { entries.write(parseExamAnswers(JSON.stringify(data), catalog).answers); },
+    export() { entries.refresh(); return JSON.stringify({ schemaVersion: 1, answers: entries.entries }, null, 2); },
   };
 }
 
