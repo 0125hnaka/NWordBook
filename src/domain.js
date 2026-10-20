@@ -5,6 +5,7 @@ import { validatePredictions, createPredictionCards } from './predictions.js';
 import { validateDetailedExplanations, addDetailedExplanations } from './detailed-explanations.js';
 import { assignQuestionCodes } from './question-codes.js';
 import { validateQuestionContexts, contextualizeQuestions } from './question-contexts.js';
+import { createPastTermCards } from './past-terms.js';
 export const studyModes = ['terms', 'thinking', 'mixed'];
 export const termDirections = ['both', 'meaning', 'name'];
 export const confidenceValues = ['understood', 'unclear', 'unknown'];
@@ -80,6 +81,7 @@ export function createCatalog(data) {
     profile,
     first100Set: new Set(data.first100),
     predictionCards: codedCards.filter(card => card.prediction),
+    pastTermCards: assignQuestionCodes(createPastTermCards(data.pastTerms), data.questionCodes),
     cards: codedCards.filter(card => !card.prediction),
   };
 }
@@ -109,6 +111,7 @@ export function parseState(text) {
   if (!Array.isArray(s.enabledGroupIds) || s.enabledGroupIds.length > 1000 || s.enabledGroupIds.some(id => typeof id !== 'string' || !id || id.length > 200) || new Set(s.enabledGroupIds).size !== s.enabledGroupIds.length || typeof s.allowUnverifiedSupplement !== 'boolean' || ![5, 10, 20, 'all'].includes(s.questionCount)) fail('学習設定が不正です。');
   if ((s.studyMode !== undefined && !studyModes.includes(s.studyMode)) || (s.termDirection !== undefined && !termDirections.includes(s.termDirection))) fail('学習モードが不正です。');
   if (s.predictionQuestionCount !== undefined && ![5, 10, 20, 'all'].includes(s.predictionQuestionCount)) fail('予想問題の出題数が不正です。');
+  if (s.pastTermQuestionCount !== undefined && ![5, 10, 20, 'all'].includes(s.pastTermQuestionCount)) fail('過去問の用語の出題数が不正です。');
   for (const [id, state] of Object.entries(value.questionStates)) {
     if (!id || id.length > 200 || ['__proto__', 'prototype', 'constructor'].includes(id) || !record(state) || typeof state.hidden !== 'boolean') fail('問題の保存状態が不正です。');
     if ((state.confidence !== undefined && !confidenceValues.includes(state.confidence)) || (state.lastReviewed !== undefined && (typeof state.lastReviewed !== 'string' || !Number.isFinite(Date.parse(state.lastReviewed))))) fail('理解度の保存状態が不正です。');

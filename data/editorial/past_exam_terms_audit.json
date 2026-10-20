@@ -1,0 +1,3187 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-10-20",
+  "sourceHash": "134332f54ccf5cb750b83b9e2f6442fa1a3dcc833cd150a5ce35578810c31f6e",
+  "reviewedPapers": [
+    "2025-1",
+    "2025-2",
+    "2024-1",
+    "2024-2",
+    "2023-1",
+    "2023-2",
+    "2022-1",
+    "2022-2",
+    "2021-1",
+    "2021-2",
+    "2019-1",
+    "2019-2",
+    "2018-1",
+    "2018-2",
+    "2017-1",
+    "2017-2",
+    "2016-1",
+    "2016-2",
+    "2015-1",
+    "2015-2",
+    "2014-1",
+    "2014-2",
+    "2013-1",
+    "2013-2",
+    "2012-1",
+    "2012-2",
+    "2011-1",
+    "2011-2",
+    "2010-1",
+    "2010-2",
+    "2009-1",
+    "2009-2"
+  ],
+  "policy": "本文の空欄前後を短く整理した独自編集問題。図表の転記、固有構成・値、計算、一般語や長文記述に依存する空欄は不採用。解答は元の解答例と照合済みの解説データをそのまま使用。",
+  "entries": [
+    {
+      "sourceFieldId": "2025/1/1/1(1):a",
+      "status": "included",
+      "answer": "バックボーン"
+    },
+    {
+      "sourceFieldId": "2025/1/1/1(1):b",
+      "status": "included",
+      "answer": "ルータ"
+    },
+    {
+      "sourceFieldId": "2025/1/1/1(1):c",
+      "status": "included",
+      "answer": "デフォルトゲートウェイ"
+    },
+    {
+      "sourceFieldId": "2025/1/2/1(1):a",
+      "status": "excluded",
+      "answer": "プライベート"
+    },
+    {
+      "sourceFieldId": "2025/1/2/1(1):b",
+      "status": "excluded",
+      "answer": "グローバル"
+    },
+    {
+      "sourceFieldId": "2025/1/2/1(1):c",
+      "status": "included",
+      "answer": "PoE+"
+    },
+    {
+      "sourceFieldId": "2025/1/2/2(2):d",
+      "status": "included",
+      "answer": "帯域確保"
+    },
+    {
+      "sourceFieldId": "2025/1/2/3(2):e",
+      "status": "included",
+      "answer": "リクエスト"
+    },
+    {
+      "sourceFieldId": "2025/1/2/3(2):f",
+      "status": "included",
+      "answer": "レスポンス"
+    },
+    {
+      "sourceFieldId": "2025/1/2/3(2):g",
+      "status": "included",
+      "answer": "ストリームID"
+    },
+    {
+      "sourceFieldId": "2025/1/2/3(2):h",
+      "status": "excluded",
+      "answer": "並列"
+    },
+    {
+      "sourceFieldId": "2025/1/3/1(4):a",
+      "status": "excluded",
+      "answer": "syslogサーバ"
+    },
+    {
+      "sourceFieldId": "2025/1/3/1(4):b",
+      "status": "excluded",
+      "answer": "認証サーバ"
+    },
+    {
+      "sourceFieldId": "2025/1/3/1(5):c",
+      "status": "excluded",
+      "answer": "10080"
+    },
+    {
+      "sourceFieldId": "2025/1/3/1(5):d",
+      "status": "excluded",
+      "answer": "443"
+    },
+    {
+      "sourceFieldId": "2025/2/1/1:a",
+      "status": "included",
+      "answer": "宛先IPアドレス"
+    },
+    {
+      "sourceFieldId": "2025/2/1/1:b",
+      "status": "included",
+      "answer": "ブロード"
+    },
+    {
+      "sourceFieldId": "2025/2/1/1:c",
+      "status": "included",
+      "answer": "リプライ"
+    },
+    {
+      "sourceFieldId": "2025/2/1/2(1):d",
+      "status": "excluded",
+      "answer": "16"
+    },
+    {
+      "sourceFieldId": "2025/2/1/2(1):e",
+      "status": "excluded",
+      "answer": "48"
+    },
+    {
+      "sourceFieldId": "2025/2/1/2(1):f",
+      "status": "excluded",
+      "answer": "64"
+    },
+    {
+      "sourceFieldId": "2025/2/1/2(5):g",
+      "status": "included",
+      "answer": "デフォルトルータ（又はデフォルトゲートウェイ）"
+    },
+    {
+      "sourceFieldId": "2025/2/1/3(1):h",
+      "status": "included",
+      "answer": "TCP"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):ア",
+      "status": "excluded",
+      "answer": "fe80::1"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):イ",
+      "status": "excluded",
+      "answer": "b"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):ウ",
+      "status": "excluded",
+      "answer": "fe80::2"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):エ",
+      "status": "excluded",
+      "answer": "c"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):オ",
+      "status": "excluded",
+      "answer": "fe80::1"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):カ",
+      "status": "excluded",
+      "answer": "d"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):キ",
+      "status": "excluded",
+      "answer": "fe80::2"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):ク",
+      "status": "excluded",
+      "answer": "f"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(4):ケ",
+      "status": "excluded",
+      "answer": "fe80::1"
+    },
+    {
+      "sourceFieldId": "2025/2/1/4(7):i",
+      "status": "excluded",
+      "answer": "NAPT"
+    },
+    {
+      "sourceFieldId": "2025/2/2/1:a",
+      "status": "excluded",
+      "answer": "消費"
+    },
+    {
+      "sourceFieldId": "2025/2/2/1:b",
+      "status": "included",
+      "answer": "非セルラー"
+    },
+    {
+      "sourceFieldId": "2025/2/2/1:c",
+      "status": "included",
+      "answer": "セルラー"
+    },
+    {
+      "sourceFieldId": "2025/2/2/1:d",
+      "status": "included",
+      "answer": "ISM"
+    },
+    {
+      "sourceFieldId": "2025/2/2/1:e",
+      "status": "excluded",
+      "answer": "干渉"
+    },
+    {
+      "sourceFieldId": "2025/2/2/1:f",
+      "status": "included",
+      "answer": "3GPP"
+    },
+    {
+      "sourceFieldId": "2025/2/2/2:g",
+      "status": "excluded",
+      "answer": "2"
+    },
+    {
+      "sourceFieldId": "2025/2/2/2:h",
+      "status": "excluded",
+      "answer": "Gメーター管理サーバ"
+    },
+    {
+      "sourceFieldId": "2025/2/2/2:i",
+      "status": "included",
+      "answer": "SIM"
+    },
+    {
+      "sourceFieldId": "2025/2/2/2:j",
+      "status": "excluded",
+      "answer": "372"
+    },
+    {
+      "sourceFieldId": "2025/2/2/2:k",
+      "status": "included",
+      "answer": "RESTful"
+    },
+    {
+      "sourceFieldId": "2025/2/2/3(1):l",
+      "status": "included",
+      "answer": "トランスポート"
+    },
+    {
+      "sourceFieldId": "2025/2/2/3(1):m",
+      "status": "included",
+      "answer": "順不同"
+    },
+    {
+      "sourceFieldId": "2025/2/2/3(1):n",
+      "status": "included",
+      "answer": "重複"
+    },
+    {
+      "sourceFieldId": "2025/2/2/3(1):o",
+      "status": "included",
+      "answer": "同期"
+    },
+    {
+      "sourceFieldId": "2025/2/2/3(1):p",
+      "status": "included",
+      "answer": "バックオフ"
+    },
+    {
+      "sourceFieldId": "2024/1/1/1(2):ア",
+      "status": "included",
+      "answer": "最少接続数"
+    },
+    {
+      "sourceFieldId": "2024/1/1/1(2):イ",
+      "status": "excluded",
+      "answer": "172.22.1.0/24"
+    },
+    {
+      "sourceFieldId": "2024/1/1/2(1):ウ",
+      "status": "excluded",
+      "answer": "大きい"
+    },
+    {
+      "sourceFieldId": "2024/1/1/2(1):エ",
+      "status": "excluded",
+      "answer": "小さい"
+    },
+    {
+      "sourceFieldId": "2024/1/2/1:ア",
+      "status": "included",
+      "answer": "カスタマー"
+    },
+    {
+      "sourceFieldId": "2024/1/2/1:イ",
+      "status": "included",
+      "answer": "再配布"
+    },
+    {
+      "sourceFieldId": "2024/1/2/1:ウ",
+      "status": "excluded",
+      "answer": "DMZ"
+    },
+    {
+      "sourceFieldId": "2024/1/2/1:エ",
+      "status": "included",
+      "answer": "eBGP"
+    },
+    {
+      "sourceFieldId": "2024/1/2/1:オ",
+      "status": "included",
+      "answer": "プライベート"
+    },
+    {
+      "sourceFieldId": "2024/1/2/1:カ",
+      "status": "included",
+      "answer": "ポリシーベース"
+    },
+    {
+      "sourceFieldId": "2024/1/2/2(1):a",
+      "status": "excluded",
+      "answer": "10.3.0.0/16"
+    },
+    {
+      "sourceFieldId": "2024/1/2/2(1):b",
+      "status": "excluded",
+      "answer": "64500 64500"
+    },
+    {
+      "sourceFieldId": "2024/1/2/2(2):c",
+      "status": "excluded",
+      "answer": "65500"
+    },
+    {
+      "sourceFieldId": "2024/1/2/2(2):d",
+      "status": "excluded",
+      "answer": "65500"
+    },
+    {
+      "sourceFieldId": "2024/1/2/2(2):e",
+      "status": "excluded",
+      "answer": "65500"
+    },
+    {
+      "sourceFieldId": "2024/1/2/2(2):f",
+      "status": "excluded",
+      "answer": "65500"
+    },
+    {
+      "sourceFieldId": "2024/1/3/1(1):ア",
+      "status": "included",
+      "answer": "ハブアンドスポーク"
+    },
+    {
+      "sourceFieldId": "2024/1/3/3(1):イ",
+      "status": "included",
+      "answer": "DHCP"
+    },
+    {
+      "sourceFieldId": "2024/1/3/3(1):ウ",
+      "status": "included",
+      "answer": "DNS"
+    },
+    {
+      "sourceFieldId": "2024/1/3/3(1):エ",
+      "status": "included",
+      "answer": "HTTP"
+    },
+    {
+      "sourceFieldId": "2024/1/3/3(1):オ",
+      "status": "included",
+      "answer": "URL"
+    },
+    {
+      "sourceFieldId": "2024/2/1/1(1):a",
+      "status": "excluded",
+      "answer": "24"
+    },
+    {
+      "sourceFieldId": "2024/2/1/1(1):b",
+      "status": "excluded",
+      "answer": "3"
+    },
+    {
+      "sourceFieldId": "2024/2/1/1(1):c",
+      "status": "excluded",
+      "answer": "UDP"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(1):d",
+      "status": "included",
+      "answer": "LSDB"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(1):e",
+      "status": "included",
+      "answer": "最短経路"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(5):ア",
+      "status": "excluded",
+      "answer": "×"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(5):イ",
+      "status": "excluded",
+      "answer": "×"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(5):ウ",
+      "status": "excluded",
+      "answer": "×"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(5):エ",
+      "status": "excluded",
+      "answer": "×"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(5):オ",
+      "status": "excluded",
+      "answer": "○"
+    },
+    {
+      "sourceFieldId": "2024/2/1/2(5):カ",
+      "status": "excluded",
+      "answer": "×"
+    },
+    {
+      "sourceFieldId": "2024/2/1/3(3):キ",
+      "status": "excluded",
+      "answer": "10010"
+    },
+    {
+      "sourceFieldId": "2024/2/1/3(3):ク",
+      "status": "excluded",
+      "answer": "10.0.0.31"
+    },
+    {
+      "sourceFieldId": "2024/2/1/3(3):ケ",
+      "status": "excluded",
+      "answer": "10010"
+    },
+    {
+      "sourceFieldId": "2024/2/1/3(3):コ",
+      "status": "excluded",
+      "answer": "10.0.0.11"
+    },
+    {
+      "sourceFieldId": "2024/2/1/4(2):f",
+      "status": "included",
+      "answer": "Unknown Unicast"
+    },
+    {
+      "sourceFieldId": "2024/2/1/4(2):g",
+      "status": "included",
+      "answer": "ESI"
+    },
+    {
+      "sourceFieldId": "2024/2/2/1(3):a",
+      "status": "included",
+      "answer": "Preference"
+    },
+    {
+      "sourceFieldId": "2024/2/2/1(3):b",
+      "status": "excluded",
+      "answer": "y-mail2"
+    },
+    {
+      "sourceFieldId": "2024/2/2/1(3):c",
+      "status": "included",
+      "answer": "逆引き"
+    },
+    {
+      "sourceFieldId": "2024/2/2/1(4):ア",
+      "status": "excluded",
+      "answer": "200.a.b.1"
+    },
+    {
+      "sourceFieldId": "2024/2/2/1(4):イ",
+      "status": "excluded",
+      "answer": "192.168.0.1"
+    },
+    {
+      "sourceFieldId": "2024/2/2/2(1):ウ",
+      "status": "excluded",
+      "answer": "200.a.b.1"
+    },
+    {
+      "sourceFieldId": "2024/2/2/2(1):エ",
+      "status": "excluded",
+      "answer": "200.a.b.2"
+    },
+    {
+      "sourceFieldId": "2024/2/2/2(2):d",
+      "status": "included",
+      "answer": "SMTP"
+    },
+    {
+      "sourceFieldId": "2024/2/2/2(2):e",
+      "status": "included",
+      "answer": "MAIL FROM"
+    },
+    {
+      "sourceFieldId": "2024/2/2/2(2):f",
+      "status": "excluded",
+      "answer": "y-sha.com"
+    },
+    {
+      "sourceFieldId": "2024/2/2/3(1):g",
+      "status": "included",
+      "answer": "ヘッダー"
+    },
+    {
+      "sourceFieldId": "2024/2/2/3(1):h",
+      "status": "included",
+      "answer": "UDP"
+    },
+    {
+      "sourceFieldId": "2024/2/2/3(1):i",
+      "status": "excluded",
+      "answer": "512"
+    },
+    {
+      "sourceFieldId": "2024/2/2/3(2):オ",
+      "status": "excluded",
+      "answer": "公開鍵"
+    },
+    {
+      "sourceFieldId": "2024/2/2/4(2):j",
+      "status": "excluded",
+      "answer": "y-sha.com"
+    },
+    {
+      "sourceFieldId": "2023/1/1/1:a",
+      "status": "included",
+      "answer": "リバース"
+    },
+    {
+      "sourceFieldId": "2023/1/1/1:b",
+      "status": "included",
+      "answer": "権威"
+    },
+    {
+      "sourceFieldId": "2023/1/1/1:c",
+      "status": "included",
+      "answer": "キャッシュ"
+    },
+    {
+      "sourceFieldId": "2023/1/1/1:d",
+      "status": "included",
+      "answer": "ストリーム"
+    },
+    {
+      "sourceFieldId": "2023/1/1/1:e",
+      "status": "included",
+      "answer": ":method"
+    },
+    {
+      "sourceFieldId": "2023/1/1/1:f",
+      "status": "included",
+      "answer": "TLS"
+    },
+    {
+      "sourceFieldId": "2023/1/1/4(1):ア",
+      "status": "excluded",
+      "answer": "172.21.10.0/24"
+    },
+    {
+      "sourceFieldId": "2023/1/1/4(1):イ",
+      "status": "excluded",
+      "answer": "172.21.11.2"
+    },
+    {
+      "sourceFieldId": "2023/1/1/4(1):ウ",
+      "status": "excluded",
+      "answer": "172.21.11.1"
+    },
+    {
+      "sourceFieldId": "2023/1/2/1:ア",
+      "status": "included",
+      "answer": "フラッディング"
+    },
+    {
+      "sourceFieldId": "2023/1/2/1:イ",
+      "status": "included",
+      "answer": "IGMP"
+    },
+    {
+      "sourceFieldId": "2023/1/2/1:ウ",
+      "status": "included",
+      "answer": "マルチキャスト"
+    },
+    {
+      "sourceFieldId": "2023/1/2/1:エ",
+      "status": "included",
+      "answer": "ツリー"
+    },
+    {
+      "sourceFieldId": "2023/1/2/1:オ",
+      "status": "included",
+      "answer": "PIM-SM"
+    },
+    {
+      "sourceFieldId": "2023/1/2/1:カ",
+      "status": "included",
+      "answer": "SSM"
+    },
+    {
+      "sourceFieldId": "2023/1/2/1:キ",
+      "status": "included",
+      "answer": "復号"
+    },
+    {
+      "sourceFieldId": "2023/1/2/3(3):I",
+      "status": "excluded",
+      "answer": "Ⅰ：カメラ管理サーバ／Ⅱ：443"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:a",
+      "status": "included",
+      "answer": "トライバンド"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:b",
+      "status": "included",
+      "answer": "アンテナ"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:c",
+      "status": "included",
+      "answer": "パスワード"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:d",
+      "status": "included",
+      "answer": "チャネルボンディング"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:e",
+      "status": "included",
+      "answer": "PoE++"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:f",
+      "status": "included",
+      "answer": "マルチギガビットイーサネット"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:g",
+      "status": "included",
+      "answer": "スタック"
+    },
+    {
+      "sourceFieldId": "2023/1/3/1:h",
+      "status": "included",
+      "answer": "DHCPリレーエージェント"
+    },
+    {
+      "sourceFieldId": "2023/2/1/2(1):a",
+      "status": "included",
+      "answer": "AS"
+    },
+    {
+      "sourceFieldId": "2023/2/1/2(1):b",
+      "status": "included",
+      "answer": "ピア"
+    },
+    {
+      "sourceFieldId": "2023/2/1/2(1):c",
+      "status": "excluded",
+      "answer": "UPDATE"
+    },
+    {
+      "sourceFieldId": "2023/2/1/2(1):d",
+      "status": "excluded",
+      "answer": "KEEPALIVE"
+    },
+    {
+      "sourceFieldId": "2023/2/1/2(1):e",
+      "status": "included",
+      "answer": "ルーティングテーブル"
+    },
+    {
+      "sourceFieldId": "2023/2/1/2(1):f",
+      "status": "excluded",
+      "answer": "大きい"
+    },
+    {
+      "sourceFieldId": "2023/2/2/1:a",
+      "status": "excluded",
+      "answer": "NS"
+    },
+    {
+      "sourceFieldId": "2023/2/2/1:b",
+      "status": "excluded",
+      "answer": "MX"
+    },
+    {
+      "sourceFieldId": "2023/2/2/1:c",
+      "status": "excluded",
+      "answer": "100.α.β.1"
+    },
+    {
+      "sourceFieldId": "2023/2/2/1:d",
+      "status": "excluded",
+      "answer": "100.α.β.3"
+    },
+    {
+      "sourceFieldId": "2023/2/2/1:e",
+      "status": "excluded",
+      "answer": "192.168.1.1"
+    },
+    {
+      "sourceFieldId": "2023/2/2/1:f",
+      "status": "excluded",
+      "answer": "192.168.1.3"
+    },
+    {
+      "sourceFieldId": "2023/2/2/3(1):g",
+      "status": "included",
+      "answer": "アップ"
+    },
+    {
+      "sourceFieldId": "2023/2/2/3(1):h",
+      "status": "included",
+      "answer": "アウト"
+    },
+    {
+      "sourceFieldId": "2023/2/2/3(3):i",
+      "status": "excluded",
+      "answer": "100.α.β.2"
+    },
+    {
+      "sourceFieldId": "2023/2/2/3(3):j",
+      "status": "excluded",
+      "answer": "192.168.1.2"
+    },
+    {
+      "sourceFieldId": "2023/2/2/3(3):k",
+      "status": "excluded",
+      "answer": "192.168.1.4"
+    },
+    {
+      "sourceFieldId": "2022/1/1/1(1):a",
+      "status": "included",
+      "answer": "Syslog"
+    },
+    {
+      "sourceFieldId": "2022/1/1/1(1):b",
+      "status": "included",
+      "answer": "ダイジェスト"
+    },
+    {
+      "sourceFieldId": "2022/1/1/1(1):c",
+      "status": "included",
+      "answer": "CONNECT"
+    },
+    {
+      "sourceFieldId": "2022/1/1/3(1):d",
+      "status": "included",
+      "answer": "フラッディング"
+    },
+    {
+      "sourceFieldId": "2022/1/2/1(2):a",
+      "status": "included",
+      "answer": "ルーティング"
+    },
+    {
+      "sourceFieldId": "2022/1/2/1(3):b",
+      "status": "excluded",
+      "answer": "本社のL3SW"
+    },
+    {
+      "sourceFieldId": "2022/1/2/1(3):c",
+      "status": "excluded",
+      "answer": "静的経路制御"
+    },
+    {
+      "sourceFieldId": "2022/1/2/1(3):d",
+      "status": "excluded",
+      "answer": "静的経路制御"
+    },
+    {
+      "sourceFieldId": "2022/1/2/2(1):e",
+      "status": "included",
+      "answer": "暗号"
+    },
+    {
+      "sourceFieldId": "2022/1/2/2(1):f",
+      "status": "included",
+      "answer": "IP"
+    },
+    {
+      "sourceFieldId": "2022/1/2/2(1):g",
+      "status": "included",
+      "answer": "Child"
+    },
+    {
+      "sourceFieldId": "2022/1/2/2(1):h",
+      "status": "included",
+      "answer": "鍵長"
+    },
+    {
+      "sourceFieldId": "2022/1/3/1(3):ア",
+      "status": "excluded",
+      "answer": "外部DNSサーバ"
+    },
+    {
+      "sourceFieldId": "2022/1/3/1(3):ウ",
+      "status": "excluded",
+      "answer": "公開Webサーバ"
+    },
+    {
+      "sourceFieldId": "2022/1/3/1(3):エ",
+      "status": "excluded",
+      "answer": "プロキシサーバ"
+    },
+    {
+      "sourceFieldId": "2022/1/3/1(3):オ",
+      "status": "excluded",
+      "answer": "any"
+    },
+    {
+      "sourceFieldId": "2022/1/3/1(3):カ",
+      "status": "excluded",
+      "answer": "社内DNSサーバ"
+    },
+    {
+      "sourceFieldId": "2022/1/3/1(4):イ",
+      "status": "excluded",
+      "answer": "UDP/53"
+    },
+    {
+      "sourceFieldId": "2022/2/1/1:ア",
+      "status": "included",
+      "answer": "改ざん検知"
+    },
+    {
+      "sourceFieldId": "2022/2/1/1:イ",
+      "status": "included",
+      "answer": "L2フォワーディング"
+    },
+    {
+      "sourceFieldId": "2022/2/1/1:ウ",
+      "status": "included",
+      "answer": "ポート"
+    },
+    {
+      "sourceFieldId": "2022/2/1/1:エ",
+      "status": "included",
+      "answer": "公開"
+    },
+    {
+      "sourceFieldId": "2022/2/1/1:オ",
+      "status": "included",
+      "answer": "ポートフォワーディング"
+    },
+    {
+      "sourceFieldId": "2022/2/1/1:カ",
+      "status": "included",
+      "answer": "DHE"
+    },
+    {
+      "sourceFieldId": "2022/2/2/1(1):ア",
+      "status": "included",
+      "answer": "ハイパーバイザ"
+    },
+    {
+      "sourceFieldId": "2022/2/2/1(1):イ",
+      "status": "included",
+      "answer": "VRID"
+    },
+    {
+      "sourceFieldId": "2022/2/2/1(1):ウ",
+      "status": "excluded",
+      "answer": "255"
+    },
+    {
+      "sourceFieldId": "2022/2/2/1(1):エ",
+      "status": "included",
+      "answer": "A"
+    },
+    {
+      "sourceFieldId": "2022/2/2/2(3):オ",
+      "status": "excluded",
+      "answer": "192.168.0.98"
+    },
+    {
+      "sourceFieldId": "2022/2/2/2(3):カ",
+      "status": "excluded",
+      "answer": "8000"
+    },
+    {
+      "sourceFieldId": "2022/2/2/4(1):キ",
+      "status": "included",
+      "answer": "エコー応答"
+    },
+    {
+      "sourceFieldId": "2022/2/2/4(1):ク",
+      "status": "included",
+      "answer": "SYN/ACK"
+    },
+    {
+      "sourceFieldId": "2022/2/2/4(1):ケ",
+      "status": "included",
+      "answer": "GET"
+    },
+    {
+      "sourceFieldId": "2021/1/1/3(1):a",
+      "status": "excluded",
+      "answer": "2"
+    },
+    {
+      "sourceFieldId": "2021/1/1/3(2):b",
+      "status": "included",
+      "answer": "SNMP"
+    },
+    {
+      "sourceFieldId": "2021/1/1/3(2):c",
+      "status": "excluded",
+      "answer": "RT管理コントローラ"
+    },
+    {
+      "sourceFieldId": "2021/1/2/1:a",
+      "status": "included",
+      "answer": "共有鍵"
+    },
+    {
+      "sourceFieldId": "2021/1/2/1:b",
+      "status": "included",
+      "answer": "ルータ"
+    },
+    {
+      "sourceFieldId": "2021/1/2/1:c",
+      "status": "included",
+      "answer": "コスト"
+    },
+    {
+      "sourceFieldId": "2021/1/2/1:d",
+      "status": "included",
+      "answer": "ダイクストラ"
+    },
+    {
+      "sourceFieldId": "2021/1/2/1:e",
+      "status": "excluded",
+      "answer": "172.16.0.0"
+    },
+    {
+      "sourceFieldId": "2021/1/2/3(4):f",
+      "status": "excluded",
+      "answer": "ルータ"
+    },
+    {
+      "sourceFieldId": "2021/1/2/3(4):g",
+      "status": "excluded",
+      "answer": "172.16.0.0/16"
+    },
+    {
+      "sourceFieldId": "2021/1/3/1:a",
+      "status": "excluded",
+      "answer": "8"
+    },
+    {
+      "sourceFieldId": "2021/1/3/1:b",
+      "status": "included",
+      "answer": "UDP"
+    },
+    {
+      "sourceFieldId": "2021/1/3/1:c",
+      "status": "included",
+      "answer": "廃棄（ドロップ、損失）"
+    },
+    {
+      "sourceFieldId": "2021/1/3/1:d",
+      "status": "included",
+      "answer": "ToS"
+    },
+    {
+      "sourceFieldId": "2021/1/3/4(4):ア",
+      "status": "excluded",
+      "answer": "f、g、j"
+    },
+    {
+      "sourceFieldId": "2021/1/3/4(4):イ",
+      "status": "excluded",
+      "answer": "a、b、c、d、e"
+    },
+    {
+      "sourceFieldId": "2021/2/1/1(1):a",
+      "status": "included",
+      "answer": "フォワーダ"
+    },
+    {
+      "sourceFieldId": "2021/2/1/1(1):b",
+      "status": "included",
+      "answer": "プライオリティ値"
+    },
+    {
+      "sourceFieldId": "2021/2/1/2(2):c",
+      "status": "included",
+      "answer": "指定"
+    },
+    {
+      "sourceFieldId": "2021/2/1/2(2):d",
+      "status": "excluded",
+      "answer": "非指定"
+    },
+    {
+      "sourceFieldId": "2021/2/1/2(2):e",
+      "status": "included",
+      "answer": "MACアドレス"
+    },
+    {
+      "sourceFieldId": "2021/2/1/3(1):f",
+      "status": "excluded",
+      "answer": "上位のスイッチ"
+    },
+    {
+      "sourceFieldId": "2021/2/1/6(7):g",
+      "status": "excluded",
+      "answer": "172.17.11.1"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(2):a",
+      "status": "excluded",
+      "answer": "α.β.γ.0/30"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(2):b",
+      "status": "excluded",
+      "answer": "α.β.γ.4/30"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(4):ア",
+      "status": "excluded",
+      "answer": "短い"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(4):イ",
+      "status": "excluded",
+      "answer": "小さい"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(4):ウ",
+      "status": "excluded",
+      "answer": "α.β.γ.8"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(4):エ",
+      "status": "excluded",
+      "answer": "α.β.γ.9"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(4):オ",
+      "status": "excluded",
+      "answer": "α.β.γ.17"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(4):カ",
+      "status": "excluded",
+      "answer": "α.β.γ.18"
+    },
+    {
+      "sourceFieldId": "2021/2/2/2(4):キ",
+      "status": "included",
+      "answer": "キープアライブ"
+    },
+    {
+      "sourceFieldId": "2021/2/2/3(1):ク",
+      "status": "excluded",
+      "answer": "エ"
+    },
+    {
+      "sourceFieldId": "2021/2/2/3(1):ケ",
+      "status": "excluded",
+      "answer": "ウ"
+    },
+    {
+      "sourceFieldId": "2021/2/2/3(1):コ",
+      "status": "excluded",
+      "answer": "イ"
+    },
+    {
+      "sourceFieldId": "2021/2/2/3(1):サ",
+      "status": "excluded",
+      "answer": "ア"
+    },
+    {
+      "sourceFieldId": "2021/2/2/3(2):シ",
+      "status": "excluded",
+      "answer": "ルータ10Z、ルータ10、FW10"
+    },
+    {
+      "sourceFieldId": "2021/2/2/4(2):ス",
+      "status": "excluded",
+      "answer": "50"
+    },
+    {
+      "sourceFieldId": "2019/1/1/1(1):a",
+      "status": "included",
+      "answer": "BGP（BGP4）"
+    },
+    {
+      "sourceFieldId": "2019/1/1/1(1):b",
+      "status": "included",
+      "answer": "バックボーン"
+    },
+    {
+      "sourceFieldId": "2019/1/1/1(1):c",
+      "status": "included",
+      "answer": "GARP"
+    },
+    {
+      "sourceFieldId": "2019/1/1/2(1):d",
+      "status": "included",
+      "answer": "ICMP"
+    },
+    {
+      "sourceFieldId": "2019/1/1/2(1):e",
+      "status": "included",
+      "answer": "SNMPトラップ"
+    },
+    {
+      "sourceFieldId": "2019/1/1/2(1):f",
+      "status": "included",
+      "answer": "MIB"
+    },
+    {
+      "sourceFieldId": "2019/1/2/2(1):ア",
+      "status": "excluded",
+      "answer": "順番"
+    },
+    {
+      "sourceFieldId": "2019/1/2/2(1):イ",
+      "status": "excluded",
+      "answer": "80"
+    },
+    {
+      "sourceFieldId": "2019/1/2/2(1):ウ",
+      "status": "excluded",
+      "answer": "200"
+    },
+    {
+      "sourceFieldId": "2019/1/2/2(1):エ",
+      "status": "included",
+      "answer": "Set-Cookie"
+    },
+    {
+      "sourceFieldId": "2019/1/2/2(1):オ",
+      "status": "included",
+      "answer": "Cookie"
+    },
+    {
+      "sourceFieldId": "2019/1/2/3(1):カ",
+      "status": "excluded",
+      "answer": "機器：FW／変更内容：任意のIPアドレスからWebシステムへのHTTPS通信を許可する。"
+    },
+    {
+      "sourceFieldId": "2019/1/3/2(3):a",
+      "status": "excluded",
+      "answer": "エ"
+    },
+    {
+      "sourceFieldId": "2019/1/3/2(3):b",
+      "status": "excluded",
+      "answer": "ア"
+    },
+    {
+      "sourceFieldId": "2019/1/3/2(3):c",
+      "status": "excluded",
+      "answer": "エ"
+    },
+    {
+      "sourceFieldId": "2019/1/3/2(3):d",
+      "status": "excluded",
+      "answer": "オ"
+    },
+    {
+      "sourceFieldId": "2019/2/1/1(1):ア",
+      "status": "excluded",
+      "answer": "PC"
+    },
+    {
+      "sourceFieldId": "2019/2/1/1(1):イ",
+      "status": "excluded",
+      "answer": "FW"
+    },
+    {
+      "sourceFieldId": "2019/2/1/1(1):カ",
+      "status": "excluded",
+      "answer": "IP-PBX"
+    },
+    {
+      "sourceFieldId": "2019/2/1/1(2):ウ",
+      "status": "included",
+      "answer": "REGISTER"
+    },
+    {
+      "sourceFieldId": "2019/2/1/1(2):エ",
+      "status": "included",
+      "answer": "SIP UA"
+    },
+    {
+      "sourceFieldId": "2019/2/1/1(2):オ",
+      "status": "included",
+      "answer": "200 OK"
+    },
+    {
+      "sourceFieldId": "2019/2/1/2(1):キ",
+      "status": "included",
+      "answer": "MPLS（Multi-Protocol Label Switching）"
+    },
+    {
+      "sourceFieldId": "2019/2/1/2(1):ク",
+      "status": "included",
+      "answer": "フルメッシュ"
+    },
+    {
+      "sourceFieldId": "2019/2/1/2(1):ケ",
+      "status": "excluded",
+      "answer": "Y-BBR"
+    },
+    {
+      "sourceFieldId": "2019/2/1/2(2):a",
+      "status": "excluded",
+      "answer": "支店～Y-VPN～本社"
+    },
+    {
+      "sourceFieldId": "2019/2/1/3(1):コ",
+      "status": "excluded",
+      "answer": "本社のスマホ"
+    },
+    {
+      "sourceFieldId": "2019/2/1/3(2):b",
+      "status": "excluded",
+      "answer": "本社のIP電話機の保留"
+    },
+    {
+      "sourceFieldId": "2019/2/1/4(2):c",
+      "status": "excluded",
+      "answer": "公衆電話網の電話番号の移行"
+    },
+    {
+      "sourceFieldId": "2019/2/1/4(2):d",
+      "status": "excluded",
+      "answer": "本社と社外の電話との発着信"
+    },
+    {
+      "sourceFieldId": "2019/2/1/4(4):サ",
+      "status": "excluded",
+      "answer": "b2"
+    },
+    {
+      "sourceFieldId": "2019/2/1/4(4):シ",
+      "status": "excluded",
+      "answer": "b3"
+    },
+    {
+      "sourceFieldId": "2019/2/2/1:a",
+      "status": "included",
+      "answer": "ホスト（アドレス）"
+    },
+    {
+      "sourceFieldId": "2019/2/2/1:b",
+      "status": "included",
+      "answer": "ICMP（ICMP Unreachable）"
+    },
+    {
+      "sourceFieldId": "2019/2/2/1:c",
+      "status": "excluded",
+      "answer": "3"
+    },
+    {
+      "sourceFieldId": "2019/2/2/1:d",
+      "status": "excluded",
+      "answer": "FPサーバ"
+    },
+    {
+      "sourceFieldId": "2019/2/2/1:e",
+      "status": "excluded",
+      "answer": "メール中継サーバ"
+    },
+    {
+      "sourceFieldId": "2019/2/2/2:ア",
+      "status": "excluded",
+      "answer": "IPアドレス：x.y.z.1／通信の名称：ゾーン転送"
+    },
+    {
+      "sourceFieldId": "2019/2/2/4(1):イ",
+      "status": "excluded",
+      "answer": "シーケンス"
+    },
+    {
+      "sourceFieldId": "2019/2/2/4(1):ウ",
+      "status": "excluded",
+      "answer": "確認応答"
+    },
+    {
+      "sourceFieldId": "2019/2/2/4(1):エ",
+      "status": "excluded",
+      "answer": "1"
+    },
+    {
+      "sourceFieldId": "2019/2/2/4(5):オ",
+      "status": "excluded",
+      "answer": "α.β.γ.6"
+    },
+    {
+      "sourceFieldId": "2019/2/2/4(5):カ",
+      "status": "excluded",
+      "answer": "any"
+    },
+    {
+      "sourceFieldId": "2019/2/2/5(1):キ",
+      "status": "excluded",
+      "answer": "コンテンツサーバのIPアドレス"
+    },
+    {
+      "sourceFieldId": "2019/2/2/5(1):ク",
+      "status": "excluded",
+      "answer": "フルリゾルバサーバのIPアドレス"
+    },
+    {
+      "sourceFieldId": "2019/2/2/5(1):ケ",
+      "status": "excluded",
+      "answer": "53"
+    },
+    {
+      "sourceFieldId": "2019/2/2/5(1):コ",
+      "status": "excluded",
+      "answer": "n"
+    },
+    {
+      "sourceFieldId": "2019/2/2/5(1):サ",
+      "status": "excluded",
+      "answer": "m"
+    },
+    {
+      "sourceFieldId": "2018/1/1/1(1):ア",
+      "status": "included",
+      "answer": "フォワード"
+    },
+    {
+      "sourceFieldId": "2018/1/1/1(1):イ",
+      "status": "included",
+      "answer": "リバース"
+    },
+    {
+      "sourceFieldId": "2018/1/1/2(2):ウ",
+      "status": "included",
+      "answer": "プロキシサーバのルート証明書"
+    },
+    {
+      "sourceFieldId": "2018/1/1/3(1):エ",
+      "status": "included",
+      "answer": "コントロール"
+    },
+    {
+      "sourceFieldId": "2018/1/1/3(3):オ",
+      "status": "excluded",
+      "answer": "SD-WANコントローラ"
+    },
+    {
+      "sourceFieldId": "2018/1/2/1:ア",
+      "status": "included",
+      "answer": "ICMP"
+    },
+    {
+      "sourceFieldId": "2018/1/2/1:イ",
+      "status": "included",
+      "answer": "IPアドレス"
+    },
+    {
+      "sourceFieldId": "2018/1/2/1:ウ",
+      "status": "included",
+      "answer": "UDP"
+    },
+    {
+      "sourceFieldId": "2018/1/2/1:エ",
+      "status": "included",
+      "answer": "コミュニティ"
+    },
+    {
+      "sourceFieldId": "2018/1/3/1:ア",
+      "status": "included",
+      "answer": "ラベル"
+    },
+    {
+      "sourceFieldId": "2018/1/3/1:イ",
+      "status": "included",
+      "answer": "PEルータ"
+    },
+    {
+      "sourceFieldId": "2018/1/3/1:ウ",
+      "status": "included",
+      "answer": "ネットワーク"
+    },
+    {
+      "sourceFieldId": "2018/1/3/1:エ",
+      "status": "included",
+      "answer": "IP-VPN"
+    },
+    {
+      "sourceFieldId": "2018/1/3/1:オ",
+      "status": "included",
+      "answer": "インターネットVPN"
+    },
+    {
+      "sourceFieldId": "2018/2/1/1(1):ア",
+      "status": "included",
+      "answer": "暗号化"
+    },
+    {
+      "sourceFieldId": "2018/2/1/1(1):イ",
+      "status": "included",
+      "answer": "検知"
+    },
+    {
+      "sourceFieldId": "2018/2/1/1(1):ウ",
+      "status": "included",
+      "answer": "認証"
+    },
+    {
+      "sourceFieldId": "2018/2/1/1(1):エ",
+      "status": "included",
+      "answer": "TCP"
+    },
+    {
+      "sourceFieldId": "2018/2/1/2(3):オ",
+      "status": "included",
+      "answer": "SUBSCRIBE"
+    },
+    {
+      "sourceFieldId": "2018/2/1/2(3):カ",
+      "status": "excluded",
+      "answer": "config/Di"
+    },
+    {
+      "sourceFieldId": "2018/2/1/2(3):キ",
+      "status": "excluded",
+      "answer": "デバイスDi"
+    },
+    {
+      "sourceFieldId": "2018/2/1/2(3):ク",
+      "status": "excluded",
+      "answer": "交換サーバ"
+    },
+    {
+      "sourceFieldId": "2018/2/1/2(3):ケ",
+      "status": "excluded",
+      "answer": "業務サーバ"
+    },
+    {
+      "sourceFieldId": "2018/2/1/2(4):コ",
+      "status": "excluded",
+      "answer": "業務サーバ、交換サーバ"
+    },
+    {
+      "sourceFieldId": "2018/2/1/3(1):サ",
+      "status": "excluded",
+      "answer": "認可"
+    },
+    {
+      "sourceFieldId": "2018/2/1/3(1):シ",
+      "status": "excluded",
+      "answer": "WebAP"
+    },
+    {
+      "sourceFieldId": "2018/2/1/3(1):ス",
+      "status": "included",
+      "answer": "リフレッシュトークン"
+    },
+    {
+      "sourceFieldId": "2018/2/1/3(1):セ",
+      "status": "excluded",
+      "answer": "認可応答"
+    },
+    {
+      "sourceFieldId": "2018/2/1/3(1):ソ",
+      "status": "excluded",
+      "answer": "認可"
+    },
+    {
+      "sourceFieldId": "2018/2/2/1:ア",
+      "status": "included",
+      "answer": "スタック"
+    },
+    {
+      "sourceFieldId": "2018/2/2/1:イ",
+      "status": "included",
+      "answer": "ステートフル"
+    },
+    {
+      "sourceFieldId": "2018/2/2/1:ウ",
+      "status": "included",
+      "answer": "負荷分散"
+    },
+    {
+      "sourceFieldId": "2018/2/2/1:エ",
+      "status": "included",
+      "answer": "チーミング"
+    },
+    {
+      "sourceFieldId": "2018/2/2/5(3):オ",
+      "status": "excluded",
+      "answer": "Fテーブル1、項番2"
+    },
+    {
+      "sourceFieldId": "2018/2/2/5(3):カ",
+      "status": "excluded",
+      "answer": "Fテーブル0、項番6"
+    },
+    {
+      "sourceFieldId": "2018/2/2/5(3):キ",
+      "status": "excluded",
+      "answer": "Fテーブル4、項番6"
+    },
+    {
+      "sourceFieldId": "2017/1/1/1:ア",
+      "status": "included",
+      "answer": "SHA-1"
+    },
+    {
+      "sourceFieldId": "2017/1/1/1:イ",
+      "status": "excluded",
+      "answer": "1.2"
+    },
+    {
+      "sourceFieldId": "2017/1/1/1:ウ",
+      "status": "included",
+      "answer": "Client_Hello"
+    },
+    {
+      "sourceFieldId": "2017/1/1/1:エ",
+      "status": "included",
+      "answer": "Server_Hello"
+    },
+    {
+      "sourceFieldId": "2017/1/1/1:オ",
+      "status": "included",
+      "answer": "リバースプロキシ"
+    },
+    {
+      "sourceFieldId": "2017/1/1/3:カ",
+      "status": "excluded",
+      "answer": "内部LAN"
+    },
+    {
+      "sourceFieldId": "2017/1/1/3:キ",
+      "status": "excluded",
+      "answer": "DMZ"
+    },
+    {
+      "sourceFieldId": "2017/1/1/3:ク",
+      "status": "excluded",
+      "answer": "172.16.0.0/16"
+    },
+    {
+      "sourceFieldId": "2017/1/1/3:ケ",
+      "status": "excluded",
+      "answer": "202.y.44.2/32"
+    },
+    {
+      "sourceFieldId": "2017/1/2/2(2):a",
+      "status": "excluded",
+      "answer": "1.25"
+    },
+    {
+      "sourceFieldId": "2017/1/2/2(2):b",
+      "status": "excluded",
+      "answer": "100"
+    },
+    {
+      "sourceFieldId": "2017/1/2/2(2):c",
+      "status": "excluded",
+      "answer": "10"
+    },
+    {
+      "sourceFieldId": "2017/1/2/4:ア",
+      "status": "excluded",
+      "answer": "仮想SW"
+    },
+    {
+      "sourceFieldId": "2017/1/2/4:イ",
+      "status": "excluded",
+      "answer": "任意"
+    },
+    {
+      "sourceFieldId": "2017/1/2/4:ウ",
+      "status": "excluded",
+      "answer": "C&Cサーバ"
+    },
+    {
+      "sourceFieldId": "2017/1/3/1:ア",
+      "status": "included",
+      "answer": "NAPT"
+    },
+    {
+      "sourceFieldId": "2017/1/3/1:イ",
+      "status": "included",
+      "answer": "事前共有鍵"
+    },
+    {
+      "sourceFieldId": "2017/1/3/1:ウ",
+      "status": "included",
+      "answer": "AS"
+    },
+    {
+      "sourceFieldId": "2017/1/3/1:エ",
+      "status": "included",
+      "answer": "TCP"
+    },
+    {
+      "sourceFieldId": "2017/1/3/1:オ",
+      "status": "included",
+      "answer": "ICMP"
+    },
+    {
+      "sourceFieldId": "2017/1/3/1:カ",
+      "status": "included",
+      "answer": "echo reply"
+    },
+    {
+      "sourceFieldId": "2017/1/3/3(3):A",
+      "status": "excluded",
+      "answer": "大きく"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:あ",
+      "status": "excluded",
+      "answer": "i1"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:い",
+      "status": "included",
+      "answer": "NAT"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:う",
+      "status": "excluded",
+      "answer": "i3"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:え",
+      "status": "included",
+      "answer": "Flow-Mod"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:お",
+      "status": "included",
+      "answer": "controller"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:か",
+      "status": "included",
+      "answer": "Packet-Out"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:き",
+      "status": "excluded",
+      "answer": "OFS2"
+    },
+    {
+      "sourceFieldId": "2017/2/1/1:く",
+      "status": "excluded",
+      "answer": "p9"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(1):け",
+      "status": "excluded",
+      "answer": "v2"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(1):こ",
+      "status": "excluded",
+      "answer": "なし"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(1):さ",
+      "status": "excluded",
+      "answer": "m2"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(1):し",
+      "status": "excluded",
+      "answer": "m3"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(1):す",
+      "status": "excluded",
+      "answer": "i4"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(5):せ",
+      "status": "excluded",
+      "answer": "p6"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(5):そ",
+      "status": "excluded",
+      "answer": "なし"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(5):た",
+      "status": "excluded",
+      "answer": "m1"
+    },
+    {
+      "sourceFieldId": "2017/2/1/2(5):ち",
+      "status": "excluded",
+      "answer": "m2"
+    },
+    {
+      "sourceFieldId": "2017/2/1/3(1):つ",
+      "status": "excluded",
+      "answer": "CNAME"
+    },
+    {
+      "sourceFieldId": "2017/2/2/1:a",
+      "status": "excluded",
+      "answer": "2.4"
+    },
+    {
+      "sourceFieldId": "2017/2/2/1:b",
+      "status": "excluded",
+      "answer": "5"
+    },
+    {
+      "sourceFieldId": "2017/2/2/1:c",
+      "status": "excluded",
+      "answer": "any"
+    },
+    {
+      "sourceFieldId": "2017/2/2/1:d",
+      "status": "excluded",
+      "answer": "共通"
+    },
+    {
+      "sourceFieldId": "2017/2/2/1:e",
+      "status": "excluded",
+      "answer": "802.11i"
+    },
+    {
+      "sourceFieldId": "2017/2/2/2(1):f",
+      "status": "included",
+      "answer": "ストリーム"
+    },
+    {
+      "sourceFieldId": "2017/2/2/2(1):g",
+      "status": "excluded",
+      "answer": "同一"
+    },
+    {
+      "sourceFieldId": "2017/2/2/2(1):h",
+      "status": "included",
+      "answer": "認証サーバ"
+    },
+    {
+      "sourceFieldId": "2017/2/2/2(1):i",
+      "status": "included",
+      "answer": "MACアドレス"
+    },
+    {
+      "sourceFieldId": "2017/2/2/2(1):j",
+      "status": "included",
+      "answer": "認証"
+    },
+    {
+      "sourceFieldId": "2016/1/1/1:ア",
+      "status": "included",
+      "answer": "MX"
+    },
+    {
+      "sourceFieldId": "2016/1/1/1:イ",
+      "status": "excluded",
+      "answer": "MSV3"
+    },
+    {
+      "sourceFieldId": "2016/1/1/1:ウ",
+      "status": "excluded",
+      "answer": "MSV2"
+    },
+    {
+      "sourceFieldId": "2016/1/1/1:エ",
+      "status": "included",
+      "answer": "SMTP-AUTH"
+    },
+    {
+      "sourceFieldId": "2016/1/1/2(3):オ",
+      "status": "excluded",
+      "answer": "TCP"
+    },
+    {
+      "sourceFieldId": "2016/1/1/2(3):カ",
+      "status": "excluded",
+      "answer": "a.b.0.0/20"
+    },
+    {
+      "sourceFieldId": "2016/1/1/2(3):キ",
+      "status": "excluded",
+      "answer": "25"
+    },
+    {
+      "sourceFieldId": "2016/1/2/1:ア",
+      "status": "included",
+      "answer": "AES"
+    },
+    {
+      "sourceFieldId": "2016/1/2/1:イ",
+      "status": "included",
+      "answer": "事前共有鍵"
+    },
+    {
+      "sourceFieldId": "2016/1/2/1:ウ",
+      "status": "included",
+      "answer": "SIMカード"
+    },
+    {
+      "sourceFieldId": "2016/1/2/1:エ",
+      "status": "included",
+      "answer": "APN"
+    },
+    {
+      "sourceFieldId": "2016/1/2/1:オ",
+      "status": "included",
+      "answer": "NAPT"
+    },
+    {
+      "sourceFieldId": "2016/1/2/1:カ",
+      "status": "included",
+      "answer": "CONNECT"
+    },
+    {
+      "sourceFieldId": "2016/1/3/1(1):a",
+      "status": "included",
+      "answer": "ゾーン転送"
+    },
+    {
+      "sourceFieldId": "2016/1/3/1(1):b",
+      "status": "excluded",
+      "answer": "SMTP"
+    },
+    {
+      "sourceFieldId": "2016/1/3/1(2):c",
+      "status": "excluded",
+      "answer": "DNS1"
+    },
+    {
+      "sourceFieldId": "2016/1/3/2(1):d",
+      "status": "excluded",
+      "answer": "新MSV1"
+    },
+    {
+      "sourceFieldId": "2016/1/3/2(1):e",
+      "status": "excluded",
+      "answer": "新MSV2"
+    },
+    {
+      "sourceFieldId": "2016/2/1/1(1):ア",
+      "status": "excluded",
+      "answer": "ip1/29"
+    },
+    {
+      "sourceFieldId": "2016/2/1/1(1):イ",
+      "status": "excluded",
+      "answer": "10.0.9.0/24"
+    },
+    {
+      "sourceFieldId": "2016/2/1/1(1):ウ",
+      "status": "included",
+      "answer": "送信元ポート番号"
+    },
+    {
+      "sourceFieldId": "2016/2/1/3(3):A",
+      "status": "excluded",
+      "answer": "vlan1"
+    },
+    {
+      "sourceFieldId": "2016/2/1/3(3):B",
+      "status": "excluded",
+      "answer": "vlan2"
+    },
+    {
+      "sourceFieldId": "2016/2/1/3(4):エ",
+      "status": "excluded",
+      "answer": "ブラウザ2のAP"
+    },
+    {
+      "sourceFieldId": "2016/2/1/3(4):オ",
+      "status": "included",
+      "answer": "STUNサーバ"
+    },
+    {
+      "sourceFieldId": "2016/2/1/4(1):カ",
+      "status": "excluded",
+      "answer": "HTTP"
+    },
+    {
+      "sourceFieldId": "2016/2/1/4(1):キ",
+      "status": "included",
+      "answer": "WebSocket"
+    },
+    {
+      "sourceFieldId": "2016/2/1/4(3):C",
+      "status": "excluded",
+      "answer": "vlan1"
+    },
+    {
+      "sourceFieldId": "2016/2/1/4(3):D",
+      "status": "excluded",
+      "answer": "vlan2"
+    },
+    {
+      "sourceFieldId": "2016/2/1/4(4):ク",
+      "status": "excluded",
+      "answer": "IP-PBX"
+    },
+    {
+      "sourceFieldId": "2016/2/1/4(4):ケ",
+      "status": "included",
+      "answer": "DNS"
+    },
+    {
+      "sourceFieldId": "2016/2/1/4(4):コ",
+      "status": "excluded",
+      "answer": "LB"
+    },
+    {
+      "sourceFieldId": "2016/2/1/5(1):サ",
+      "status": "included",
+      "answer": "切り戻し"
+    },
+    {
+      "sourceFieldId": "2016/2/2/1:ア",
+      "status": "excluded",
+      "answer": "32"
+    },
+    {
+      "sourceFieldId": "2016/2/2/1:イ",
+      "status": "included",
+      "answer": "セレクタ"
+    },
+    {
+      "sourceFieldId": "2016/2/2/1:ウ",
+      "status": "included",
+      "answer": "アグレッシブ"
+    },
+    {
+      "sourceFieldId": "2016/2/2/1:エ",
+      "status": "included",
+      "answer": "経路"
+    },
+    {
+      "sourceFieldId": "2016/2/2/1:オ",
+      "status": "included",
+      "answer": "断片化"
+    },
+    {
+      "sourceFieldId": "2016/2/2/3(1):あ",
+      "status": "excluded",
+      "answer": "1,436"
+    },
+    {
+      "sourceFieldId": "2016/2/2/3(1):い",
+      "status": "excluded",
+      "answer": "1,414"
+    },
+    {
+      "sourceFieldId": "2016/2/2/5(6):う",
+      "status": "excluded",
+      "answer": "広域イーサ網→本社→専用線"
+    },
+    {
+      "sourceFieldId": "2016/2/2/5(6):え",
+      "status": "excluded",
+      "answer": "インターネットVPN→データセンタ→専用線"
+    },
+    {
+      "sourceFieldId": "2015/1/1/1:ア",
+      "status": "included",
+      "answer": "リバースプロキシ"
+    },
+    {
+      "sourceFieldId": "2015/1/1/1:イ",
+      "status": "included",
+      "answer": "リダイレクト"
+    },
+    {
+      "sourceFieldId": "2015/1/1/1:ウ",
+      "status": "included",
+      "answer": "Set-Cookie"
+    },
+    {
+      "sourceFieldId": "2015/1/1/1:エ",
+      "status": "excluded",
+      "answer": "内部DNS"
+    },
+    {
+      "sourceFieldId": "2015/1/1/1:オ",
+      "status": "included",
+      "answer": "ループバック"
+    },
+    {
+      "sourceFieldId": "2015/1/2/1:ア",
+      "status": "included",
+      "answer": "スループット"
+    },
+    {
+      "sourceFieldId": "2015/1/2/1:イ",
+      "status": "excluded",
+      "answer": "パケット"
+    },
+    {
+      "sourceFieldId": "2015/1/2/1:ウ",
+      "status": "excluded",
+      "answer": "維持"
+    },
+    {
+      "sourceFieldId": "2015/1/2/3(2):あ",
+      "status": "excluded",
+      "answer": "99"
+    },
+    {
+      "sourceFieldId": "2015/1/2/3(2):い",
+      "status": "excluded",
+      "answer": "180"
+    },
+    {
+      "sourceFieldId": "2015/1/3/1:ア",
+      "status": "included",
+      "answer": "アノマリ（異常検知）"
+    },
+    {
+      "sourceFieldId": "2015/1/3/1:イ",
+      "status": "included",
+      "answer": "ミラー（ミラーリング）"
+    },
+    {
+      "sourceFieldId": "2015/1/3/1:ウ",
+      "status": "included",
+      "answer": "プロミスキャス"
+    },
+    {
+      "sourceFieldId": "2015/1/3/1:エ",
+      "status": "included",
+      "answer": "IP"
+    },
+    {
+      "sourceFieldId": "2015/1/3/1:オ",
+      "status": "included",
+      "answer": "unreachable"
+    },
+    {
+      "sourceFieldId": "2015/2/1/1(1):あ",
+      "status": "excluded",
+      "answer": "送信元IP"
+    },
+    {
+      "sourceFieldId": "2015/2/1/1(2):い",
+      "status": "excluded",
+      "answer": "LB正"
+    },
+    {
+      "sourceFieldId": "2015/2/1/2(1):う",
+      "status": "excluded",
+      "answer": "中継装置"
+    },
+    {
+      "sourceFieldId": "2015/2/1/2(1):え",
+      "status": "excluded",
+      "answer": "通信アダプタ"
+    },
+    {
+      "sourceFieldId": "2015/2/1/2(1):お",
+      "status": "included",
+      "answer": "リバース"
+    },
+    {
+      "sourceFieldId": "2015/2/1/3(1):か",
+      "status": "excluded",
+      "answer": "通信アダプタ"
+    },
+    {
+      "sourceFieldId": "2015/2/1/4(1):き",
+      "status": "excluded",
+      "answer": "LB"
+    },
+    {
+      "sourceFieldId": "2015/2/1/4(3):ア",
+      "status": "excluded",
+      "answer": "30"
+    },
+    {
+      "sourceFieldId": "2015/2/1/4(3):イ",
+      "status": "excluded",
+      "answer": "72"
+    },
+    {
+      "sourceFieldId": "2015/2/1/4(3):ウ",
+      "status": "excluded",
+      "answer": "6"
+    },
+    {
+      "sourceFieldId": "2015/2/2/1:a",
+      "status": "excluded",
+      "answer": "3"
+    },
+    {
+      "sourceFieldId": "2015/2/2/1:b",
+      "status": "excluded",
+      "answer": "16"
+    },
+    {
+      "sourceFieldId": "2015/2/2/1:c",
+      "status": "included",
+      "answer": "アクティブ"
+    },
+    {
+      "sourceFieldId": "2015/2/2/1:d",
+      "status": "included",
+      "answer": "D"
+    },
+    {
+      "sourceFieldId": "2015/2/2/1:e",
+      "status": "included",
+      "answer": "マルチキャストMACアドレス"
+    },
+    {
+      "sourceFieldId": "2015/2/2/4(3):ア",
+      "status": "excluded",
+      "answer": "01-00-5e-01-01-01"
+    },
+    {
+      "sourceFieldId": "2015/2/2/4(3):イ",
+      "status": "excluded",
+      "answer": "①受信時：p1／②受信時：p1、p3／③受信時：p3"
+    },
+    {
+      "sourceFieldId": "2014/1/1/1:ア",
+      "status": "included",
+      "answer": "帯域幅（通信速度）"
+    },
+    {
+      "sourceFieldId": "2014/1/1/1:イ",
+      "status": "excluded",
+      "answer": "0"
+    },
+    {
+      "sourceFieldId": "2014/1/1/1:ウ",
+      "status": "included",
+      "answer": "TOS"
+    },
+    {
+      "sourceFieldId": "2014/1/1/1:エ",
+      "status": "included",
+      "answer": "DiffServ"
+    },
+    {
+      "sourceFieldId": "2014/1/1/1:オ",
+      "status": "excluded",
+      "answer": "高く"
+    },
+    {
+      "sourceFieldId": "2014/1/1/2(3):a",
+      "status": "excluded",
+      "answer": "ルータ1→ルータ3"
+    },
+    {
+      "sourceFieldId": "2014/1/1/2(3):b",
+      "status": "excluded",
+      "answer": "ルータ2→ルータ1→ルータ3"
+    },
+    {
+      "sourceFieldId": "2014/1/2/1:ア",
+      "status": "included",
+      "answer": "NAPT"
+    },
+    {
+      "sourceFieldId": "2014/1/2/1:イ",
+      "status": "included",
+      "answer": "ステートフル"
+    },
+    {
+      "sourceFieldId": "2014/1/2/1:ウ",
+      "status": "included",
+      "answer": "物理（第1）"
+    },
+    {
+      "sourceFieldId": "2014/1/2/1:エ",
+      "status": "included",
+      "answer": "Gratuitous ARP（GARP）"
+    },
+    {
+      "sourceFieldId": "2014/1/2/1:オ",
+      "status": "included",
+      "answer": "タグ"
+    },
+    {
+      "sourceFieldId": "2014/1/2/2(5):a",
+      "status": "excluded",
+      "answer": "ルータ、DNSサーバ、Webサーバ"
+    },
+    {
+      "sourceFieldId": "2014/1/2/2(5):b",
+      "status": "excluded",
+      "answer": "FW1から設定情報が同期されたこと"
+    },
+    {
+      "sourceFieldId": "2014/1/3/1:ア",
+      "status": "included",
+      "answer": "分散"
+    },
+    {
+      "sourceFieldId": "2014/1/3/1:イ",
+      "status": "included",
+      "answer": "フラッド"
+    },
+    {
+      "sourceFieldId": "2014/1/3/1:ウ",
+      "status": "included",
+      "answer": "再帰"
+    },
+    {
+      "sourceFieldId": "2014/1/3/1:エ",
+      "status": "included",
+      "answer": "リフレクタ"
+    },
+    {
+      "sourceFieldId": "2014/1/3/1:オ",
+      "status": "included",
+      "answer": "ペネトレーション"
+    },
+    {
+      "sourceFieldId": "2014/1/3/2(1):a",
+      "status": "included",
+      "answer": "踏み台"
+    },
+    {
+      "sourceFieldId": "2014/1/3/4(1):b",
+      "status": "excluded",
+      "answer": "ネットワークの切断"
+    },
+    {
+      "sourceFieldId": "2014/2/1/1:a",
+      "status": "included",
+      "answer": "URL"
+    },
+    {
+      "sourceFieldId": "2014/2/1/1:b",
+      "status": "included",
+      "answer": "HTTP"
+    },
+    {
+      "sourceFieldId": "2014/2/1/1:c",
+      "status": "included",
+      "answer": "IPアドレス"
+    },
+    {
+      "sourceFieldId": "2014/2/1/1:d",
+      "status": "included",
+      "answer": "コンテンツフィルタリング"
+    },
+    {
+      "sourceFieldId": "2014/2/1/1:e",
+      "status": "included",
+      "answer": "トンネリング"
+    },
+    {
+      "sourceFieldId": "2014/2/2/1(1):a",
+      "status": "included",
+      "answer": "インスタントメッセージ（チャット）"
+    },
+    {
+      "sourceFieldId": "2014/2/2/1(1):b",
+      "status": "included",
+      "answer": "RTP（又はRTPとRTCP）"
+    },
+    {
+      "sourceFieldId": "2014/2/2/1(1):c",
+      "status": "included",
+      "answer": "UDP"
+    },
+    {
+      "sourceFieldId": "2014/2/2/1(1):d",
+      "status": "included",
+      "answer": "テキスト"
+    },
+    {
+      "sourceFieldId": "2014/2/2/4(2):e",
+      "status": "excluded",
+      "answer": "VoIP-GW"
+    },
+    {
+      "sourceFieldId": "2014/2/2/4(2):f",
+      "status": "excluded",
+      "answer": "IP-PBX"
+    },
+    {
+      "sourceFieldId": "2014/2/2/5(1):ア",
+      "status": "excluded",
+      "answer": "IP01"
+    },
+    {
+      "sourceFieldId": "2014/2/2/5(1):イ",
+      "status": "excluded",
+      "answer": "Any"
+    },
+    {
+      "sourceFieldId": "2014/2/2/5(1):ウ",
+      "status": "excluded",
+      "answer": "Any"
+    },
+    {
+      "sourceFieldId": "2014/2/2/5(1):エ",
+      "status": "excluded",
+      "answer": "443"
+    },
+    {
+      "sourceFieldId": "2013/1/1/1:ア",
+      "status": "included",
+      "answer": "HELLO"
+    },
+    {
+      "sourceFieldId": "2013/1/1/1:イ",
+      "status": "excluded",
+      "answer": "127.255.255.254"
+    },
+    {
+      "sourceFieldId": "2013/1/1/1:ウ",
+      "status": "included",
+      "answer": "FQDN"
+    },
+    {
+      "sourceFieldId": "2013/1/1/1:エ",
+      "status": "included",
+      "answer": "第三者認証局"
+    },
+    {
+      "sourceFieldId": "2013/1/1/3:オ",
+      "status": "excluded",
+      "answer": "202.y.63.10"
+    },
+    {
+      "sourceFieldId": "2013/1/1/3:カ",
+      "status": "excluded",
+      "answer": "443"
+    },
+    {
+      "sourceFieldId": "2013/1/1/3:キ",
+      "status": "excluded",
+      "answer": "202.y.63.11"
+    },
+    {
+      "sourceFieldId": "2013/1/1/3:ク",
+      "status": "excluded",
+      "answer": "202.y.63.11"
+    },
+    {
+      "sourceFieldId": "2013/1/1/3:ケ",
+      "status": "excluded",
+      "answer": "202.y.63.11"
+    },
+    {
+      "sourceFieldId": "2013/1/2/1:ア",
+      "status": "included",
+      "answer": "リレーエージェント"
+    },
+    {
+      "sourceFieldId": "2013/1/2/1:イ",
+      "status": "included",
+      "answer": "ARP"
+    },
+    {
+      "sourceFieldId": "2013/1/2/1:ウ",
+      "status": "included",
+      "answer": "製造者"
+    },
+    {
+      "sourceFieldId": "2013/1/2/1:エ",
+      "status": "included",
+      "answer": "ミラー"
+    },
+    {
+      "sourceFieldId": "2013/1/2/1:オ",
+      "status": "included",
+      "answer": "DHCPDISCOVER"
+    },
+    {
+      "sourceFieldId": "2013/1/2/2(1):a",
+      "status": "excluded",
+      "answer": "5"
+    },
+    {
+      "sourceFieldId": "2013/1/2/3(1):b",
+      "status": "excluded",
+      "answer": "24"
+    },
+    {
+      "sourceFieldId": "2013/1/2/3(1):c",
+      "status": "excluded",
+      "answer": "6"
+    },
+    {
+      "sourceFieldId": "2013/1/3/1:ア",
+      "status": "included",
+      "answer": "タグ"
+    },
+    {
+      "sourceFieldId": "2013/1/3/1:イ",
+      "status": "excluded",
+      "answer": "12"
+    },
+    {
+      "sourceFieldId": "2013/1/3/1:ウ",
+      "status": "included",
+      "answer": "帯域"
+    },
+    {
+      "sourceFieldId": "2013/1/3/1:エ",
+      "status": "included",
+      "answer": "ルータ"
+    },
+    {
+      "sourceFieldId": "2013/1/3/1:オ",
+      "status": "included",
+      "answer": "スタック"
+    },
+    {
+      "sourceFieldId": "2013/2/1/1:ア",
+      "status": "included",
+      "answer": "L3SW（レイヤ3スイッチ）"
+    },
+    {
+      "sourceFieldId": "2013/2/1/1:イ",
+      "status": "excluded",
+      "answer": "最小"
+    },
+    {
+      "sourceFieldId": "2013/2/1/1:ウ",
+      "status": "included",
+      "answer": "802.11"
+    },
+    {
+      "sourceFieldId": "2013/2/1/1:エ",
+      "status": "included",
+      "answer": "暗号化"
+    },
+    {
+      "sourceFieldId": "2013/2/1/1:オ",
+      "status": "included",
+      "answer": "RC4"
+    },
+    {
+      "sourceFieldId": "2013/2/1/1:カ",
+      "status": "included",
+      "answer": "ESSID（SSID）"
+    },
+    {
+      "sourceFieldId": "2013/2/1/4(4):a",
+      "status": "excluded",
+      "answer": "HAプロキシ"
+    },
+    {
+      "sourceFieldId": "2013/2/1/4(4):b",
+      "status": "excluded",
+      "answer": "FA"
+    },
+    {
+      "sourceFieldId": "2013/2/1/4(4):c",
+      "status": "excluded",
+      "answer": "HA"
+    },
+    {
+      "sourceFieldId": "2013/2/1/4(4):d",
+      "status": "excluded",
+      "answer": "FAプロキシ"
+    },
+    {
+      "sourceFieldId": "2013/2/1/4(4):e",
+      "status": "excluded",
+      "answer": "FA"
+    },
+    {
+      "sourceFieldId": "2013/2/2/1(1):a",
+      "status": "included",
+      "answer": "SDN"
+    },
+    {
+      "sourceFieldId": "2013/2/2/1(1):b",
+      "status": "included",
+      "answer": "ブリッジ（レイヤ2スイッチ）"
+    },
+    {
+      "sourceFieldId": "2013/2/2/1(1):c",
+      "status": "included",
+      "answer": "ルータ（レイヤ3スイッチ）"
+    },
+    {
+      "sourceFieldId": "2013/2/2/1(2):ア",
+      "status": "excluded",
+      "answer": "接続用トンネルを終端する機能（カプセル化用ヘッダの追加・削除）"
+    },
+    {
+      "sourceFieldId": "2013/2/2/1(2):イ",
+      "status": "excluded",
+      "answer": "中継路でフラグメンテーションが発生する。"
+    },
+    {
+      "sourceFieldId": "2012/1/1/1:ア",
+      "status": "included",
+      "answer": "ゾーン"
+    },
+    {
+      "sourceFieldId": "2012/1/1/1:イ",
+      "status": "included",
+      "answer": "事業継続"
+    },
+    {
+      "sourceFieldId": "2012/1/1/1:ウ",
+      "status": "included",
+      "answer": "A"
+    },
+    {
+      "sourceFieldId": "2012/1/1/1:エ",
+      "status": "included",
+      "answer": "権威"
+    },
+    {
+      "sourceFieldId": "2012/1/1/2(1):a",
+      "status": "excluded",
+      "answer": "DC-C"
+    },
+    {
+      "sourceFieldId": "2012/1/1/2(1):b",
+      "status": "excluded",
+      "answer": "DC-D"
+    },
+    {
+      "sourceFieldId": "2012/1/2/1(1):ア",
+      "status": "included",
+      "answer": "802.3"
+    },
+    {
+      "sourceFieldId": "2012/1/2/1(1):イ",
+      "status": "included",
+      "answer": "PSE"
+    },
+    {
+      "sourceFieldId": "2012/1/2/1(1):ウ",
+      "status": "included",
+      "answer": "PoE"
+    },
+    {
+      "sourceFieldId": "2012/1/2/1(1):エ",
+      "status": "excluded",
+      "answer": "4、5、7、8"
+    },
+    {
+      "sourceFieldId": "2012/1/2/1(1):オ",
+      "status": "included",
+      "answer": "IEEE802.3at"
+    },
+    {
+      "sourceFieldId": "2012/1/3/1:ア",
+      "status": "included",
+      "answer": "チャネルボンディング"
+    },
+    {
+      "sourceFieldId": "2012/1/3/1:イ",
+      "status": "excluded",
+      "answer": "300"
+    },
+    {
+      "sourceFieldId": "2012/1/3/1:ウ",
+      "status": "included",
+      "answer": "MIMO"
+    },
+    {
+      "sourceFieldId": "2012/1/3/1:エ",
+      "status": "included",
+      "answer": "プリアンブル"
+    },
+    {
+      "sourceFieldId": "2012/1/3/1:オ",
+      "status": "included",
+      "answer": "URLリライティング"
+    },
+    {
+      "sourceFieldId": "2012/2/1/1:ア",
+      "status": "included",
+      "answer": "あふれ（又は枯渇）"
+    },
+    {
+      "sourceFieldId": "2012/2/1/1:イ",
+      "status": "excluded",
+      "answer": "10"
+    },
+    {
+      "sourceFieldId": "2012/2/1/1:ウ",
+      "status": "included",
+      "answer": "SPOF（単一障害点）"
+    },
+    {
+      "sourceFieldId": "2012/2/1/3(2):a",
+      "status": "excluded",
+      "answer": "FCoEフレーム"
+    },
+    {
+      "sourceFieldId": "2012/2/1/3(2):b",
+      "status": "excluded",
+      "answer": "FCoEフレーム"
+    },
+    {
+      "sourceFieldId": "2012/2/1/3(2):c",
+      "status": "excluded",
+      "answer": "FCフレーム"
+    },
+    {
+      "sourceFieldId": "2012/2/2/1:ア",
+      "status": "included",
+      "answer": "ICMP"
+    },
+    {
+      "sourceFieldId": "2012/2/2/1:イ",
+      "status": "included",
+      "answer": "IPアドレス"
+    },
+    {
+      "sourceFieldId": "2012/2/2/1:ウ",
+      "status": "included",
+      "answer": "拡張"
+    },
+    {
+      "sourceFieldId": "2012/2/2/1:エ",
+      "status": "excluded",
+      "answer": "管理"
+    },
+    {
+      "sourceFieldId": "2012/2/2/3(1):a",
+      "status": "excluded",
+      "answer": "40"
+    },
+    {
+      "sourceFieldId": "2012/2/2/3(1):b",
+      "status": "excluded",
+      "answer": "128"
+    },
+    {
+      "sourceFieldId": "2012/2/2/3(1):c",
+      "status": "excluded",
+      "answer": "96"
+    },
+    {
+      "sourceFieldId": "2011/1/1/1:ア",
+      "status": "included",
+      "answer": "ブロード"
+    },
+    {
+      "sourceFieldId": "2011/1/1/1:イ",
+      "status": "included",
+      "answer": "SX"
+    },
+    {
+      "sourceFieldId": "2011/1/1/1:ウ",
+      "status": "included",
+      "answer": "ポート"
+    },
+    {
+      "sourceFieldId": "2011/1/1/1:エ",
+      "status": "included",
+      "answer": "Trap"
+    },
+    {
+      "sourceFieldId": "2011/1/1/1:オ",
+      "status": "included",
+      "answer": "ディジタル著作権管理（DRM）"
+    },
+    {
+      "sourceFieldId": "2011/1/1/2(1):a",
+      "status": "excluded",
+      "answer": "100"
+    },
+    {
+      "sourceFieldId": "2011/1/1/3(1):b",
+      "status": "excluded",
+      "answer": "4"
+    },
+    {
+      "sourceFieldId": "2011/1/2/2(2):ア",
+      "status": "excluded",
+      "answer": "10"
+    },
+    {
+      "sourceFieldId": "2011/1/2/2(2):イ",
+      "status": "excluded",
+      "answer": "12.5"
+    },
+    {
+      "sourceFieldId": "2011/1/2/2(2):ウ",
+      "status": "excluded",
+      "answer": "0.8"
+    },
+    {
+      "sourceFieldId": "2011/1/2/2(2):エ",
+      "status": "excluded",
+      "answer": "0.32"
+    },
+    {
+      "sourceFieldId": "2011/1/2/3(2):オ",
+      "status": "excluded",
+      "answer": "13"
+    },
+    {
+      "sourceFieldId": "2011/1/2/3(2):カ",
+      "status": "excluded",
+      "answer": "14"
+    },
+    {
+      "sourceFieldId": "2011/1/2/3(2):キ",
+      "status": "excluded",
+      "answer": "4"
+    },
+    {
+      "sourceFieldId": "2011/1/2/3(2):ク",
+      "status": "excluded",
+      "answer": "42"
+    },
+    {
+      "sourceFieldId": "2011/1/2/3(2):ケ",
+      "status": "excluded",
+      "answer": "9"
+    },
+    {
+      "sourceFieldId": "2011/1/3/1:ア",
+      "status": "included",
+      "answer": "UTM"
+    },
+    {
+      "sourceFieldId": "2011/1/3/1:イ",
+      "status": "excluded",
+      "answer": "再起動"
+    },
+    {
+      "sourceFieldId": "2011/1/3/1:ウ",
+      "status": "included",
+      "answer": "TFTP"
+    },
+    {
+      "sourceFieldId": "2011/1/3/1:エ",
+      "status": "excluded",
+      "answer": "IPアドレス"
+    },
+    {
+      "sourceFieldId": "2011/1/3/1:オ",
+      "status": "included",
+      "answer": "RJ-45"
+    },
+    {
+      "sourceFieldId": "2011/1/3/1:カ",
+      "status": "included",
+      "answer": "コミュニティ"
+    },
+    {
+      "sourceFieldId": "2011/2/1/1(1):ア",
+      "status": "included",
+      "answer": "無線LAN"
+    },
+    {
+      "sourceFieldId": "2011/2/1/1(1):イ",
+      "status": "included",
+      "answer": "GPS"
+    },
+    {
+      "sourceFieldId": "2011/2/1/3(1):a",
+      "status": "excluded",
+      "answer": "36"
+    },
+    {
+      "sourceFieldId": "2011/2/1/3(1):b",
+      "status": "excluded",
+      "answer": "6"
+    },
+    {
+      "sourceFieldId": "2011/2/1/3(1):c",
+      "status": "excluded",
+      "answer": "10"
+    },
+    {
+      "sourceFieldId": "2011/2/1/4(2):ウ",
+      "status": "excluded",
+      "answer": "192.168.32.0/24"
+    },
+    {
+      "sourceFieldId": "2011/2/1/4(2):エ",
+      "status": "excluded",
+      "answer": "0.0.0.0"
+    },
+    {
+      "sourceFieldId": "2011/2/1/4(2):オ",
+      "status": "excluded",
+      "answer": "2以上"
+    },
+    {
+      "sourceFieldId": "2011/2/2/1:ア",
+      "status": "excluded",
+      "answer": "帯域拡大"
+    },
+    {
+      "sourceFieldId": "2011/2/2/1:イ",
+      "status": "included",
+      "answer": "バックアップ"
+    },
+    {
+      "sourceFieldId": "2011/2/2/1:ウ",
+      "status": "included",
+      "answer": "マルチ"
+    },
+    {
+      "sourceFieldId": "2011/2/2/1:エ",
+      "status": "excluded",
+      "answer": "大きい"
+    },
+    {
+      "sourceFieldId": "2010/1/1/1(1):ア",
+      "status": "included",
+      "answer": "対話型データ転送"
+    },
+    {
+      "sourceFieldId": "2010/1/1/1(1):イ",
+      "status": "included",
+      "answer": "バルクデータ転送"
+    },
+    {
+      "sourceFieldId": "2010/1/1/1(1):ウ",
+      "status": "included",
+      "answer": "ウィンドウサイズ"
+    },
+    {
+      "sourceFieldId": "2010/1/1/1(3):エ",
+      "status": "excluded",
+      "answer": "t2"
+    },
+    {
+      "sourceFieldId": "2010/1/1/1(3):オ",
+      "status": "excluded",
+      "answer": "t3＋t4＋t5"
+    },
+    {
+      "sourceFieldId": "2010/1/1/1(3):カ",
+      "status": "excluded",
+      "answer": "t6＋t7＋t8"
+    },
+    {
+      "sourceFieldId": "2010/1/1/1(3):キ",
+      "status": "excluded",
+      "answer": "t4＋t5"
+    },
+    {
+      "sourceFieldId": "2010/1/2/1:ア",
+      "status": "included",
+      "answer": "統計"
+    },
+    {
+      "sourceFieldId": "2010/1/2/1:イ",
+      "status": "included",
+      "answer": "コーデック"
+    },
+    {
+      "sourceFieldId": "2010/1/2/1:ウ",
+      "status": "included",
+      "answer": "エージェント"
+    },
+    {
+      "sourceFieldId": "2010/1/2/1:エ",
+      "status": "included",
+      "answer": "MIB"
+    },
+    {
+      "sourceFieldId": "2010/1/2/1:オ",
+      "status": "included",
+      "answer": "FIFO（First In First Out）"
+    },
+    {
+      "sourceFieldId": "2010/1/2/2(1):a",
+      "status": "excluded",
+      "answer": "1,000"
+    },
+    {
+      "sourceFieldId": "2010/1/2/3(1):b",
+      "status": "excluded",
+      "answer": "7,500"
+    },
+    {
+      "sourceFieldId": "2010/1/3/1:ア",
+      "status": "included",
+      "answer": "ホスト"
+    },
+    {
+      "sourceFieldId": "2010/1/3/1:イ",
+      "status": "included",
+      "answer": "シグネチャ"
+    },
+    {
+      "sourceFieldId": "2010/1/3/1:ウ",
+      "status": "included",
+      "answer": "SQLインジェクション"
+    },
+    {
+      "sourceFieldId": "2010/1/3/1:エ",
+      "status": "included",
+      "answer": "クロスサイトスクリプティング"
+    },
+    {
+      "sourceFieldId": "2010/1/3/1:オ",
+      "status": "included",
+      "answer": "シーケンス番号"
+    },
+    {
+      "sourceFieldId": "2010/2/1/1:a",
+      "status": "included",
+      "answer": "IP-SAN"
+    },
+    {
+      "sourceFieldId": "2010/2/1/1:b",
+      "status": "included",
+      "answer": "TCP"
+    },
+    {
+      "sourceFieldId": "2010/2/1/1:c",
+      "status": "included",
+      "answer": "SCSI"
+    },
+    {
+      "sourceFieldId": "2010/2/1/1:d",
+      "status": "included",
+      "answer": "ターゲット"
+    },
+    {
+      "sourceFieldId": "2010/2/1/1:e",
+      "status": "included",
+      "answer": "スケーラビリティ（拡張性）"
+    },
+    {
+      "sourceFieldId": "2010/2/1/4(4):ア",
+      "status": "excluded",
+      "answer": "8"
+    },
+    {
+      "sourceFieldId": "2010/2/2/1(1):ア",
+      "status": "included",
+      "answer": "ハイパーバイザ"
+    },
+    {
+      "sourceFieldId": "2010/2/2/1(1):イ",
+      "status": "excluded",
+      "answer": "信頼性"
+    },
+    {
+      "sourceFieldId": "2010/2/2/1(1):ウ",
+      "status": "excluded",
+      "answer": "通信帯域の確保"
+    },
+    {
+      "sourceFieldId": "2010/2/2/1(1):エ",
+      "status": "included",
+      "answer": "チーミング"
+    },
+    {
+      "sourceFieldId": "2010/2/2/1(1):オ",
+      "status": "included",
+      "answer": "リンク"
+    },
+    {
+      "sourceFieldId": "2009/1/1/1:ア",
+      "status": "included",
+      "answer": "BPDU"
+    },
+    {
+      "sourceFieldId": "2009/1/1/1:イ",
+      "status": "included",
+      "answer": "PoE"
+    },
+    {
+      "sourceFieldId": "2009/1/1/1:ウ",
+      "status": "included",
+      "answer": "確認応答（ACK）"
+    },
+    {
+      "sourceFieldId": "2009/1/1/1:エ",
+      "status": "included",
+      "answer": "ミラー"
+    },
+    {
+      "sourceFieldId": "2009/1/1/1:オ",
+      "status": "included",
+      "answer": "Auto MDI/MDI-X"
+    },
+    {
+      "sourceFieldId": "2009/1/1/2(1):a",
+      "status": "excluded",
+      "answer": "11"
+    },
+    {
+      "sourceFieldId": "2009/1/1/2(1):b",
+      "status": "excluded",
+      "answer": "2"
+    },
+    {
+      "sourceFieldId": "2009/1/2/1:ア",
+      "status": "included",
+      "answer": "Ajax"
+    },
+    {
+      "sourceFieldId": "2009/1/2/1:イ",
+      "status": "included",
+      "answer": "SMTP"
+    },
+    {
+      "sourceFieldId": "2009/1/2/1:ウ",
+      "status": "included",
+      "answer": "POP3S"
+    },
+    {
+      "sourceFieldId": "2009/1/2/1:エ",
+      "status": "included",
+      "answer": "NAPT"
+    },
+    {
+      "sourceFieldId": "2009/1/2/1:オ",
+      "status": "included",
+      "answer": "CONNECT"
+    },
+    {
+      "sourceFieldId": "2009/1/2/3(1):カ",
+      "status": "included",
+      "answer": "MX"
+    },
+    {
+      "sourceFieldId": "2009/1/2/3(1):キ",
+      "status": "included",
+      "answer": "FQDN"
+    },
+    {
+      "sourceFieldId": "2009/1/3/1(1):ア",
+      "status": "included",
+      "answer": "セッション"
+    },
+    {
+      "sourceFieldId": "2009/1/3/1(1):イ",
+      "status": "included",
+      "answer": "Cookie"
+    },
+    {
+      "sourceFieldId": "2009/1/3/2(1):a",
+      "status": "excluded",
+      "answer": "HRTMAC"
+    },
+    {
+      "sourceFieldId": "2009/1/3/2(1):b",
+      "status": "excluded",
+      "answer": "LBMAC"
+    },
+    {
+      "sourceFieldId": "2009/1/3/2(1):c",
+      "status": "excluded",
+      "answer": "SVR1MAC"
+    },
+    {
+      "sourceFieldId": "2009/1/3/2(1):d",
+      "status": "excluded",
+      "answer": "172.16.0.1"
+    },
+    {
+      "sourceFieldId": "2009/2/1/1(3):ア",
+      "status": "included",
+      "answer": "アソシエーション"
+    },
+    {
+      "sourceFieldId": "2009/2/1/2(1):イ",
+      "status": "included",
+      "answer": "PKI（公開鍵基盤）"
+    },
+    {
+      "sourceFieldId": "2009/2/1/2(1):ウ",
+      "status": "included",
+      "answer": "秘密鍵"
+    },
+    {
+      "sourceFieldId": "2009/2/1/2(1):エ",
+      "status": "included",
+      "answer": "証明書失効リスト（CRL）"
+    },
+    {
+      "sourceFieldId": "2009/2/1/3(1):オ",
+      "status": "included",
+      "answer": "CSMA/CA"
+    },
+    {
+      "sourceFieldId": "2009/2/1/3(1):カ",
+      "status": "included",
+      "answer": "802.11n"
+    },
+    {
+      "sourceFieldId": "2009/2/1/3(5):a",
+      "status": "excluded",
+      "answer": "203"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:ア",
+      "status": "included",
+      "answer": "ITサービス"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:イ",
+      "status": "included",
+      "answer": "ディスプレイ"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:ウ",
+      "status": "included",
+      "answer": "ブレーカ"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:エ",
+      "status": "included",
+      "answer": "ホットスワップ"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:オ",
+      "status": "included",
+      "answer": "コンティンジェンシ"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:カ",
+      "status": "included",
+      "answer": "リハーサル"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:キ",
+      "status": "excluded",
+      "answer": "作業時間"
+    },
+    {
+      "sourceFieldId": "2009/2/2/1:ク",
+      "status": "included",
+      "answer": "ミラーリング"
+    },
+    {
+      "sourceFieldId": "2009/2/2/2(1):a",
+      "status": "excluded",
+      "answer": "リモートKVMスイッチのIPアドレス"
+    },
+    {
+      "sourceFieldId": "2009/2/2/2(2):b",
+      "status": "excluded",
+      "answer": "6"
+    },
+    {
+      "sourceFieldId": "2009/2/2/2(4):c",
+      "status": "excluded",
+      "answer": "バックアップの取得"
+    },
+    {
+      "sourceFieldId": "2009/2/2/2(4):d",
+      "status": "excluded",
+      "answer": "サーバαのIPアドレス変更"
+    }
+  ]
+}

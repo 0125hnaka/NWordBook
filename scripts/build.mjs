@@ -15,7 +15,7 @@ export async function build() {
   const explanations = await loadAllExplanations(exams);
   await mkdir(join(root, 'dist/src'), { recursive: true });
   await mkdir(join(root, 'dist/study-data'), { recursive: true });
-  const paths = ['index.html', 'exam.html', 'exam-explanation.html', 'favicon.svg', 'src/app.js', 'src/domain.js', 'src/content.js', 'src/detailed-explanations.js', 'src/terminology.js', 'src/storage.js', 'src/predictions.js', 'src/question-codes.js', 'src/question-contexts.js', 'src/exams.js', 'src/exam-storage.js', 'src/exam-navigation.js', 'src/exam-pdfs.js', 'src/exam-app.js', 'src/exam-practice.js', 'src/exam-grade-ui.js', 'src/exam-explanations.js', 'src/exam-explanation-app.js', 'src/pdf-viewer.js', 'src/styles.css', 'src/learning.css', 'src/exam.css'];
+  const paths = ['index.html', 'exam.html', 'exam-explanation.html', 'favicon.svg', 'src/app.js', 'src/domain.js', 'src/content.js', 'src/detailed-explanations.js', 'src/terminology.js', 'src/storage.js', 'src/predictions.js', 'src/question-codes.js', 'src/past-terms.js', 'src/question-contexts.js', 'src/exams.js', 'src/exam-storage.js', 'src/exam-navigation.js', 'src/exam-pdfs.js', 'src/exam-app.js', 'src/exam-practice.js', 'src/exam-grade-ui.js', 'src/exam-explanations.js', 'src/exam-explanation-app.js', 'src/pdf-viewer.js', 'src/styles.css', 'src/learning.css', 'src/exam.css'];
   const sources = await Promise.all(paths.map(path => readFile(join(root, path), 'utf8')));
   const revision = createHash('sha256').update(sources.join('\n')).update(JSON.stringify(data)).update(JSON.stringify(exams)).update(JSON.stringify(explanations)).digest('hex').slice(0, 16);
   for (const [index, path] of paths.entries()) {

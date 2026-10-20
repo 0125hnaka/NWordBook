@@ -3,6 +3,8 @@ import { renderQuestionContext } from './question-contexts.js';
 import { renderDetailedExplanation } from './detailed-explanations.js';
 import { createStateStore } from './storage.js';
 import { eligiblePredictionCards, predictionScopeCounts } from './predictions.js';
+import { eligiblePastTermCards, pastTermSourceLabel, pastTermOccurrences } from './past-terms.js';
+import { examYearLabel } from './exams.js';
 
 // Only escaped text enters templates. Source content is never interpreted as HTML.
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -13,21 +15,23 @@ const confidenceHints = { understood: '意味・理由を説明できる', uncle
 const modeLabels = { terms: '用語を覚える', thinking: '仕組み・判断', mixed: '両方を学ぶ' };
 const relationLabels = { generalized_from_subquestion: '設問から一般化', prerequisite: '設問群の前提', problem_body_prerequisite: '本文の前提', related_prerequisite_only: '関連する前提', candidate_without_ipa_exam_mapping: '対応未確認の補充' };
 let catalog, store, view = 'home', session = null, revealed = false, message = '', pendingImport = null, hiddenLimit = 30;
-let filter = { groupId: 'all', preset: 'all', mode: 'terms', direction: 'both', review: 'all', collection: 'exam', predictionScope: 'all' };
+let filter = { groupId: 'all', preset: 'all', mode: 'terms', direction: 'both', review: 'all', collection: 'exam', predictionScope: 'all', pastTermYear: 'all', pastTermPeriod: 'all' };
 const state = () => store.state;
 const save = next => store.save(next);
 const cardsById = new Map();
 const hiddenIds = () => new Set(Object.entries(state().questionStates).filter(([, s]) => s.hidden).map(([id]) => id));
-const candidates = () => filter.collection === 'predictions' ? eligiblePredictionCards(catalog, state(), filter) : eligibleCards(catalog, state(), filter);
-const allCards = () => [...catalog.cards, ...catalog.predictionCards];
-const requestedCount = () => filter.collection === 'predictions' ? (state().settings.predictionQuestionCount ?? 10) : state().settings.questionCount;
+const candidates = () => filter.collection === 'past-terms' ? eligiblePastTermCards(catalog, state(), filter) : filter.collection === 'predictions' ? eligiblePredictionCards(catalog, state(), filter) : eligibleCards(catalog, state(), filter);
+const allCards = () => [...catalog.cards, ...catalog.predictionCards, ...catalog.pastTermCards];
+const countSetting = () => filter.collection === 'past-terms' ? 'pastTermQuestionCount' : filter.collection === 'predictions' ? 'predictionQuestionCount' : 'questionCount';
+const requestedCount = () => state().settings[countSetting()] ?? 10;
+const collectionHome = () => ['predictions', 'past-terms'].includes(filter.collection) ? filter.collection : 'home';
 const button = (action, label, cls = 'button', attrs = '') => `<button class="${cls}" data-action="${action}" ${attrs}>${label}</button>`;
 
 function shell(content) {
   const inStudy = view === 'study';
   return `<header class="header"><div class="header-inner"><a class="brand" href="#home" aria-label="NWordBook ホーム"><span class="brand-mark" aria-hidden="true">N<span>↗</span></span><span>NWordBook<small>NETWORK SPECIALIST</small></span></a><span class="edition">午後対策 / SHORT STUDY</span></div></header>
     <div class="app-layout"><aside class="sidebar"><p class="nav-caption">MY STUDY</p><nav aria-label="メインメニュー">${inStudy ? button('interrupt', '← 中断して戻る', 'nav-item') : ['home', 'hidden', 'settings'].map((page, i) => `<a class="nav-item ${view === page ? 'active' : ''}" href="#${page}" ${view === page ? 'aria-current="page"' : ''}><span aria-hidden="true">${['▤', '◫', '⚙'][i]}</span>${['学習をはじめる', '非表示の問題', '学習設定'][i]}${page === 'hidden' ? `<span class="nav-count">${hiddenIds().size}</span>` : ''}</a>`).join('')}</nav><div class="sidebar-note"><span class="tiny-label">ONE QUESTION AT A TIME</span><p>知識をつなぐ。<br>判断する力にする。</p><span>用語から、構成変更の理由まで。</span></div><p class="local-label"><span class="status-dot"></span>${store.persistent ? 'このブラウザーに保存' : '一時保存モード'}</p></aside>
-    <main id="main" tabindex="-1">${store.notice ? `<div class="notice warning" role="status">${esc(store.notice)}</div>` : ''}<div id="feedback" role="status" aria-live="polite">${message ? `<div class="notice">${esc(message)}</div>` : ''}</div>${content}<footer>${filter.collection === 'predictions' ? '独自の予想教材です。IPA出題対応は未調査で、出題を保証するものではありません。' : 'IPAの過去問から一般化した独自編集の短問です。IPAの公式・監修教材ではありません。'}<br><span>教材 ${esc(filter.collection === 'predictions' ? catalog.predictions.version : catalog.manifest.datasetVersion)} · NWordBook v0.5.2</span></footer></main></div>`;
+    <main id="main" tabindex="-1">${store.notice ? `<div class="notice warning" role="status">${esc(store.notice)}</div>` : ''}<div id="feedback" role="status" aria-live="polite">${message ? `<div class="notice">${esc(message)}</div>` : ''}</div>${content}<footer>${filter.collection === 'past-terms' ? 'IPAの過去問の空欄前後を短く整理した独自編集問題です。IPAの公式・監修教材ではありません。' : filter.collection === 'predictions' ? '独自の予想教材です。IPA出題対応は未調査で、出題を保証するものではありません。' : 'IPAの過去問から一般化した独自編集の短問です。IPAの公式・監修教材ではありません。'}<br><span>教材 ${esc(filter.collection === 'past-terms' ? catalog.pastTerms.version : filter.collection === 'predictions' ? catalog.predictions.version : catalog.manifest.datasetVersion)} · NWordBook v0.7.0</span></footer></main></div>`;
 }
 
 function home() {
@@ -46,6 +50,7 @@ function home() {
     <div class="session-summary"><span>今回の出題</span><strong>${count === 'all' ? available.length : Math.min(count, available.length)}問 <span>/ 候補 ${available.length}問</span></strong></div>
     ${available.length === 0 || (count !== 'all' && available.length < count) ? `<p class="shortage" role="status">${available.length === 0 ? (filter.review === 'weak' ? 'この条件で「わからない」「知らない」を記録した問題はありません。復習のチェックを外すか、学び方・分野を変更してください。' : '出題候補がありません。学び方・分野・非表示設定を確認してください。') : `条件に合う問題が${available.length}問のため、その件数で開始します。学び方・分野・復習・非表示・未確認設定で絞り込んでいます。`}</p><div class="inline-links"><a href="#settings">学習分野を見直す</a><a href="#hidden">非表示一覧へ</a></div>` : ''}
     ${button('start', `学習をはじめる <span aria-hidden="true">→</span>`, 'button primary start-button', available.length ? '' : 'disabled')}<p class="below-button">答えは頭の中で。自分のペースで進めましょう。</p></section>
+    <p class="prediction-entry"><a href="#past-terms" class="button secondary">過去問の用語クイズ</a><span>実際に問われた空欄を短く練習</span></p>
     <p class="prediction-entry"><a href="./exam.html" class="button secondary">午後試験を解く</a><span>公式PDFで大問を練習</span></p>
     <p class="prediction-entry">${button('prediction-home', '予想問題を解く', 'button quiet')}<span>過去問由来の学習を終えたら</span></p>`;
 }
@@ -62,6 +67,31 @@ function predictions() {
     ${!available.length ? '<p class="shortage" role="status">条件に合う予想問題がありません。復習のチェックを外すか、問題の種類・非表示設定を見直してください。</p>' : ''}
     ${button('start', '予想問題をはじめる →', 'button primary start-button', available.length ? '' : 'disabled')}
     <p class="field-note">通常の学び方・学習分野・未確認補充の設定とは別に出題します。理解度・非表示・前の問題への移動も利用できます。</p><a href="#home">過去問由来の学習に戻る</a></section>`;
+}
+
+function pastTerms() {
+  const available = candidates(), count = requestedCount();
+  const reviewCount = eligiblePastTermCards(catalog, state(), { ...filter, review: 'weak' }).length;
+  const years = [...new Set(catalog.pastTermCards.map(c => c.source.year))].sort((a, b) => b - a);
+  return `<section class="panel study-setup"><div class="section-title"><h1 class="setup-heading">過去問の用語クイズ</h1><span class="candidate-count" role="status">対象 ${available.length}問</span></div>
+    <p class="field-note">平成21年度〜令和7年度の全16年分から${catalog.pastTermCards.length}問。本文の空欄前後を短く整理し、用語だけで答えられる問題を選びました。図表の転記・計算・固有の設定値などは除いています。原文そのままの抜粋ではありません。</p>
+    <div class="past-term-filters"><div><label class="field-label" for="past-term-year">年度</label><select id="past-term-year"><option value="all">すべての年度</option>${years.map(y => `<option value="${y}" ${filter.pastTermYear === String(y) ? 'selected' : ''}>${esc(examYearLabel(y))}（${y}年）</option>`).join('')}</select></div>
+    <div><label class="field-label" for="past-term-period">午後区分</label><select id="past-term-period">${[['all', '午後Ⅰ・Ⅱ'], ['1', '午後Ⅰ'], ['2', '午後Ⅱ']].map(([v, label]) => `<option value="${v}" ${filter.pastTermPeriod === v ? 'selected' : ''}>${label}</option>`).join('')}</select></div></div>
+    <label class="review-choice"><input id="weak-only" type="checkbox" ${filter.review === 'weak' ? 'checked' : ''}><span>「わからない」「知らない」だけを復習（${reviewCount}問）</span></label>
+    <fieldset><legend>問題数</legend><div class="count-options">${[5, 10, 20, 'all'].map(n => button(`count-${n}`, `<strong>${n === 'all' ? 'すべて' : n}</strong>${n === 'all' ? '' : '<span>問</span>'}`, n === count ? 'count-option selected' : 'count-option', `aria-pressed="${n === count}"`)).join('')}</div></fieldset>
+    <div class="session-summary"><span>今回の出題</span><strong>${count === 'all' ? available.length : Math.min(count, available.length)}問 <span>/ 候補 ${available.length}問</span></strong></div>
+    ${!available.length ? '<p class="shortage" role="status">条件に合う問題がありません。年度・午後区分・復習・非表示設定を見直してください。</p>' : ''}
+    ${button('start', '用語クイズをはじめる →', 'button primary start-button', available.length ? '' : 'disabled')}
+    <p class="field-note">答えは頭の中で考え、「答えを見る」で確認します。理解度・非表示・前の問題への移動も使えます。通常の学習分野や用語カードの向きとは別の出題です。</p><a href="#home">今日の学習に戻る</a></section>`;
+}
+
+function pastTermAnswer(card) {
+  const { cards, paperCount } = pastTermOccurrences(catalog, card);
+  const source = card.source, hash = `#${source.year}-${source.period}-${source.questionNo}`;
+  const localPdf = (filename, page) => `./past-exams/${encodeURIComponent(filename)}#page=${page}`;
+  return `<p class="explanation">${esc(card.explanation)}</p><p class="field-note">解答は原問の解答例の表記です。空欄の外にある語も合わせて読みましょう。過去の規格・方式は出題当時の内容です。</p>
+    <section class="past-term-source" aria-label="出典"><h4>元の過去問を確認する</h4><p>${esc(pastTermSourceLabel(source))}</p><div class="inline-links"><a href="./exam.html${hash}" target="_blank" rel="noopener noreferrer">原問を解く ↗</a><a href="./exam-explanation.html${hash}" target="_blank" rel="noopener noreferrer">大問の解説 ↗</a><a href="${esc(localPdf(source.problem, source.pages[0]))}" target="_blank" rel="noopener noreferrer">問題PDF（${source.pages.join('・')}ページ）↗</a><a href="${esc(localPdf(source.answer, source.answerPage))}" target="_blank" rel="noopener noreferrer">公式解答例PDF ↗</a></div></section>
+    ${cards.length > 1 ? `<details class="term-occurrences"><summary>同じ解答語の収録箇所（${paperCount}回・${cards.length}箇所）</summary><p class="field-note">このクイズに収録した空欄の集計です。IPAの全出題回数ではありません。表記が異なる解答語は別に集計します。</p><ul>${cards.map(c => `<li>${esc(pastTermSourceLabel(c.source))} · ${esc(c.shortCode)}</li>`).join('')}</ul></details>` : ''}`;
 }
 
 function confidenceControls(card) {
@@ -111,21 +141,21 @@ function study() {
   return `<div class="study-top"><div><p class="eyebrow">SHORT STUDY</p><h1>ひとつずつ、理解する。</h1></div><span class="progress-label">${position}<span> / ${session.queue.length} 問</span></span></div><progress value="${session.index}" max="${session.queue.length}" aria-label="学習の進捗"></progress>
     <nav class="session-navigation" aria-label="学習中の問題移動">${button('previous-question', '← 前の問題', 'button secondary', previous ? `data-index="${previous.index}"` : 'disabled')}<label for="session-position">問題を選ぶ<select id="session-position">${visited.map(q => `<option value="${q.index}" ${q.index === viewedIndex ? 'selected' : ''}>${q.index + 1}問目${q.index === session.index ? '（学習中）' : ''}</option>`).join('')}</select></label>${reviewing ? button('return-current', `元の${session.index + 1}問目に戻る`, 'button secondary') : ''}</nav>
     ${reviewing ? `<p class="review-notice" role="status">${position}問目を見直しています。学習の進捗は${session.index + 1}問目のまま保持しています。</p>` : ''}
-    <section class="panel question-card"><div class="card-meta"><span class="category-pill">${esc(card.group.label)}</span><span>${esc(typeLabels[card.questionType])}${card.questionType === 'term' ? ` · ${card.termDirection === 'meaning' ? '用語 → 意味' : '説明 → 用語'}` : ''}${card.prediction ? ` · ${esc(card.code)} · ${card.kind === 'composite' ? '複合演習' : '短問'}` : ` · 難易度 ${card.difficulty}/3`}${card.level ? ` · Level ${card.level}` : ''}</span></div>${card.prediction ? '<p class="prediction-label">予想問題 · IPA出題対応は未調査</p>' : !card.atom.verified ? '<p class="unverified-label">IPA設問対応未確認の技術補充</p>' : ''}<p class="question-number"><span>QUESTION ${String(position).padStart(2, '0')}</span><span class="question-code">問題ID <code>${esc(card.shortCode)}</code></span></p>${renderQuestionContext(card, esc)}<h2 class="question-text ${isDiagram ? 'diagram' : ''}">${esc(card.question)}</h2><div class="answer-guide"><strong>答えること</strong><p>${esc(card.answerFocus)}</p></div>
-    ${revealed ? `<section class="answer" aria-label="解答と解説"><p class="eyebrow">ANSWER</p><h3>${esc(card.answer)}</h3>${confidenceControls(card)}<details class="explanation-details" ${card.questionType === 'term' ? '' : 'open'}><summary>短い解説と、午後につながる考え方</summary><p class="explanation">${esc(card.explanation)}</p><div class="trigger"><span aria-hidden="true">↳</span><div><strong>午後につながる思考トリガー</strong><p>${esc(card.thinkingTrigger || card.atom.thinkingTrigger)}</p></div></div></details>${renderDetailedExplanation(card, esc)}<details class="more-details"><summary>間違えやすい点・学習の目安</summary><p class="explanation">${esc(card.atom.commonTrap)}</p>${card.prediction ? `<p class="field-note">${card.kind === 'composite' ? '複合演習' : `学習順 ${esc(card.priority)}（独自の学習順で、出題確率ではありません）`}</p>` : `<p>重要度 <span class="stars">${'★'.repeat(card.importance)}</span>（${card.importance}/3） · 優先度 ${esc(card.priority)} · カードの分類 ${esc(card.classification)}</p><p class="field-note">K＝知識、R＝読解、KR＝両方。重要度・優先度・難易度・Levelは別の指標です。</p>`}</details> ${sources(card)}</section>` : `<div class="thinking-hint"><span aria-hidden="true">◎</span> ${card.questionType === 'term' ? '用語の名前や意味を、短く思い出してみましょう。' : '「答えること」を確認し、頭の中で答えてみましょう。'}</div>`}
+    <section class="panel question-card"><div class="card-meta"><span class="category-pill">${esc(card.group.label)}</span><span>${esc(typeLabels[card.questionType])}${card.questionType === 'term' ? ` · ${card.termDirection === 'meaning' ? '用語 → 意味' : '説明 → 用語'}` : ''}${card.pastTerm ? '' : card.prediction ? ` · ${esc(card.code)} · ${card.kind === 'composite' ? '複合演習' : '短問'}` : ` · 難易度 ${card.difficulty}/3`}${card.level ? ` · Level ${card.level}` : ''}</span></div>${card.prediction ? '<p class="prediction-label">予想問題 · IPA出題対応は未調査</p>' : !card.atom.verified ? '<p class="unverified-label">IPA設問対応未確認の技術補充</p>' : ''}<p class="question-number"><span>QUESTION ${String(position).padStart(2, '0')}</span><span class="question-code">問題ID <code>${esc(card.shortCode)}</code></span></p>${card.pastTerm ? `<p class="past-term-stamp">${esc(pastTermSourceLabel(card.source))}<br><span>空欄前後を短く整理</span></p>` : ''}${renderQuestionContext(card, esc)}<h2 class="question-text ${isDiagram ? 'diagram' : ''}">${esc(card.question)}</h2><div class="answer-guide"><strong>答えること</strong><p>${esc(card.answerFocus)}</p></div>
+    ${revealed ? `<section class="answer" aria-label="解答と解説"><p class="eyebrow">ANSWER</p><h3>${esc(card.answer)}</h3>${confidenceControls(card)}${card.pastTerm ? pastTermAnswer(card) : `<details class="explanation-details" ${card.questionType === 'term' ? '' : 'open'}><summary>短い解説と、午後につながる考え方</summary><p class="explanation">${esc(card.explanation)}</p><div class="trigger"><span aria-hidden="true">↳</span><div><strong>午後につながる思考トリガー</strong><p>${esc(card.thinkingTrigger || card.atom.thinkingTrigger)}</p></div></div></details>${renderDetailedExplanation(card, esc)}<details class="more-details"><summary>間違えやすい点・学習の目安</summary><p class="explanation">${esc(card.atom.commonTrap)}</p>${card.prediction ? `<p class="field-note">${card.kind === 'composite' ? '複合演習' : `学習順 ${esc(card.priority)}（独自の学習順で、出題確率ではありません）`}</p>` : `<p>重要度 <span class="stars">${'★'.repeat(card.importance)}</span>（${card.importance}/3） · 優先度 ${esc(card.priority)} · カードの分類 ${esc(card.classification)}</p><p class="field-note">K＝知識、R＝読解、KR＝両方。重要度・優先度・難易度・Levelは別の指標です。</p>`}</details> ${sources(card)}`}</section>` : `<div class="thinking-hint"><span aria-hidden="true">◎</span> ${card.questionType === 'term' ? '用語の名前や意味を、短く思い出してみましょう。' : '「答えること」を確認し、頭の中で答えてみましょう。'}</div>`}
     <div class="card-actions">${button('hide', 'この問題を非表示', 'button quiet')}${button(revealed ? 'next' : 'reveal', revealed ? `${reviewing ? `元の${session.index + 1}問目に戻る` : position === session.queue.length ? '結果を見る' : '次の問題へ'} <span aria-hidden="true">→</span>` : '答えを見る', 'button primary')}</div><p class="field-note">非表示はこのカードだけに適用され、一覧からいつでも戻せます。</p></section>`;
 }
 
 function result() {
   const ratings = Object.values(session.ratings);
-  return `<section class="panel result-panel"><div class="completion-mark" aria-hidden="true">✓</div><p class="eyebrow">SESSION COMPLETE</p><h1>今日のひと積み、完了。</h1><p>覚えたことを、次の判断につなげましょう。</p><div class="result-stats"><div><strong>${session.completed}</strong><span>次へ進んだ問題</span></div><div><strong>${session.hidden}</strong><span>非表示にした問題</span></div></div><div class="confidence-results">${Object.entries(confidenceLabels).map(([value, label]) => `<div><strong>${ratings.filter(r => r === value).length}</strong><span>${label}</span></div>`).join('')}</div><p class="field-note">理解度は自己申告です。未選択 ${Math.max(0, session.completed - ratings.length)}問。正解数・正答率は推測しません。</p><div class="result-actions">${button('again', '同じ条件でもう一度 →', 'button primary')}${ratings.some(r => r !== 'understood') ? button('review-weak', 'わからない・知らないを復習', 'button secondary') : ''}${button(session.filter.collection === 'predictions' ? 'prediction-home' : 'home', '条件を変更する', 'button secondary')}</div></section>`;
+  return `<section class="panel result-panel"><div class="completion-mark" aria-hidden="true">✓</div><p class="eyebrow">SESSION COMPLETE</p><h1>今日のひと積み、完了。</h1><p>覚えたことを、次の判断につなげましょう。</p><div class="result-stats"><div><strong>${session.completed}</strong><span>次へ進んだ問題</span></div><div><strong>${session.hidden}</strong><span>非表示にした問題</span></div></div><div class="confidence-results">${Object.entries(confidenceLabels).map(([value, label]) => `<div><strong>${ratings.filter(r => r === value).length}</strong><span>${label}</span></div>`).join('')}</div><p class="field-note">理解度は自己申告です。未選択 ${Math.max(0, session.completed - ratings.length)}問。正解数・正答率は推測しません。</p><div class="result-actions">${button('again', '同じ条件でもう一度 →', 'button primary')}${ratings.some(r => r !== 'understood') ? button('review-weak', 'わからない・知らないを復習', 'button secondary') : ''}${button('collection-home', '条件を変更する', 'button secondary')}</div></section>`;
 }
 
 function hidden() {
   const ids = hiddenIds();
   const cards = allCards().filter(c => ids.has(c.id));
   const unknown = ids.size - cards.length;
-  return `<div class="page-heading"><p class="eyebrow">HIDDEN QUESTIONS</p><h1>非表示の問題</h1><p>覚えた問題はひと休み。必要になったら、また学習へ。</p></div><section class="panel"><div class="list-heading"><h2>${cards.length}問を非表示中</h2><span class="field-note">問題カードごとに保存</span></div>${unknown ? `<div class="notice">現在の教材にない問題IDが${unknown}件あります。保存状態は保持しています。</div>` : ''}${cards.length ? `<ul class="hidden-list">${cards.slice(0, hiddenLimit).map(c => `<li><div><span class="tiny-label">${esc(c.group.label)} · ${esc(c.shortCode)}</span><p>${esc(c.question)}</p><span class="field-note">${c.prediction ? '予想問題 · 専用画面で出題' : `${!c.atom.verified ? '対応未確認 · ' : ''}${state().settings.enabledGroupIds.includes(c.group.id) ? '分野は有効' : '分野は無効'}`}</span></div>${button('restore', '復活する', 'button secondary', `data-id="${esc(c.id)}" aria-label="${esc(c.question)} を復活する"`)}</li>`).join('')}</ul>${cards.length > hiddenLimit ? button('more-hidden', 'さらに30問表示', 'button secondary') : ''}` : '<div class="empty-state"><span aria-hidden="true">◫</span><h3>非表示の問題はありません</h3><p>学習中の「非表示」で、覚えたカードを整理できます。</p><a href="#home">学習をはじめる →</a></div>'}<p class="field-note">復活しても、無効な分野や未確認OFFの設定は維持されます。</p></section>`;
+  return `<div class="page-heading"><p class="eyebrow">HIDDEN QUESTIONS</p><h1>非表示の問題</h1><p>覚えた問題はひと休み。必要になったら、また学習へ。</p></div><section class="panel"><div class="list-heading"><h2>${cards.length}問を非表示中</h2><span class="field-note">問題カードごとに保存</span></div>${unknown ? `<div class="notice">現在の教材にない問題IDが${unknown}件あります。保存状態は保持しています。</div>` : ''}${cards.length ? `<ul class="hidden-list">${cards.slice(0, hiddenLimit).map(c => `<li><div><span class="tiny-label">${esc(c.group.label)} · ${esc(c.shortCode)}</span><p>${esc(c.question)}</p><span class="field-note">${c.pastTerm ? '過去問の用語クイズ · 専用画面で出題' : c.prediction ? '予想問題 · 専用画面で出題' : `${!c.atom.verified ? '対応未確認 · ' : ''}${state().settings.enabledGroupIds.includes(c.group.id) ? '分野は有効' : '分野は無効'}`}</span></div>${button('restore', '復活する', 'button secondary', `data-id="${esc(c.id)}" aria-label="${esc(c.question)} を復活する"`)}</li>`).join('')}</ul>${cards.length > hiddenLimit ? button('more-hidden', 'さらに30問表示', 'button secondary') : ''}` : '<div class="empty-state"><span aria-hidden="true">◫</span><h3>非表示の問題はありません</h3><p>学習中の「非表示」で、覚えたカードを整理できます。</p><a href="#home">学習をはじめる →</a></div>'}<p class="field-note">復活しても、無効な分野や未確認OFFの設定は維持されます。</p></section>`;
 }
 
 function settings() {
@@ -139,17 +169,17 @@ function render(focus = false) {
   const activeId = document.activeElement?.id;
   const activeAction = document.activeElement?.dataset.action;
   if (!state().settings.enabledGroupIds.includes(filter.groupId)) filter.groupId = 'all';
-  const screens = { home, predictions, study, result, hidden, settings };
+  const screens = { home, predictions, 'past-terms': pastTerms, study, result, hidden, settings };
   app.innerHTML = shell(screens[view]());
-  document.title = `${({ home: '学習をはじめる', predictions: '予想問題', study: '学習中', result: '学習結果', hidden: '非表示の問題', settings: '学習設定' })[view]} | NWordBook`;
+  document.title = `${({ home: '学習をはじめる', predictions: '予想問題', 'past-terms': '過去問の用語クイズ', study: '学習中', result: '学習結果', hidden: '非表示の問題', settings: '学習設定' })[view]} | NWordBook`;
   if (focus) { document.querySelector('#main').focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'instant' }); }
   else if (activeId) document.getElementById(activeId)?.focus({ preventScroll: true });
   else if (activeAction) document.querySelector(`[data-action="${CSS.escape(activeAction)}"]`)?.focus({ preventScroll: true });
 }
 
 function navigate(page) {
-  view = ['home', 'predictions', 'hidden', 'settings'].includes(page) ? page : 'home';
-  const collection = view === 'predictions' ? 'predictions' : 'exam';
+  view = ['home', 'predictions', 'past-terms', 'hidden', 'settings'].includes(page) ? page : 'home';
+  const collection = ['predictions', 'past-terms'].includes(view) ? view : 'exam';
   if (collection !== filter.collection) filter.review = 'all';
   filter.collection = collection;
   if (session && session.index < session.queue.length) message = '学習を中断しました。次回は新しい問題の組合せで開始します。';
@@ -159,8 +189,8 @@ function navigate(page) {
 }
 
 function start() {
-  const selected = selectStudyQuestions(candidates(), requestedCount(), filter.collection === 'predictions' ? 'thinking' : filter.mode);
-  if (!selected.length) { message = '条件に合う問題がありません。分野や非表示設定を見直してください。'; view = 'home'; render(true); return; }
+  const selected = selectStudyQuestions(candidates(), requestedCount(), filter.collection === 'past-terms' ? 'terms' : filter.collection === 'predictions' ? 'thinking' : filter.mode);
+  if (!selected.length) { message = '条件に合う問題がありません。分野や非表示設定を見直してください。'; view = collectionHome(); render(true); return; }
   session = createSession(selected, filter, requestedCount());
   message = '';
   revealed = false;
@@ -185,10 +215,11 @@ app.addEventListener('click', event => {
   message = '';
   if (action === 'start') return start();
   if (action === 'prediction-home') { navigate('predictions'); return; }
-  if (action === 'home' || action === 'interrupt') { navigate(action === 'interrupt' && filter.collection === 'predictions' ? 'predictions' : 'home'); return; }
+  if (action === 'collection-home' || action === 'interrupt') { navigate(collectionHome()); return; }
+  if (action === 'home') { navigate('home'); return; }
   if (action.startsWith('preset-')) { filter.preset = action.slice(7); render(); return; }
   if (action.startsWith('mode-')) { filter.mode = action.slice(5); save({ ...state(), settings: { ...state().settings, studyMode: filter.mode } }); render(); return; }
-  if (action.startsWith('count-')) { save({ ...state(), settings: { ...state().settings, [filter.collection === 'predictions' ? 'predictionQuestionCount' : 'questionCount']: action.slice(6) === 'all' ? 'all' : Number(action.slice(6)) } }); render(); return; }
+  if (action.startsWith('count-')) { save({ ...state(), settings: { ...state().settings, [countSetting()]: action.slice(6) === 'all' ? 'all' : Number(action.slice(6)) } }); render(); return; }
   if (action === 'previous-question') { showSessionQuestion(Number(target.dataset.index)); return; }
   if (action === 'return-current') {
     if (!session || view !== 'study') return;
@@ -248,6 +279,8 @@ app.addEventListener('change', async event => {
   const input = event.target;
   message = '';
   if (input.id === 'session-position') { showSessionQuestion(Number(input.value)); return; }
+  if (input.id === 'past-term-year') { filter.pastTermYear = input.value; render(); return; }
+  if (input.id === 'past-term-period') { filter.pastTermPeriod = input.value; render(); return; }
   if (input.id === 'prediction-scope') { filter.predictionScope = input.value; render(); return; }
   if (input.id === 'group') { filter.groupId = input.value; render(); }
   if (input.id === 'term-direction') { filter.direction = input.value; save({ ...state(), settings: { ...state().settings, termDirection: filter.direction } }); render(); }

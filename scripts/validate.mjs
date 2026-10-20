@@ -5,9 +5,11 @@ import { pathToFileURL } from 'node:url';
 import { createCatalog, eligibleCards, initialState } from '../src/domain.js';
 import { readDataset, root } from './data.mjs';
 import { parsePredictionSource } from './import-predictions.mjs';
+import { verifyPastTerms } from './past-term-data.mjs';
 
 export async function validate() {
   const data = await readDataset();
+  await verifyPastTerms(data.pastTerms);
   const catalog = createCatalog({ ...data, editorial: undefined });
   createCatalog(data); // Also validate separate editorial references and added cards.
   const predictionSource = await readFile(join(root, data.predictions.source.path), 'utf8');
